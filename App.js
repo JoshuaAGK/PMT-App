@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import BottomNav from './components/BottomNav';
 import Advertisement from './components/Advertisement';
 import VerticalPage from './components/VerticalPage';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
