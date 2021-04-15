@@ -35,13 +35,24 @@ function dateString() {
 
 const UpperContents = (props) => {
     
+    const containerType = props.content;
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.dateText}>{dateString()}</Text>
-            <View style={styles.rightBox}><Text>$4.20</Text></View>
-        </View>
-    )
+    if (containerType == "logout") {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.dateText}>{dateString()}</Text>
+                <View style={styles.rightBox}><Text>Log out</Text></View>
+            </View>
+        )
+    } else {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.dateText}>{dateString()}</Text>
+                <View style={styles.rightBox}><Text>$4.20</Text></View>
+            </View>
+        )
+    }
+    
 };
 
 export default UpperContents;

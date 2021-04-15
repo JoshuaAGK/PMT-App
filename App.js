@@ -56,15 +56,18 @@ const ShopRoute = () => <View style={styles.container}>
   <StatusBar style="auto" />
 </View>;
 
-// const theme = {
-//   ...DefaultTheme,
-//   roundness: 2,
-//   colors: {
-//     ...DefaultTheme.colors,
-//     primary: '#3498db',
-//     accent: '#f1c40f',
-//   },
-// };
+const theme = {
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#ffffff',
+  },
+  animation: {
+    ...DefaultTheme.scale
+  },
+  fonts: {
+    ...DefaultTheme.fonts
+  }
+};
 
 const MyComponent = () => {
   const [index, setIndex] = React.useState(0);
@@ -84,6 +87,7 @@ const MyComponent = () => {
 
   return (
     <PaperProvider
+      theme={theme}
       settings={{
         icon: props => <MaterialIcons {...props} />,
       }}

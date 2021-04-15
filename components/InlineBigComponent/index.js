@@ -5,11 +5,21 @@ import styles from './styles'
 const InlineBigComponent = (props) => {
     const content = props.content
     const tbd = props.tbd
+    const type = props.type
 
     if (tbd) {
         return (
             <View style={styles.tbd}>
                 <Text>{content}</Text>
+            </View>
+        );
+    } else if (type == "emotionSubmit") {
+        return (
+            <View style={styles.emote}>
+                <Text style={styles.emoteIcon}>😢</Text>
+                <Text style={styles.emoteIcon}>🙁</Text>
+                <Text style={styles.emoteIcon}>😐</Text>
+                <Text style={styles.emoteIcon}>🙂</Text>
             </View>
         );
     } else {
@@ -21,7 +31,5 @@ const InlineBigComponent = (props) => {
     }
     
 };
-
-
 
 export default InlineBigComponent;

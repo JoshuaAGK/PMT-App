@@ -12,7 +12,9 @@ const VerticalPage = (props) => {
     if (pageName == "journal") {
         return (
             <ScrollView style={styles.mainPage}>
-                <UpperContents/>
+                <UpperContents
+                    content="currency"
+                />
                 <Text style={styles.bigText}>Journal</Text>
                 <InlineBigComponent
                     content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin placerat euismod nisi, sed sollicitudin nisl volutpat id. Aenean vel felis urna. Nullam bibendum, est at commodo varius, ex mi tincidunt ex, nec semper ex lorem at odio. Mauris at turpis metus. Vestibulum augue urna, interdum vel iaculis auctor, ultrices eget quam. Praesent quam orci, luctus quis pulvinar ac, maximus ac metus. Donec maximus sapien ut odio hendrerit, vel tempor lorem tristique. Mauris tincidunt semper venenatis. Nam nec leo id elit luctus auctor id ac ante. Praesent luctus porttitor porta. Pellentesque quis magna ac nulla congue mattis a sed sem."
@@ -31,9 +33,12 @@ const VerticalPage = (props) => {
     } else if (pageName == "me") {
         return (
             <ScrollView style={styles.mainPage}>
+                <UpperContents
+                    content="logout"
+                />
                 <Text style={styles.bigText}>How do you feel?</Text>
                 <InlineBigComponent
-                    content = "😢🙁😐🙂"
+                    type="emotionSubmit"
                 />
                 <Text style={styles.bigText}>Alarm</Text>
                 <InlineBigComponent
@@ -63,6 +68,9 @@ const VerticalPage = (props) => {
     } else {
         return (
             <ScrollView style={styles.mainPage}>
+                <UpperContents
+                    content="currency"
+                />
                 <Text style={styles.bigText}>Buy in-app currency</Text>
                 <InlineBigComponent
                     content = "PLACEHOLDER SHOP ITEM"
