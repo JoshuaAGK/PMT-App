@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import styles from './styles'
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 function dateString() {
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -33,7 +35,9 @@ function dateString() {
     return day + ", " + monthDate + ordinal + " " + month + " " + year;
 }
 
-const UpperContents = (props) => {
+function UpperContents(props) {
+
+    const navigation = useNavigation();
     
     const containerType = props.content;
 
@@ -41,7 +45,12 @@ const UpperContents = (props) => {
         return (
             <View style={styles.container}>
                 <Text style={styles.dateText}>{dateString()}</Text>
-                <View style={styles.rightBox}><Text style={styles.rightInnerText}>Log out</Text></View>
+                <Pressable
+                    style={styles.rightBox}
+                    onPress={() => alert("Logged out")}
+                >
+                    <Text>Log out</Text>
+                </Pressable>
             </View>
         )
     } else if (containerType == "none") {
@@ -61,7 +70,12 @@ const UpperContents = (props) => {
         return (
             <View style={styles.container}>
                 <Text style={styles.dateText}>{dateString()}</Text>
-                <View style={styles.rightBox}><Text style={styles.rightInnerText}>₩4.20</Text></View>
+                <Pressable
+                    style={styles.rightBox}
+                    onPress={() => navigation.navigate('Shop')}
+                >
+                    <Text>₩4.20</Text>
+                </Pressable>
             </View>
         )
     }

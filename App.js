@@ -1,14 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
 import Advertisement from './components/Advertisement';
 import VerticalPage from './components/VerticalPage';
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigation, Text, Provider as PaperProvider } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-function JournalScreen() {
+function JournalScreen({navigation}) {
   return (
 <View style={styles.container}>
   <VerticalPage
@@ -24,7 +23,7 @@ function JournalScreen() {
   )
 }
 
-function MeScreen() {
+function MeScreen({navigation}) {
   return (
 <View style={styles.container}>
   <VerticalPage
@@ -40,7 +39,7 @@ function MeScreen() {
   )
 }
 
-function SocialScreen() {
+function SocialScreen({navigation}) {
   return (
 <View style={styles.container}>
   <VerticalPage
@@ -56,7 +55,7 @@ function SocialScreen() {
   )
 }
 
-function ShopScreen() {
+function ShopScreen({navigation}) {
   return (
 <View style={styles.container}>
   <VerticalPage
@@ -100,7 +99,6 @@ export default function App() {
                 : 'shopping-cart';
             }
 
-            // You can return any component that you like here!
             return <MaterialIcons name={iconName} size={size} color={color} />;
           },
         })}
