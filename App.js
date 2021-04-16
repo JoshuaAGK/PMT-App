@@ -4,11 +4,13 @@ import { StyleSheet, View } from 'react-native';
 import Advertisement from './components/Advertisement';
 import VerticalPage from './components/VerticalPage';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigation, Text, Provider as PaperProvider } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const JournalRoute = () => <View style={styles.container}>
+function JournalScreen() {
+  return (
+<View style={styles.container}>
   <VerticalPage
     page = "journal"
   />
@@ -18,9 +20,13 @@ const JournalRoute = () => <View style={styles.container}>
     content="ADVERTISEMENT"
   />
   <StatusBar style="auto" />
-</View>;
+</View>
+  )
+}
 
-const MeRoute = () => <View style={styles.container}>
+function MeScreen() {
+  return (
+<View style={styles.container}>
   <VerticalPage
     page = "me"
   />
@@ -30,9 +36,13 @@ const MeRoute = () => <View style={styles.container}>
     content="ADVERTISEMENT"
   />
   <StatusBar style="auto" />
-</View>;
+</View>
+  )
+}
 
-const SocialRoute = () => <View style={styles.container}>
+function SocialScreen() {
+  return (
+<View style={styles.container}>
   <VerticalPage
     page = "social"
   />
@@ -41,11 +51,14 @@ const SocialRoute = () => <View style={styles.container}>
     type="banner"
     content="ADVERTISEMENT"
   />
-
   <StatusBar style="auto" />
-</View>;
+</View>
+  )
+}
 
-const ShopRoute = () => <View style={styles.container}>
+function ShopScreen() {
+  return (
+<View style={styles.container}>
   <VerticalPage
     page = "shop"
   />
@@ -55,59 +68,52 @@ const ShopRoute = () => <View style={styles.container}>
     content="ADVERTISEMENT"
   />
   <StatusBar style="auto" />
-</View>;
+</View>
+  )
+}
 
-const theme = {
-  colors: {
-    ...DefaultTheme.colors,
-    primary: '#ffffff',
-  },
-  animation: {
-    ...DefaultTheme.scale
-  },
-  fonts: {
-    ...DefaultTheme.fonts
-  }
-};
+const Tab = createBottomTabNavigator();
 
-const MyComponent = () => {
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'journal', title: 'Journal', icon: 'book' },
-    { key: 'me', title: 'Me', icon: 'person' },
-    { key: 'social', title: 'Social', icon: 'people-alt' },
-    { key: 'shop', title: 'Shop', icon: 'shopping-cart' },
-  ]);
-
-  const renderScene = BottomNavigation.SceneMap({
-    journal: JournalRoute,
-    me: MeRoute,
-    social: SocialRoute,
-    shop: ShopRoute,
-  });
-
+export default function App() {
   return (
-    <PaperProvider
-      theme={theme}
-      settings={{
-        icon: props => <MaterialIcons {...props} />,
-      }}
-    >
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
 
-      <BottomNavigation
-        shifting = {false}
-        navigationState={{ index, routes }}
-        onIndexChange={setIndex}
-        renderScene={renderScene}
-        activeColor={"#007bff"}
-        inactiveColor={"#8e8e93"}
-      />
+            if (route.name === 'Journal') {
+              iconName = focused
+                ? 'book'
+                : 'book';
+            } else if (route.name === 'Me') {
+              iconName = focused
+                ? 'person'
+                : 'person';
+            } else if (route.name === 'Social') {
+              iconName = focused
+                ? 'people-alt'
+                : 'people-alt';
+            } else if (route.name === 'Shop') {
+              iconName = focused
+                ? 'shopping-cart'
+                : 'shopping-cart';
+            }
 
-    </PaperProvider>
+            // You can return any component that you like here!
+            return <MaterialIcons name={iconName} size={size} color={color} />;
+          },
+        })}
+      >
+        <Tab.Screen name="Journal" component={JournalScreen} />
+        <Tab.Screen name="Me" component={MeScreen} />
+        <Tab.Screen name="Social" component={SocialScreen} />
+        <Tab.Screen name="Shop" component={ShopScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
-};
+}
 
-export default MyComponent;
 
 const styles = StyleSheet.create({
   container: {
