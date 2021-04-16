@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TextInput, FlatList } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput, FlatList, Pressable } from 'react-native';
 import styles from './styles'
 import Advertisement from '../Advertisement'
 import InlineBigComponent from '../InlineBigComponent'
@@ -117,18 +117,33 @@ const VerticalPage = (props) => {
                 <Text style={styles.bigText}>Buy in-app currency</Text>
                 <View style={styles.shopContainer}>
                     <View style={styles.shopFlex}>
-                        <View style={styles.shopItem}><Text style={styles.shopItemText}>₩1.00</Text></View>
-                        <View style={styles.shopItem}><Text style={styles.shopItemText}>₩2.00</Text></View>
-                        <View style={styles.shopItem}><Text style={styles.shopItemText}>₩5.00</Text></View>
-                        <View style={styles.shopItem}><Text style={styles.shopItemText}>₩10.00</Text></View>
-                        <View style={styles.shopItem}><Text style={styles.shopItemText}>₩20.00</Text></View>
-                        <View style={styles.shopItem}><Text style={styles.shopItemText}>Custom</Text></View>
+                        {/* <View style={styles.shopItem}><Text style={styles.shopItemText}>₩1.00</Text></View> */}
+                        <Pressable style={styles.shopItem} onPress={() => alert("Thank you for purchasing ₩1.00 of in-app currency!")}>
+                            <Text style={styles.shopItemText}>₩1.00</Text>
+                        </Pressable>
+                        <Pressable style={styles.shopItem} onPress={() => alert("Thank you for purchasing ₩2.00 of in-app currency!")}>
+                            <Text style={styles.shopItemText}>₩2.00</Text>
+                        </Pressable>
+                        <Pressable style={styles.shopItem} onPress={() => alert("Thank you for purchasing ₩5.00 of in-app currency!")}>
+                            <Text style={styles.shopItemText}>₩5.00</Text>
+                        </Pressable>
+                        <Pressable style={styles.shopItem} onPress={() => alert("Thank you for purchasing ₩10.00 of in-app currency!")}>
+                            <Text style={styles.shopItemText}>₩10.00</Text>
+                        </Pressable>
+                        <Pressable style={styles.shopItem} onPress={() => alert("Thank you for purchasing ₩20.00 of in-app currency!")}>
+                            <Text style={styles.shopItemText}>₩20.00</Text>
+                        </Pressable>
+                        <Pressable style={styles.shopItem} onPress={() => alert("Thank you for purchasing an indeterminate in-app currency!")}>
+                            <Text style={styles.shopItemText}>Custom</Text>
+                        </Pressable>
                     </View>
                     <View style={styles.premiumUpsellContainer}>
                         <Text style={styles.premiumTitle}>Premium</Text>
                         <Text style={styles.premiumLower}>No adverts, etc</Text>
                         <Text style={styles.premiumLower}>£X.XX per month, or{"\n"}₩X.XX per month</Text>
-                        <View style={styles.premiumButton}><Text style={styles.premiumButtonText}>Upgrade</Text></View>
+                        <Pressable style={styles.premiumButton} onPress={() => alert("Thank you for upgrading! You are now a premium user.")}>
+                            <Text style={styles.premiumButtonText}>Upgrade</Text>
+                        </Pressable>
                     </View>
                 </View>
                 <Text style={styles.bigText}>Avatar Accessories</Text>
