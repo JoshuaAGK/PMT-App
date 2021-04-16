@@ -7,7 +7,6 @@ import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { BottomNavigation, Text, Provider as PaperProvider } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import OverlayCard from './components/OverlayCard';
 
 const JournalRoute = () => <View style={styles.container}>
   <VerticalPage
