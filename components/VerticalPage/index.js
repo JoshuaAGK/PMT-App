@@ -99,10 +99,12 @@ const VerticalPage = (props) => {
                     onSubmitEditing={(event) => addElement(event.nativeEvent.text)}
                 />
                 <Text style={styles.bigText}>My Friends</Text>
+                <View style={styles.flatListView}>
                 <FlatList
             keyExtractor = {item => item.id}  
             data={exampleState}
             renderItem = {item => (<Text>{item.item.text}</Text>)} />
+            </View>
 
             </ScrollView>
         );
@@ -115,17 +117,17 @@ const VerticalPage = (props) => {
                 <Text style={styles.bigText}>Buy in-app currency</Text>
                 <View style={styles.shopContainer}>
                     <View style={styles.shopFlex}>
-                        <View style={styles.shopItem}><Text style={styles.shopItemText}>$1.00</Text></View>
-                        <View style={styles.shopItem}><Text style={styles.shopItemText}>$2.00</Text></View>
-                        <View style={styles.shopItem}><Text style={styles.shopItemText}>$5.00</Text></View>
-                        <View style={styles.shopItem}><Text style={styles.shopItemText}>$10.00</Text></View>
-                        <View style={styles.shopItem}><Text style={styles.shopItemText}>$20.00</Text></View>
+                        <View style={styles.shopItem}><Text style={styles.shopItemText}>₩1.00</Text></View>
+                        <View style={styles.shopItem}><Text style={styles.shopItemText}>₩2.00</Text></View>
+                        <View style={styles.shopItem}><Text style={styles.shopItemText}>₩5.00</Text></View>
+                        <View style={styles.shopItem}><Text style={styles.shopItemText}>₩10.00</Text></View>
+                        <View style={styles.shopItem}><Text style={styles.shopItemText}>₩20.00</Text></View>
                         <View style={styles.shopItem}><Text style={styles.shopItemText}>Custom</Text></View>
                     </View>
                     <View style={styles.premiumUpsellContainer}>
                         <Text style={styles.premiumTitle}>Premium</Text>
                         <Text style={styles.premiumLower}>No adverts, etc</Text>
-                        <Text style={styles.premiumLower}>£X.XX per month, or{"\n"}$X.XX per month</Text>
+                        <Text style={styles.premiumLower}>£X.XX per month, or{"\n"}₩X.XX per month</Text>
                         <View style={styles.premiumButton}><Text style={styles.premiumButtonText}>Upgrade</Text></View>
                     </View>
                 </View>

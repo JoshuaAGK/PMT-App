@@ -61,7 +61,7 @@ const UpperContents = (props) => {
         return (
             <View style={styles.container}>
                 <Text style={styles.dateText}>{dateString()}</Text>
-                <View style={styles.rightBox}><Text style={styles.rightInnerText}>$4.20</Text></View>
+                <View style={styles.rightBox}><Text style={styles.rightInnerText}>₩4.20</Text></View>
             </View>
         )
     }

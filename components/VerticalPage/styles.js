@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.2,
         shadowRadius: 15,
+        marginBottom: 10
     },
     journalInput: {
         width: "100%",
@@ -96,6 +97,21 @@ const styles = StyleSheet.create({
     },
     premiumButtonText: {
         fontSize: scaleFontSize(16)
+    },
+    flatListView: {
+        width: "100%",
+        backgroundColor: "white",
+        borderRadius: 50/4,
+        padding: 50/4,
+        paddingTop: 10,
+        paddingBottom: 10,
+        shadowColor: "black",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 15,
     }
 })
 
