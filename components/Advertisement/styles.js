@@ -4,21 +4,26 @@ const styles = StyleSheet.create({
     banner: {
         width: "100%",
         height: 50,
-        backgroundColor: "red",
-        // position: "absolute",
-        // bottom: 80,
+        backgroundColor: "skyblue",
         justifyContent: "center",
         alignItems: "center"
     },
     normal: {
         width: "100%",
         height: 50,
-        backgroundColor: "red",
+        backgroundColor: "skyblue",
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 50/4,
-        borderWidth: 1,
-        marginTop: 20
+        marginTop: 20,
+        shadowColor: "black",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 15,
+        marginBottom: 10
     }
 })
 

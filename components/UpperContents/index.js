@@ -41,14 +41,27 @@ const UpperContents = (props) => {
         return (
             <View style={styles.container}>
                 <Text style={styles.dateText}>{dateString()}</Text>
-                <View style={styles.rightBox}><Text>Log out</Text></View>
+                <View style={styles.rightBox}><Text style={styles.rightInnerText}>Log out</Text></View>
+            </View>
+        )
+    } else if (containerType == "none") {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.dateText}>{dateString()}</Text>
+            </View>
+        )
+    } else if (containerType == "friends") {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.dateText}>{dateString()}</Text>
+                <View style={styles.rightBox}><Text style={styles.rightInnerText}>Add Friends</Text></View>
             </View>
         )
     } else {
         return (
             <View style={styles.container}>
                 <Text style={styles.dateText}>{dateString()}</Text>
-                <View style={styles.rightBox}><Text>$4.20</Text></View>
+                <View style={styles.rightBox}><Text style={styles.rightInnerText}>$4.20</Text></View>
             </View>
         )
     }

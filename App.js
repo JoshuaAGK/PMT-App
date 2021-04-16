@@ -7,6 +7,7 @@ import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { BottomNavigation, Text, Provider as PaperProvider } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import OverlayCard from './components/OverlayCard';
 
 const JournalRoute = () => <View style={styles.container}>
   <VerticalPage
@@ -41,6 +42,7 @@ const SocialRoute = () => <View style={styles.container}>
     type="banner"
     content="ADVERTISEMENT"
   />
+
   <StatusBar style="auto" />
 </View>;
 
@@ -73,7 +75,7 @@ const MyComponent = () => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'journal', title: 'Journal', icon: 'book' },
-    { key: 'me', title: 'Me', icon:'person' },
+    { key: 'me', title: 'Me', icon: 'person' },
     { key: 'social', title: 'Social', icon: 'people-alt' },
     { key: 'shop', title: 'Shop', icon: 'shopping-cart' },
   ]);
@@ -98,6 +100,8 @@ const MyComponent = () => {
         navigationState={{ index, routes }}
         onIndexChange={setIndex}
         renderScene={renderScene}
+        activeColor={"#007bff"}
+        inactiveColor={"#8e8e93"}
       />
 
     </PaperProvider>
@@ -109,11 +113,8 @@ export default MyComponent;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fefefe',
     alignItems: 'center',
     justifyContent: 'flex-start',
-  },
-  topblock: {
-    height: 100
   }
 });

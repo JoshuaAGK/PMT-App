@@ -6,31 +6,25 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 50/4,
         padding: 50/4,
-        borderWidth: 1,
+        shadowColor: "black",
+        shadowOffset: {
+          width: 0,
+          height: 5,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 15,
+        marginBottom: 10
     },
-    tbd: {
-      width: "100%",
-      backgroundColor: "white",
-      borderWidth: 1,
-      borderRadius: 50/4,
-      padding: 50/4,
-      alignItems: "center",
-      justifyContent: "center"
+    textBig: {
+      fontSize: 26,
+      paddingTop: 5,
+      paddingBottom: 5
     },
-    emote: {
-        width: "100%",
-        backgroundColor: "white",
-        borderRadius: 50/4,
-        padding: 50/4,
-        borderWidth: 1,
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-around",
-        paddingTop: 5,
-        paddingBottom: 5
-    },
-    emoteIcon: {
-      fontSize: 40
+    textRight: {
+      position: "absolute",
+      right: 0,
+      margin: 12,
+      textDecorationLine: "underline"
     }
 })
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import styles from './styles'
 
 const InlineBigComponent = (props) => {
@@ -22,10 +22,21 @@ const InlineBigComponent = (props) => {
                 <Text style={styles.emoteIcon}>🙂</Text>
             </View>
         );
+    } else if (type == "list") {
+        return (
+            <FlatList style={styles.listContainer}
+                data = {[
+                    {key: "Joe Bloggs"},
+                    {key: "Gernot Liebchen"}
+                ]}
+                renderItem={({item}) => <Text style={styles.listItem}>{item.key}</Text>}
+            />
+                
+        );
     } else {
         return (
             <View style={styles.container}>
-                <Text>{content}</Text>
+                <Text style={styles.innerText}>{content}</Text>
             </View>
         );
     }
