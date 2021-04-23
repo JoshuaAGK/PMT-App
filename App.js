@@ -2,72 +2,71 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View, Button } from 'react-native';
 import Advertisement from './components/Advertisement';
-import VerticalPage from './components/VerticalPage';
+import Journal from './components/Journal';
+import Account from './components/Account';
+import Social from './components/Social';
+import Shop from './components/Shop';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import capitalize from './utils/StringUtils';
+
+String.prototype.capitalize = capitalize
+
+const JOURNAL = "journal"
+const ME = "me"
+const SOCIAL = "social"
+const SHOP = "shop"
 
 function JournalScreen({navigation}) {
   return (
-<View style={styles.container}>
-  <VerticalPage
-    page = "journal"
-  />
-
-  <Advertisement
-    type="banner"
-    content="ADVERTISEMENT"
-  />
-  <StatusBar style="auto" />
-</View>
+    <View style={styles.container}>
+      <Journal/>
+      <Advertisement
+        type="banner"
+        content="ADVERTISEMENT"
+      />
+      <StatusBar style="auto" />
+    </View>
   )
 }
 
-function MeScreen({navigation}) {
+function AccountScreen({navigation}) {
   return (
-<View style={styles.container}>
-  <VerticalPage
-    page = "me"
-  />
-
-  <Advertisement
-    type="banner"
-    content="ADVERTISEMENT"
-  />
-  <StatusBar style="auto" />
-</View>
+    <View style={styles.container}>
+      <Account/>
+      <Advertisement
+        type="banner"
+        content="ADVERTISEMENT"
+      />
+      <StatusBar style="auto" />
+    </View>
   )
 }
 
 function SocialScreen({navigation}) {
   return (
-<View style={styles.container}>
-  <VerticalPage
-    page = "social"
-  />
-
-  <Advertisement
-    type="banner"
-    content="ADVERTISEMENT"
-  />
-  <StatusBar style="auto" />
-</View>
+    <View style={styles.container}>
+      <Social/>
+      <Advertisement
+        type="banner"
+        content="ADVERTISEMENT"
+      />
+      <StatusBar style="auto" />
+    </View>
   )
 }
 
 function ShopScreen({navigation}) {
   return (
-<View style={styles.container}>
-  <VerticalPage
-    page = "shop"
-  />
-
-  <Advertisement
-    type="banner"
-    content="ADVERTISEMENT"
-  />
-  <StatusBar style="auto" />
-</View>
+    <View style={styles.container}>
+      <Shop/>
+      <Advertisement
+        type="banner"
+        content="ADVERTISEMENT"
+      />
+      <StatusBar style="auto" />
+    </View>
   )
 }
 
@@ -81,32 +80,37 @@ export default function App() {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
-            if (route.name === 'Journal') {
-              iconName = focused
-                ? 'book'
-                : 'book';
-            } else if (route.name === 'Me') {
-              iconName = focused
-                ? 'person'
-                : 'person';
-            } else if (route.name === 'Social') {
-              iconName = focused
-                ? 'people-alt'
-                : 'people-alt';
-            } else if (route.name === 'Shop') {
-              iconName = focused
-                ? 'shopping-cart'
-                : 'shopping-cart';
+            switch (route.name) {
+              case JOURNAL.capitalize():
+                iconName = focused
+                  ? 'book'
+                  : 'book';
+                break;
+              case ME.capitalize():
+                iconName = focused
+                  ? 'person'
+                  : 'person';
+                break;
+              case SOCIAL.capitalize():
+                iconName = focused
+                  ? 'people-alt'
+                  : 'people-alt';
+                break;
+              case SHOP.capitalize():
+                iconName = focused
+                  ? 'shopping-cart'
+                  : 'shopping-cart';
+                break;
             }
 
-            return <MaterialIcons name={iconName} size={size} color={color} />;
+            return (<MaterialIcons name={iconName} size={size} color={color} />);
           },
         })}
       >
-        <Tab.Screen name="Journal" component={JournalScreen} />
-        <Tab.Screen name="Me" component={MeScreen} />
-        <Tab.Screen name="Social" component={SocialScreen} />
-        <Tab.Screen name="Shop" component={ShopScreen} />
+        <Tab.Screen name={JOURNAL.capitalize()} component={JournalScreen} />
+        <Tab.Screen name={ME.capitalize()} component={AccountScreen} />
+        <Tab.Screen name={SOCIAL.capitalize()} component={SocialScreen} />
+        <Tab.Screen name={SHOP.capitalize()} component={ShopScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );

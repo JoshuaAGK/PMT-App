@@ -1,0 +1,34 @@
+import React, { useState } from 'react';
+import { Text, ScrollView, TextInput } from 'react-native';
+import mainStyles from '../../styles/styles';
+import journalStyles from './styles';
+import Advertisement from '../Advertisement';
+import InlineBigComponent from '../InlineBigComponent';
+import UpperContents from '../UpperContents';
+
+export const Journal = (props) => {
+    return (
+        <ScrollView showsVerticalScrollIndicator={false} style={mainStyles.mainPage}>
+            <UpperContents
+                content="currency"
+            />
+            <Text style={mainStyles.bigText}>Journal</Text>
+            <TextInput
+                style={journalStyles.journalInput}
+                placeholder="Journal entry for today"
+                multiline={true}
+            />
+            <Advertisement
+                type = "inline"
+                content = "ADVERTISEMENT"
+            />
+            <Text style={mainStyles.bigText}>Brain Training</Text>
+            <InlineBigComponent
+                content = "GAME ELEMENT (TBD)"
+                tbd = {true}
+            />
+        </ScrollView>
+    );
+};
+
+export default Journal;

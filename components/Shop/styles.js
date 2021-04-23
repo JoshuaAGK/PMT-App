@@ -7,46 +7,6 @@ const scaleFontSize = (fontSize) => {
 }
 
 const styles = StyleSheet.create({
-    mainPage: {
-        width: "90%",
-        overflow: "visible",
-        marginTop: "15%",
-        marginBottom: "5%"
-    },
-    bigText: {
-        fontSize: scaleFontSize(30),
-        fontWeight: "500"
-    },
-    textInput: {
-        width: "100%",
-        backgroundColor: "white",
-        borderRadius: 50/4,
-        padding: 50/4,
-        shadowColor: "black",
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 15,
-        marginBottom: 10
-    },
-    journalInput: {
-        width: "100%",
-        backgroundColor: "white",
-        borderRadius: 50/4,
-        padding: 50/4,
-        minHeight: 100,
-        paddingTop: 10,
-        paddingBottom: 10,
-        shadowColor: "black",
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 15,
-    },
     shopContainer: {
         width: "100%",
         backgroundColor: "white",
@@ -97,21 +57,6 @@ const styles = StyleSheet.create({
     },
     premiumButtonText: {
         fontSize: scaleFontSize(16)
-    },
-    flatListView: {
-        width: "100%",
-        backgroundColor: "white",
-        borderRadius: 50/4,
-        padding: 50/4,
-        paddingTop: 10,
-        paddingBottom: 10,
-        shadowColor: "black",
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 15,
     }
 })
 
