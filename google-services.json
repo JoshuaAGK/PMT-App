@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "124983312526",
+    "firebase_url": "https://pmt-project-3b78e-default-rtdb.firebaseio.com",
+    "project_id": "pmt-project-3b78e",
+    "storage_bucket": "pmt-project-3b78e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124983312526:android:e2219d6d0f1abc565a09df",
+        "android_client_info": {
+          "package_name": "com.reactnativefirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124983312526-tdm5fu274njn1afjd2kjssqu0ph934cq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSboGnLpsUQSVxEf4SCV7VS5KtXhuxSxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124983312526-tdm5fu274njn1afjd2kjssqu0ph934cq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
