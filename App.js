@@ -1,11 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, View, Button } from 'react-native';
-import Advertisement from './components/Advertisement';
-import Journal from './components/Journal';
-import Account from './components/Account';
-import Social from './components/Social';
-import Shop from './components/Shop';
+import { StyleSheet, View } from 'react-native';
+import { Advertisement, Journal, Account, Social, Shop } from './components';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';

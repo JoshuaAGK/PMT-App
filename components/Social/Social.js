@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Text, View, ScrollView, TextInput, FlatList } from 'react-native';
 import mainStyles from '../../styles/styles';
 import socialStyles from './styles';
-import UpperContents from '../UpperContents';
+import UpperContents from '../UpperContents/UpperContents';
 
 var initialElements = [
   { id: '0', text: 'Joe Bloggs' },
