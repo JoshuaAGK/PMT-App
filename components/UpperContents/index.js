@@ -1,85 +1,52 @@
 import React from 'react';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { Text, View, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import styles from './styles'
-import { TouchableHighlight } from 'react-native-gesture-handler';
-
-function dateString() {
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    var date = new Date();
-    
-    var monthNum = date.getMonth()
-    var year = date.getFullYear();
-    
-    var day = String(days[date.getDay()]);
-    var monthDate = date.getDate();
-    var month = String(months[monthNum]);
-
-    var ordinal = "";
-    const stDates = [1, 21, 31];
-    const ndDates = [2, 22];
-    const rdDates = [3, 23];
-
-
-    if (stDates.includes(monthDate)) {
-        ordinal = "st"
-    } else if (ndDates.includes(monthDate)) {
-        ordinal = "nd"
-    } else if (rdDates.includes(monthDate)) {
-        ordinal = "rd"
-    } else {
-        ordinal = "th"
-    }
-    
-    return day + ", " + monthDate + ordinal + " " + month + " " + year;
-}
+import { dateString } from '../../utils/StringUtils';
+import styles from './styles';
+//import { database } from '../../src/firebase/config';
+import database from 'react-native-firebase/database';
 
 function UpperContents(props) {
-
     const navigation = useNavigation();
     
     const containerType = props.content;
 
-    if (containerType == "logout") {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.dateText}>{dateString()}</Text>
-                <Pressable
-                    style={styles.rightBox}
-                    onPress={() => alert("Logged out")}
-                >
+    let content = null;
+    switch (containerType) {
+        case "logout":
+            content = (
+                <Pressable style={styles.rightBox} onPress={logOut}>
                     <Text>Log out</Text>
                 </Pressable>
-            </View>
-        )
-    } else if (containerType == "none") {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.dateText}>{dateString()}</Text>
-            </View>
-        )
-    } else if (containerType == "friends") {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.dateText}>{dateString()}</Text>
-                <View style={styles.rightBox}><Text style={styles.rightInnerText}>Add Friends</Text></View>
-            </View>
-        )
-    } else {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.dateText}>{dateString()}</Text>
-                <Pressable
-                    style={styles.rightBox}
-                    onPress={() => navigation.navigate('Shop')}
-                >
+                );
+            break;
+        case "friends":
+            content = (
+                <View style={styles.rightBox}>
+                    <Text style={styles.rightInnerText}>Add Friends</Text>
+                </View>
+                );
+            break;
+        case "currency":
+            content = (
+                <Pressable style={styles.rightBox} onPress={() => navigation.navigate('Shop')}>
                     <Text>₩4.20</Text>
                 </Pressable>
-            </View>
-        )
+            );
+            break;
     }
     
+    return (
+        <View style={styles.container}>
+            <Text style={styles.dateText}>{dateString()}</Text>
+            {content}
+        </View>
+    );
 };
+
+function logOut() {
+    let newUser = database().ref().child('users').push().key;
+    console.log(newUser);
+}
 
 export default UpperContents;

@@ -15,7 +15,7 @@ export const Social = (props) => {
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={mainStyles.mainPage}>
             <UpperContents
-                content="none"
+                content="friends"
             />
             <Text style={mainStyles.bigText}>Add Friend</Text>
             <TextInput

@@ -9,7 +9,7 @@ import Shop from './components/Shop';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import capitalize from './utils/StringUtils';
+import { capitalize } from './utils/StringUtils';
 
 String.prototype.capitalize = capitalize
 
