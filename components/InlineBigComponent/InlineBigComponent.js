@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import styles from './styles';
+import BrainTraining from '../BrainTraining'
 
 const InlineBigComponent = ({ content, tbd, type }) => {
   if (tbd) {
@@ -27,6 +28,12 @@ const InlineBigComponent = ({ content, tbd, type }) => {
           <Text style={styles.listItem}>{item.key}</Text>
         )}
       />
+    );
+  } else if (type == "brainTraining") {
+    return (
+      <View style={styles.gameContainer}>
+        <BrainTraining />
+      </View>
     );
   } else {
     return (

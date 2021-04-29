@@ -21,7 +21,7 @@ export const Journal = (props) => {
       />
       <Advertisement type="inline" content="ADVERTISEMENT" />
       <Text style={mainStyles.bigText}>Brain Training</Text>
-      <InlineBigComponent content="GAME ELEMENT (TBD)" tbd={true} />
+      <InlineBigComponent type="brainTraining" />
     </ScrollView>
   );
 };

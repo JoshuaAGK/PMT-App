@@ -29,8 +29,7 @@ const styles = StyleSheet.create({
       },
       shadowOpacity: 0.2,
       shadowRadius: 15,
-
-elevation: 10,
+      elevation: 10,
     },
     emote: {
         width: "100%",
@@ -64,10 +63,10 @@ elevation: 10,
         padding: 50/4,
         borderWidth: 1,
         shadowColor: "black",
-      shadowOffset: {
-        width: 0,
-        height: 5,
-      },
+        shadowOffset: {
+          width: 0,
+          height: 5,
+        },
       shadowOpacity: 0.2,
       shadowRadius: 15,
     },
@@ -75,6 +74,20 @@ elevation: 10,
       fontSize: scaleFontSize(14),
       paddingTop: 5,
       paddingBottom: 5
+    },
+    gameContainer: {
+      width: "100%",
+      backgroundColor: "white",
+      borderRadius: 50/4,
+      padding: 50/4,
+      shadowColor: "black",
+      shadowOffset: {
+        width: 0,
+        height: 5,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 15,
+      height: 200
     }
 })
 
