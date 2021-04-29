@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     buttonText: {
-        color: "white",
         textAlign: "center"
     },
     beginGameButton: {
@@ -62,7 +61,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 50/4,
-
+        shadowColor: "black",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 7,
     },
     beginGameText: {
         fontSize: scaleFontSize(16)
