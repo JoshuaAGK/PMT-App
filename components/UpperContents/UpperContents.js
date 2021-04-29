@@ -3,8 +3,7 @@ import { Text, View, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { dateString } from '../../utils/StringUtils';
 import styles from './styles';
-//import { database } from '../../src/firebase/config';
-import database from 'react-native-firebase/database';
+import { firebase } from '../../src/firebase/config';
 
 function UpperContents(props) {
     const navigation = useNavigation();
@@ -38,14 +37,14 @@ function UpperContents(props) {
     
     return (
         <View style={styles.container}>
-            <Text style={styles.dateText}>{dateString()}</Text>
+            <Text style={styles.dateText}>{dateString(new Date())}</Text>
             {content}
         </View>
     );
 };
 
 function logOut() {
-    let newUser = database().ref().child('users').push().key;
+    let newUser = firebase.database().ref().child('users').push().key;
     console.log(newUser);
 }
 

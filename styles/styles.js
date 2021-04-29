@@ -45,6 +45,18 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.2,
         shadowRadius: 15,
+    },
+    buttonContainer: {
+    },
+    button: {
+        padding: 10,
+        width: "30%",
+        backgroundColor: "limegreen",
+        borderRadius: 5
+    },
+    buttonText: {
+        color: "white",
+        textAlign: "center"
     }
 })
 

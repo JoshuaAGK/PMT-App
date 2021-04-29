@@ -6,3 +6,5 @@ export { default as Journal } from './Journal/Journal';
 export { default as Shop } from './Shop/Shop';
 export { default as Social } from './Social/Social';
 export { default as UpperContents } from './UpperContents/UpperContents';
+export { default as LogIn } from './LogIn/LogIn';
+export { default as Calendar } from './Calendar/Calendar';
