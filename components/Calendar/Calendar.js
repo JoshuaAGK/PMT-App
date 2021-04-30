@@ -1,24 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Pressable, Text, ScrollView, TextInput } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { View, Pressable, Text, ScrollView } from 'react-native';
 import mainStyles from '../../styles/styles';
 import calendarStyles from './styles';
-import Advertisement from '../Advertisement/Advertisement';
-import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
-import UpperContents from '../UpperContents/UpperContents';
 import { firebase } from '../../src/firebase/config';
-import {
-    setText,
-    selectJournal
-} from '../../src/features/journal/journalSlice';
 import { dateString } from '../../utils/StringUtils';
 
 export const Calendar = (props) => {
-    const { journal } = useSelector(state => {
-        //console.log(state);
-        return state.journal;
-    })
-
     let today = new Date();
     const [month, setMonth] = useState(() => {
         return today.getMonth();
@@ -159,6 +146,7 @@ export const Calendar = (props) => {
 
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={[mainStyles.mainPage, calendarStyles.calendarMain]}>
+            <Text style={[mainStyles.bigText, calendarStyles.title]}>Journal Calendar</Text>
             <View style={calendarStyles.calendarContainer}>
                 <View style={calendarStyles.calendarHeader}>
                     <Pressable style={[calendarStyles.prevMonth, calendarStyles.monthButton]} onPress={prevMonth}>

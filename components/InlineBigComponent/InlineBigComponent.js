@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
+import EmotionTracker from '../EmotionTracker/EmotionTracker';
 import styles from './styles';
 
 const InlineBigComponent = ({ content, tbd, type }) => {
@@ -11,12 +12,7 @@ const InlineBigComponent = ({ content, tbd, type }) => {
     );
   } else if (type == 'emotionSubmit') {
     return (
-      <View style={styles.emote}>
-        <Text style={styles.emoteIcon}>😢</Text>
-        <Text style={styles.emoteIcon}>🙁</Text>
-        <Text style={styles.emoteIcon}>😐</Text>
-        <Text style={styles.emoteIcon}>🙂</Text>
-      </View>
+      <EmotionTracker />
     );
   } else if (type == 'list') {
     return (

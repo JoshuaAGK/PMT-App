@@ -3,21 +3,23 @@ import { createSlice } from '@reduxjs/toolkit';
 const journalSlice = createSlice({
     name: 'journal',
     initialState: {
-        text: ""
+        text: "",
+        mood: -1
     },
     reducers: {
         setText: (state = initialState, action) => {
             state.text = action.payload;
+        },
+        setMood: (state = initialState, action) => {
+            state.mood = action.payload
         }
     }
 });
-
-console.log(journalSlice);
 
 export function selectJournal(state) {
     return state.journal;
 }
 
 const { actions, reducer } = journalSlice;
-export const { setText } = actions;
+export const { setText, setMood } = actions;
 export default reducer;

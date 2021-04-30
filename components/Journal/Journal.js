@@ -18,7 +18,7 @@ export const Journal = (props) => {
     const { journal } = useSelector(state => {
         //console.log(state);
         return state.journal;
-    })
+    });
     const navigation = useNavigation();
 
     /*let journalRef = firebase.firestore().collection("journal");

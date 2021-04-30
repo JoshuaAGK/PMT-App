@@ -6,6 +6,10 @@ const styles = StyleSheet.create({
     calendarMain: {
         width: "100%"
     },
+    title: {
+        textAlign: "center",
+        marginBottom: 20
+    },
     calendarContainer: {
         display: "flex",
         width: "100%",
