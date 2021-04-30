@@ -1,19 +1,13 @@
-import React, {useState} from 'react';
-import {Modal, ScrollView, Text, ToastAndroid, TouchableOpacity, View} from 'react-native';
+import React from 'react';
+import {ScrollView, Text, ToastAndroid, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
 import {Formik} from 'formik'
-import * as Yup from 'yup'
 
 import {TextInput} from 'react-native-gesture-handler';
-import {signInWithEmail} from '../../src/firebase/firestore/firebaseService';
-import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import {registerInFirebase} from '../../src/firebase/firestore/firebaseService';
 
 
-export const LogIn = ({navigation}) => {
-    const onFooterLinkPress = () => {
-        navigation.navigate('Registration')
-    }
-
+export const Registration = ({navigation}) => {
     const showToast = (error) => {
         ToastAndroid.showWithGravityAndOffset(
             `${error}`,
@@ -24,21 +18,21 @@ export const LogIn = ({navigation}) => {
         )
     }
 
+    const onFooterLinkPress = () => {
+        navigation.navigate('Log In')
+    }
+
     return (
         <Formik
-            initialValues={{email: '', password: ''}}
-            validationSchema={Yup.object({
-                email: Yup.string().required().email(),
-                password: Yup.string().required()
-            })}
+            initialValues={{displayName: '', email: '', password: ''}}
             onSubmit={async (values, {setSubmitting, setErrors}) => {
                 try {
-                    await signInWithEmail(values);
+                    await registerInFirebase(values);
                     setSubmitting(false);
                     navigation.navigate('App');
                     navigation.reset({index: 0, routes: [{name: 'App'}]});
                 } catch (e) {
-                    setErrors({auth: 'Incorrect username or password'})
+                    setErrors({auth: e.message})
                     setSubmitting(false)
                 }
             }}
@@ -48,11 +42,20 @@ export const LogIn = ({navigation}) => {
                   handleBlur,
                   handleSubmit,
                   values,
-                  touched,
-                  errors,
+                  errors
                   isValid
               }) => (
                 <View style={styles.container}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Your Display Name"
+                        placeholderTextColor="#aaaaaa"
+                        onChangeText={handleChange('displayName')}
+                        onBlur={handleBlur('displayName')}
+                        value={values.displayName}
+                        underlineColorAndroid="transparent"
+                        autoCapitalize="none"
+                    />
                     <TextInput
                         style={styles.input}
                         placeholder="E-mail"
@@ -62,10 +65,7 @@ export const LogIn = ({navigation}) => {
                         value={values.email}
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
-                        name="email"
                     />
-                    {errors.email && touched.email ? (
-                        <Text style={styles.errorStyle}>{errors.email}</Text>) : null}
                     <TextInput
                         style={styles.input}
                         placeholderTextColor="#aaaaaa"
@@ -76,22 +76,19 @@ export const LogIn = ({navigation}) => {
                         value={values.password}
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
-                        name="password"
                     />
-                    {errors.password && touched.password ? (<Text
-                        style={styles.errorStyle}>{errors.password}</Text>) : null}
                     <TouchableOpacity
                         style={styles.button}
                         disabled={!isValid}
                         onPress={handleSubmit}>
-                        <Text style={styles.buttonTitle}>Log In</Text>
+                        <Text style={styles.buttonTitle}>Sign Up</Text>
                     </TouchableOpacity>
                     {errors.auth &&
                     showToast(errors.auth)}
                     <View style={styles.footerView}>
-                        <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress}
-                                                                                     style={styles.footerLink}>Sign
-                            Up</Text></Text>
+                        <Text style={styles.footerText}>Already have an account? <Text onPress={onFooterLinkPress}
+                                                                                       style={styles.footerLink}>Login
+                            In</Text></Text>
                     </View>
                 </View>
             )}
@@ -99,7 +96,6 @@ export const LogIn = ({navigation}) => {
     );
 }
 
-
-export default LogIn;
+export default Registration;
 
 

@@ -7,17 +7,14 @@ import Advertisement from '../Advertisement/Advertisement';
 import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
 import UpperContents from '../UpperContents/UpperContents';
 import { firebase } from '../../src/firebase/config';
-import {
-    setText,
-    selectJournal
-} from '../../src/features/journal/journalSlice';
+
 import { dateString } from '../../utils/StringUtils';
 
 export const Calendar = (props) => {
-    const { journal } = useSelector(state => {
-        //console.log(state);
-        return state.journal;
-    })
+    // const { journal } = useSelector(state => {
+    //     //console.log(state);
+    //     return state.journal;
+    // })
 
     let today = new Date();
     const [month, setMonth] = useState(() => {

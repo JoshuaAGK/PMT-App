@@ -1,25 +1,17 @@
-import React, { useState } from 'react';
-import { View, Pressable, Text, ScrollView, TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useState} from 'react';
+import {Pressable, ScrollView, Text, TextInput, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import mainStyles from '../../styles/styles';
 import journalStyles from './styles';
 import Advertisement from '../Advertisement/Advertisement';
 import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
 import UpperContents from '../UpperContents/UpperContents';
-import { firebase } from '../../src/firebase/config';
-import {
-    setText,
-    selectJournal
-} from '../../src/features/journal/journalSlice';
+import {firebase} from '../../src/firebase/config';
 
 export const Journal = (props) => {
     const [text, setText] = useState('');
-    const { journal } = useSelector(state => {
-        //console.log(state);
-        return state.journal;
-    })
     const navigation = useNavigation();
+
 
     /*let journalRef = firebase.firestore().collection("journal");
     let query = journalRef.where("date", "<", new Date());
