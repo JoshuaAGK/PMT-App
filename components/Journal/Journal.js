@@ -44,7 +44,7 @@ export const Journal = (props) => {
             mood: journal.mood,
             date: new Date()
         }).then(() => {
-            dispatch(setText(""));
+            dispatch(setText(''));
             dispatch(setMood(-1));
             console.log("Document successfully written!");
         }).catch((error) => {

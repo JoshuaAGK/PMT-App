@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const journalSlice = createSlice({
     name: 'journal',
     initialState: {
-        text: "",
+        text: '',
         mood: -1
     },
     reducers: {
