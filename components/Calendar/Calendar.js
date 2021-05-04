@@ -6,7 +6,7 @@ import calendarStyles from './styles';
 import Advertisement from '../Advertisement/Advertisement';
 import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
 import UpperContents from '../UpperContents/UpperContents';
-import { firebase } from '../../src/firebase/config';
+import firebase from '../../src/firebase/config';
 
 import { dateString } from '../../utils/StringUtils';
 
@@ -38,7 +38,7 @@ export const Calendar = (props) => {
 
     let header = daysOfWeek.map((day, index) => {
         return (
-            <Text style={calendarStyles.headerCell}>{day}</Text>
+            <Text style={calendarStyles.headerCell} key={index}>{day}</Text>
         );
     });
 
@@ -124,7 +124,7 @@ export const Calendar = (props) => {
             }
 
             return (
-                <View style={style}>
+                <View style={style} key={index}>
                     <Pressable onPress={() => {
                         setSelectedDay(day);
                         setDisplayEntries((displayEntries) => {
@@ -137,7 +137,7 @@ export const Calendar = (props) => {
             );
         });
         return (
-            <View style={calendarStyles.calendarRow}>
+            <View style={calendarStyles.calendarRow} key={index}>
                 {calendarDayCells}
             </View>
         );
@@ -147,7 +147,7 @@ export const Calendar = (props) => {
         let dateParts = displayEntry.date.toLocaleString("en-GB").split(" ");
         let time = dateParts[3];
         return (
-            <View style={calendarStyles.journalEntry}>
+            <View style={calendarStyles.journalEntry} key={index}>
                 <Text style={calendarStyles.journalEntryDate}>{time}</Text>
                 <Text style={calendarStyles.journalEntryText}>{displayEntry.text}</Text>
             </View>

@@ -6,7 +6,7 @@ import journalStyles from './styles';
 import Advertisement from '../Advertisement/Advertisement';
 import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
 import UpperContents from '../UpperContents/UpperContents';
-import {firebase} from '../../src/firebase/config';
+import firebase from '../../src/firebase/config';
 
 export const Journal = (props) => {
     const [text, setText] = useState('');

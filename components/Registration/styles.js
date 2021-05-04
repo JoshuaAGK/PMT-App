@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     footerView: {
-        flex: 1,
         alignItems: 'center',
         marginTop: 20
     },
@@ -52,6 +51,13 @@ const styles = StyleSheet.create({
         color: '#788eec',
         fontWeight: 'bold',
         fontSize: 16
+    },
+    errorStyle: {
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16,
+        color: "#c20a0a",
+        fontWeight: "bold"
     }
 })
 

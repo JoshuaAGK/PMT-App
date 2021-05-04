@@ -9,13 +9,17 @@ import {registerInFirebase} from '../../src/firebase/firestore/firebaseService';
 
 export const Registration = ({navigation}) => {
     const showToast = (error) => {
-        ToastAndroid.showWithGravityAndOffset(
-            `${error}`,
-            ToastAndroid.LONG,
-            ToastAndroid.BOTTOM,
-            25,
-            50
-        )
+        if (Platform.OS === 'android') {
+            ToastAndroid.showWithGravityAndOffset(
+                `${error}`,
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM,
+                25,
+                50
+            )
+        } else {
+            return <Text style={styles.errorStyle}>{error}</Text>;
+        }
     }
 
     const onFooterLinkPress = () => {
@@ -42,7 +46,7 @@ export const Registration = ({navigation}) => {
                   handleBlur,
                   handleSubmit,
                   values,
-                  errors
+                  errors,
                   isValid
               }) => (
                 <View style={styles.container}>
@@ -77,17 +81,17 @@ export const Registration = ({navigation}) => {
                         underlineColorAndroid="transparent"
                         autoCapitalize="none"
                     />
+                    {errors.auth &&
+                    showToast(errors.auth)}
                     <TouchableOpacity
                         style={styles.button}
                         disabled={!isValid}
                         onPress={handleSubmit}>
                         <Text style={styles.buttonTitle}>Sign Up</Text>
                     </TouchableOpacity>
-                    {errors.auth &&
-                    showToast(errors.auth)}
                     <View style={styles.footerView}>
                         <Text style={styles.footerText}>Already have an account? <Text onPress={onFooterLinkPress}
-                                                                                       style={styles.footerLink}>Login
+                                                                                       style={styles.footerLink}>Log
                             In</Text></Text>
                     </View>
                 </View>
