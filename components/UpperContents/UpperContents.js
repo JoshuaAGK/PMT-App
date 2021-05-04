@@ -3,7 +3,7 @@ import { Text, View, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { dateString } from '../../utils/StringUtils';
 import styles from './styles';
-import firebase from '../../src/firebase/config';
+import { signOutFirebase } from '../../src/firebase/firestore/firebaseService';
 
 function UpperContents(props) {
     const navigation = useNavigation();
@@ -12,21 +12,21 @@ function UpperContents(props) {
 
     let content = null;
     switch (containerType) {
-        case "logout":
+        case 'logout':
             content = (
-                <Pressable style={styles.rightBox} onPress={logOut}>
+                <Pressable style={styles.rightBox} onPress={async () => { await logOut(navigation); }}>
                     <Text>Log out</Text>
                 </Pressable>
                 );
             break;
-        case "friends":
+        case 'friends':
             content = (
                 <View style={styles.rightBox}>
                     <Text style={styles.rightInnerText}>Add Friends</Text>
                 </View>
                 );
             break;
-        case "currency":
+        case 'currency':
             content = (
                 <Pressable style={styles.rightBox} onPress={() => navigation.navigate('Shop')}>
                     <Text>₩4.20</Text>
@@ -41,11 +41,12 @@ function UpperContents(props) {
             {content}
         </View>
     );
-};
+}
 
-function logOut() {
-    let newUser = firebase.database().ref().child('users').push().key;
-    console.log(newUser);
+async function logOut(navigation) {
+    await signOutFirebase();
+    navigation.navigate('Log In');
+    navigation.reset({index: 0, routes: [{name: 'Log In'}]});
 }
 
 export default UpperContents;

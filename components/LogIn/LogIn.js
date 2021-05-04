@@ -9,18 +9,22 @@ import {signInWithEmail} from '../../src/firebase/firestore/firebaseService';
 
 export const LogIn = ({navigation}) => {
     const onFooterLinkPress = () => {
-        navigation.navigate('Registration')
-    }
+        navigation.navigate('Registration');
+    };
 
     const showToast = (error) => {
-        ToastAndroid.showWithGravityAndOffset(
-            `${error}`,
-            ToastAndroid.LONG,
-            ToastAndroid.BOTTOM,
-            25,
-            50
-        )
-    }
+        if (Platform.OS === 'android') {
+            ToastAndroid.showWithGravityAndOffset(
+                `${error}`,
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM,
+                25,
+                50
+            );
+        } else {
+            return <Text style={styles.errorStyle}>{error}</Text>;
+        }
+    };
 
     return (
         <Formik
@@ -36,7 +40,7 @@ export const LogIn = ({navigation}) => {
                     navigation.navigate('App');
                     navigation.reset({index: 0, routes: [{name: 'App'}]});
                 } catch (e) {
-                    setErrors({auth: 'Incorrect username or password'})
+                    setErrors({auth: 'Incorrect username or password'});
                     setSubmitting(false)
                 }
             }}
@@ -78,14 +82,14 @@ export const LogIn = ({navigation}) => {
                     />
                     {errors.password && touched.password ? (<Text
                         style={styles.errorStyle}>{errors.password}</Text>) : null}
+                    {errors.auth &&
+                        showToast(errors.auth)}
                     <TouchableOpacity
                         style={styles.button}
                         disabled={!isValid}
                         onPress={handleSubmit}>
                         <Text style={styles.buttonTitle}>Log In</Text>
                     </TouchableOpacity>
-                    {errors.auth &&
-                    showToast(errors.auth)}
                     <View style={styles.footerView}>
                         <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress}
                                                                                      style={styles.footerLink}>Sign

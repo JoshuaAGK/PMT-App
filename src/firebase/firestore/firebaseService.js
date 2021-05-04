@@ -10,7 +10,7 @@ export async function signInWithEmail(creds) {
 export async function signOutFirebase() {
     return await firebase
         .auth()
-        .signOut()
+        .signOut();
 }
 
 export async function registerInFirebase(creds) {

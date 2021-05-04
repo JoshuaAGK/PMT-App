@@ -23,7 +23,7 @@ export const Registration = ({navigation}) => {
     }
 
     const onFooterLinkPress = () => {
-        navigation.navigate('Log In')
+        navigation.navigate('Log In');
     }
 
     return (
@@ -36,8 +36,8 @@ export const Registration = ({navigation}) => {
                     navigation.navigate('App');
                     navigation.reset({index: 0, routes: [{name: 'App'}]});
                 } catch (e) {
-                    setErrors({auth: e.message})
-                    setSubmitting(false)
+                    setErrors({auth: e.message});
+                    setSubmitting(false);
                 }
             }}
         >
