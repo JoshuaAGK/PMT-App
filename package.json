@@ -32,7 +32,9 @@
     "react-native-web": "~0.13.12",
     "react-redux": "^7.2.4",
     "redux": "^4.1.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "yup": "^0.32.9",
+    "formik": "^2.2.6"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

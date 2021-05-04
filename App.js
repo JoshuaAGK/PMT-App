@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Provider } from 'react-redux';
-import { Advertisement, Journal, Account, Social, Shop, LogIn, Calendar } from './components';
+import { Advertisement, Journal, Account, Social, Shop, LogIn, Calendar, Registration } from './components';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -21,7 +21,7 @@ const SHOP = 'shop';
 function LogInScreen({ navigation }) {
     return (
         <View stlye={styles.container}>
-            <LogIn />
+            <LogIn/>
         </View>
     );
 }
@@ -112,7 +112,8 @@ export default function App() {
     <Provider store={store}>
         <NavigationContainer>
             <Stack.Navigator>
-                {/*<Stack.Screen name="Log In" component={LogIn}></Stack.Screen>*/}
+                <Stack.Screen name="Log In" component={LogIn}/>
+                <Stack.Screen name="Registration" component={Registration}/>
                 <Stack.Screen name="App" component={AppTabs} options={stackOptions} />
                 <Stack.Screen name="Calendar" component={Calendar} options={stackOptions} />
             </Stack.Navigator>

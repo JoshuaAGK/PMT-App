@@ -1,6 +1,10 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
+    ontainer: {
+        flex: 1,
+        alignItems: 'center'
+    },
     title: {},
     logo: {
         flex: 1,

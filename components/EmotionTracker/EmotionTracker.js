@@ -2,10 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import mainStyles from '../../styles/styles';
 import emotionStyles from './styles';
-import Advertisement from '../Advertisement/Advertisement';
-import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
-import UpperContents from '../UpperContents/UpperContents';
-import AlarmItem from '../AlarmItem/AlarmItem';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     setMood

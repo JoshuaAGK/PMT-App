@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Pressable, Text, ScrollView } from 'react-native';
 import mainStyles from '../../styles/styles';
 import calendarStyles from './styles';
-import { firebase } from '../../src/firebase/config';
+import firebase from '../../src/firebase/config';
 import { dateString } from '../../utils/StringUtils';
 
 export const Calendar = (props) => {

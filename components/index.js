@@ -9,3 +9,4 @@ export { default as UpperContents } from './UpperContents/UpperContents';
 export { default as LogIn } from './LogIn/LogIn';
 export { default as Calendar } from './Calendar/Calendar';
 export { default as EmotionTracker } from './EmotionTracker/EmotionTracker';
+export { default as Registration } from './Registration/Registration';

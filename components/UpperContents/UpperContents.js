@@ -3,7 +3,7 @@ import { Text, View, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { dateString } from '../../utils/StringUtils';
 import styles from './styles';
-import { firebase } from '../../src/firebase/config';
+import firebase from '../../src/firebase/config';
 
 function UpperContents(props) {
     const navigation = useNavigation();
