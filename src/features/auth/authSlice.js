@@ -11,7 +11,8 @@ const authSlice = createSlice({
         signInUser: (state = initialState, action) => {
             state.authenticated = true;
             state.currentUser = {
-                email: action.payload.email
+                email: action.payload.email,
+                uid: action.payload.uid
             };
         },
         signOutUser: (state = initialState, action) => {
@@ -27,8 +28,10 @@ const { signInUser, signOutUser } = actions;
 export function verifyAuth() {
     return function(dispatch) {
         return firebase.auth().onAuthStateChanged((user) => {
+            //console.log(user);
             if(user) {
                 let authObj = {
+                    uid: user.uid,
                     email: user.email
                 };
                 dispatch(signInUser(authObj))

@@ -9,3 +9,7 @@ export function setUserProfileData(user) {
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 }
+
+export function getUserCollection(collectionName) {
+    return db.collection('users').doc(firebase.auth().currentUser.uid).collection(collectionName);
+}
