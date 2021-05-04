@@ -19,7 +19,7 @@ export const Account = (props) => {
       <AlarmItem />
       <Advertisement type="inline" content="ADVERTISEMENT" />
       <Text style={mainStyles.bigText}>Customise Avatar</Text>
-      <InlineBigComponent content="AVATAR CUSTOMISATION (TBD)" tbd={true} />
+      <InlineBigComponent type="customiseAvatar" />
     </ScrollView>
   );
 };

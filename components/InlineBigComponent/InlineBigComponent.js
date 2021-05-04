@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import styles from './styles';
 import BrainTraining from '../BrainTraining'
+import AvatarShop from '../AvatarShop'
+import CustomiseAvatar from '../CustomiseAvatar'
 
 const InlineBigComponent = ({ content, tbd, type }) => {
   if (tbd) {
@@ -33,6 +35,18 @@ const InlineBigComponent = ({ content, tbd, type }) => {
     return (
       <View style={styles.gameContainer}>
         <BrainTraining />
+      </View>
+    );
+  } else if (type == "avatarShop") {
+    return (
+      <View style={styles.genericContanier}>
+        <AvatarShop />
+      </View>
+    );
+  } else if (type == "customiseAvatar") {
+    return (
+      <View style={styles.genericContanier}>
+        <CustomiseAvatar />
       </View>
     );
   } else {
