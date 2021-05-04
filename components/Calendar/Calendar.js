@@ -4,6 +4,7 @@ import mainStyles from '../../styles/styles';
 import calendarStyles from './styles';
 import firebase from '../../src/firebase/config';
 import { dateString } from '../../utils/StringUtils';
+import { getUserCollection } from '../../src/firebase/firestore/firestoreService';
 
 export const Calendar = (props) => {
     let today = new Date();
@@ -38,7 +39,7 @@ export const Calendar = (props) => {
         let endDate = new Date(year, month, daysInMonth + 1);
         console.log(date);
         console.log(endDate);
-        let journalRef = firebase.firestore().collection("journal");
+        let journalRef = getUserCollection("journal");
         let query = journalRef.where("date", ">=", date).where("date", "<=", endDate);
 
         query.get().then((querySnapshot) => {

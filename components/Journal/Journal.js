@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Pressable, Text, ScrollView, TextInput } from 'react-native';
+import { View, Pressable, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import mainStyles from '../../styles/styles';
@@ -9,39 +9,29 @@ import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
 import UpperContents from '../UpperContents/UpperContents';
 import EmotionTracker from '../EmotionTracker/EmotionTracker';
 import firebase from '../../src/firebase/config';
+import { getUserCollection } from '../../src/firebase/firestore/firestoreService';
 import {
     setText,
+    setMood,
     selectJournal
 } from '../../src/features/journal/journalSlice';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
 
 export const Journal = (props) => {
     const dispatch = useDispatch();
     const journal = useSelector(state => state.journal);
+    const auth = useSelector(state => state.auth);
     const navigation = useNavigation();
-
-    /*let journalRef = firebase.firestore().collection("journal");
-    let query = journalRef.where("date", "<", new Date());
-
-    query.get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            let data = doc.data();
-            let date = new Date((data.date.nanoseconds / 1000) + (data.date.seconds * 1000));
-            let text = data.text;
-            console.log(date);
-        })
-    }).catch((error) => {
-        console.error("Error writing document: ", error);
-    })*/
 
     function openCalendar() {
         navigation.navigate('Calendar');
     }
 
-    function onSave() {
-        firebase.firestore().collection("journal").add({
-            // user: 
-            text: journal.text,
-            mood: journal.mood,
+    function onSave(values) {
+        getUserCollection("journal").add({
+            text: values.text,
+            mood: values.emotionTracker,
             date: new Date()
         }).then(() => {
             dispatch(setText(""));
@@ -51,6 +41,9 @@ export const Journal = (props) => {
             console.error("Error writing document: ", error);
         });
     }
+
+    let mood = journal.mood;
+    let text = journal.text;
 
     return (
         <ScrollView
@@ -66,19 +59,48 @@ export const Journal = (props) => {
                 </Pressable>
             </View>
         </View>
-        <EmotionTracker />
-        <TextInput
-            style={journalStyles.journalInput}
-            placeholder="Journal entry for today"
-            multiline={true}
-            onChangeText={text => dispatch(setText(text))}
-            defaultValue={journal.text}
-        />
-        <View style={mainStyles.buttonContainer}>
+        <Formik initialValues={{emotionTracker: mood, text: text}}
+            validationSchema={Yup.object({
+                emotionTracker: Yup.number().required(),
+                text: Yup.string().required()
+            })}
+            onSubmit={async (values, {setSubmitting, setErrors}) => {
+                onSave(values)
+            }}
+            >
+            {({
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  values,
+                  touched,
+                  errors,
+                  isValid
+              }) => (
+                <View style={mainStyles.container}>
+                    <EmotionTracker />
+                    <TextInput
+                        style={journalStyles.journalInput}
+                        placeholder="Journal entry for today"
+                        multiline={true}
+                        onChangeText={handleChange('text')}
+                        onBlur={handleBlur('text')}
+                        value={values.text}
+                    />
+                    <TouchableOpacity
+                        style={mainStyles.button}
+                        disabled={!isValid}
+                        onPress={handleSubmit}>
+                        <Text style={mainStyles.buttonText}>Save</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
+        </Formik>
+        {/*<View style={mainStyles.buttonContainer}>
             <Pressable style={mainStyles.button} onPress={onSave}>
                 <Text style={mainStyles.buttonText}>Save</Text>
             </Pressable>
-        </View>
+        </View>*/}
         <Advertisement type="inline" content="ADVERTISEMENT" />
         <Text style={mainStyles.bigText}>Brain Training</Text>
         <InlineBigComponent content="GAME ELEMENT (TBD)" tbd={true} />

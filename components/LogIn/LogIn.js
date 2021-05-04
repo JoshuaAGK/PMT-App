@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import { Pressable, Modal, ScrollView, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
-import {Formik} from 'formik'
-import * as Yup from 'yup'
+import {Formik} from 'formik';
+import * as Yup from 'yup';
 
 import {TextInput} from 'react-native-gesture-handler';
 import {signInWithEmail} from '../../src/firebase/firestore/firebaseService';
