@@ -18,8 +18,6 @@ export const Account = (props) => {
         style={mainStyles.mainPage}
         >
         <UpperContents content="logout" />
-        <Text style={mainStyles.bigText}>How do you feel?</Text>
-        <InlineBigComponent type="emotionSubmit" />
         <Text style={mainStyles.bigText}>Alarm</Text>
         <AlarmItem />
         <Advertisement type="inline" content="ADVERTISEMENT" />

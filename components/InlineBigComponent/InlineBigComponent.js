@@ -10,10 +10,6 @@ const InlineBigComponent = ({ content, tbd, type }) => {
         <Text>{content}</Text>
       </View>
     );
-  } else if (type == 'emotionSubmit') {
-    return (
-      <EmotionTracker />
-    );
   } else if (type == 'list') {
     return (
       <FlatList
