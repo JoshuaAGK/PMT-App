@@ -34,7 +34,10 @@ export const Calendar = (props) => {
 
     useEffect(() => {
         let date = new Date(year, month, 0);
-        let endDate = new Date(year, month, daysInMonth);
+        console.log(daysInMonth);
+        let endDate = new Date(year, month, daysInMonth + 1);
+        console.log(date);
+        console.log(endDate);
         let journalRef = firebase.firestore().collection("journal");
         let query = journalRef.where("date", ">=", date).where("date", "<=", endDate);
 
@@ -45,9 +48,11 @@ export const Calendar = (props) => {
                 if (data.hasOwnProperty('date') && data.hasOwnProperty('text')) {
                     let dataDate = new Date((data.date.nanoseconds / 1000) + (data.date.seconds * 1000));
                     let dataText = data.text;
+                    let dataMood = data.mood;
                     journalEntries.push({
                         date: dataDate,
-                        text: dataText
+                        text: dataText,
+                        mood: dataMood
                     });
                 }
             });
@@ -55,7 +60,13 @@ export const Calendar = (props) => {
         }).catch((error) => {
             console.error("Error getting document: ", error);
         });
-    }, [month, year, setJournalEntries]);
+    }, [selectedDay, month, year, setJournalEntries]);
+
+    useEffect(() => {
+        setDisplayEntries((displayEntries) => {
+            return getJournalEntries(journalEntries, selectedDay)
+        });
+    }, [selectedDay, setDisplayEntries]);
 
     let calendarDayRows = [];
     var calendarDayRow = [];
@@ -80,6 +91,7 @@ export const Calendar = (props) => {
                     return year - 1;
                 })
             }
+            setSelectedDay(0);
             return prev;
         });
     }
@@ -93,6 +105,7 @@ export const Calendar = (props) => {
                     return year + 1;
                 })
             }
+            setSelectedDay(0);
             return next;
         });
     }
@@ -117,9 +130,6 @@ export const Calendar = (props) => {
                 <View style={style}>
                     <Pressable onPress={() => {
                         setSelectedDay(day);
-                        setDisplayEntries((displayEntries) => {
-                            return getJournalEntries(journalEntries, day);
-                        })
                     }}>
                         <Text style={calendarStyles.cellText}>{content}</Text>
                     </Pressable>
@@ -134,11 +144,15 @@ export const Calendar = (props) => {
     });
 
     let journalDisplayEntries = displayEntries.map((displayEntry, index) => {
+        let mood = displayEntry.mood;
         let dateParts = displayEntry.date.toLocaleString("en-GB").split(" ");
         let time = dateParts[3];
         return (
             <View style={calendarStyles.journalEntry}>
-                <Text style={calendarStyles.journalEntryDate}>{time}</Text>
+                <View style={calendarStyles.journalEntryHeader}>
+                    <Text style={calendarStyles.journalEntryDate}>{time}</Text>
+                    <Text style={calendarStyles.journalMood}>{mood}</Text>
+                </View>
                 <Text style={calendarStyles.journalEntryText}>{displayEntry.text}</Text>
             </View>
         );

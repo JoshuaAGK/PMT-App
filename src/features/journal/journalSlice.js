@@ -16,10 +16,6 @@ const journalSlice = createSlice({
     }
 });
 
-export function selectJournal(state) {
-    return state.journal;
-}
-
 const { actions, reducer } = journalSlice;
 export const { setText, setMood } = actions;
 export default reducer;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import mainStyles from '../../styles/styles';
 import emotionStyles from './styles';
 import Advertisement from '../Advertisement/Advertisement';
@@ -8,8 +8,7 @@ import UpperContents from '../UpperContents/UpperContents';
 import AlarmItem from '../AlarmItem/AlarmItem';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    setMood,
-    selectJournal
+    setMood
 } from '../../src/features/journal/journalSlice';
 
 const EMOTION_CRY = 0;
@@ -18,11 +17,12 @@ const EMOTION_NORMAL = 2;
 const EMOTION_HAPPY = 3;
 
 export const EmotionTracker = (props) => {
-    const { journal } = useSelector(selectJournal);
+    const dispatch = useDispatch();
+    const journal = useSelector(state => state.journal);
 
     function emotionButton(emotionType, emoji) {
         function selectEmotion() {
-            setMood(emotionType);
+            dispatch(setMood(emotionType));
         }
 
         let style = (emotionType == journal.mood) ? [emotionStyles.emoteIcon, emotionStyles.selected] : emotionStyles.emoteIcon;

@@ -5,12 +5,12 @@ const styles = StyleSheet.create({
         width: "100%",
         backgroundColor: "white",
         borderRadius: 50/4,
-        padding: 50/4,
+        //padding: 50/4,
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-around",
-        paddingTop: 5,
-        paddingBottom: 5,
+        //paddingTop: 5,
+        //paddingBottom: 5,
         shadowColor: "black",
         shadowOffset: {
           width: 0,
@@ -18,11 +18,15 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.2,
         shadowRadius: 15,
-        marginBottom: 10
+        //marginBottom: 10
     },
     emoteIcon: {
       fontSize: 40
-    }    
+    },
+    selected: {
+        backgroundColor: "limegreen",
+        borderRadius: 20
+    }
 })
 
 export default styles;

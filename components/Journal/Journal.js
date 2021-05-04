@@ -7,6 +7,7 @@ import journalStyles from './styles';
 import Advertisement from '../Advertisement/Advertisement';
 import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
 import UpperContents from '../UpperContents/UpperContents';
+import EmotionTracker from '../EmotionTracker/EmotionTracker';
 import { firebase } from '../../src/firebase/config';
 import {
     setText,
@@ -14,11 +15,8 @@ import {
 } from '../../src/features/journal/journalSlice';
 
 export const Journal = (props) => {
-    const [text, setText] = useState('');
-    const { journal } = useSelector(state => {
-        //console.log(state);
-        return state.journal;
-    });
+    const dispatch = useDispatch();
+    const journal = useSelector(state => state.journal);
     const navigation = useNavigation();
 
     /*let journalRef = firebase.firestore().collection("journal");
@@ -42,13 +40,16 @@ export const Journal = (props) => {
     function onSave() {
         firebase.firestore().collection("journal").add({
             // user: 
-            text: text,
+            text: journal.text,
+            mood: journal.mood,
             date: new Date()
         }).then(() => {
+            dispatch(setText(""));
+            dispatch(setMood(-1));
             console.log("Document successfully written!");
         }).catch((error) => {
             console.error("Error writing document: ", error);
-        })
+        });
     }
 
     return (
@@ -65,12 +66,13 @@ export const Journal = (props) => {
                 </Pressable>
             </View>
         </View>
+        <EmotionTracker />
         <TextInput
             style={journalStyles.journalInput}
             placeholder="Journal entry for today"
             multiline={true}
-            onChangeText={text => setText(text)}
-            defaultValue={text}
+            onChangeText={text => dispatch(setText(text))}
+            defaultValue={journal.text}
         />
         <View style={mainStyles.buttonContainer}>
             <Pressable style={mainStyles.button} onPress={onSave}>

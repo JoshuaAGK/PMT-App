@@ -12,8 +12,6 @@ export function dateString(date) {
     var day = days[date.getDay()];
     var monthDate = date.getDate();
     var month = months[monthNum];
-    console.log(monthNum);
-    console.log(month);
 
     var ordinal = "";
     const stDates = [1, 21, 31];
