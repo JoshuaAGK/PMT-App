@@ -3,8 +3,9 @@ import { View, Pressable, Text, ScrollView } from 'react-native';
 import mainStyles from '../../styles/styles';
 import calendarStyles from './styles';
 import firebase from '../../src/firebase/config';
-import { dateString } from '../../utils/StringUtils';
+import { dateString, pad } from '../../utils/StringUtils';
 import { getUserCollection } from '../../src/firebase/firestore/firestoreService';
+import { getEmoji } from '../EmotionTracker/EmotionTracker';
 
 export const Calendar = (props) => {
     let today = new Date();
@@ -35,10 +36,7 @@ export const Calendar = (props) => {
 
     useEffect(() => {
         let date = new Date(year, month, 0);
-        console.log(daysInMonth);
         let endDate = new Date(year, month, daysInMonth + 1);
-        console.log(date);
-        console.log(endDate);
         let journalRef = getUserCollection("journal");
         let query = journalRef.where("date", ">=", date).where("date", "<=", endDate);
 
@@ -146,13 +144,15 @@ export const Calendar = (props) => {
 
     let journalDisplayEntries = displayEntries.map((displayEntry, index) => {
         let mood = displayEntry.mood;
-        let dateParts = displayEntry.date.toLocaleString("en-GB").split(" ");
-        let time = dateParts[3];
+        let emoji = getEmoji(mood);
+        let hours = pad(displayEntry.date.getHours());
+        let minutes = pad(displayEntry.date.getMinutes());
+        let time = `${hours}:${minutes}`;
         return (
             <View style={calendarStyles.journalEntry} key={index}>
                 <View style={calendarStyles.journalEntryHeader}>
                     <Text style={calendarStyles.journalEntryDate}>{time}</Text>
-                    <Text style={calendarStyles.journalMood}>{mood}</Text>
+                    <Text style={calendarStyles.journalMood}>{emoji}</Text>
                 </View>
                 <Text style={calendarStyles.journalEntryText}>{displayEntry.text}</Text>
             </View>

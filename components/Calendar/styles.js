@@ -69,6 +69,12 @@ const styles = StyleSheet.create({
         color: "white",
         textAlign: "center"
     },
+    journalEntryHeader: {
+        display: "flex",
+        width: "100%",
+        flexDirection: "row",
+        justifyContent: "space-between"
+    },
     journalEntries: {
         display: "flex",
         flexDirection: "column",
