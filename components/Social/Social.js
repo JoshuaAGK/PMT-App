@@ -8,11 +8,11 @@ import InlineBigComponent from '../InlineBigComponent/InlineBigComponent'
 
 var listOfFriends = [
   { id: '0', text: 'Joe Bloggs' },
-  { id: '1', text: 'Gernot Liebchen' },
+  { id: '1', text: 'Obi-Wan Kenobi' },
   { id: '2', text: 'Firstname Lastname' },
   { id: '3', text: 'This is just an example name' },
   { id: '4', text: 'Yeet' },
-  { id: '5', text: 'General Kenobi' },
+  { id: '5', text: 'Gernot Liebchen' },
 ];
 
 

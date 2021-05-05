@@ -1,23 +1,79 @@
-{
-    "message-1620216745": {
-        "timestamp": 1620216745,
-        "sender": "you",
-        "contents": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+[
+    {
+        "message-1620216745": {
+            "timestamp": 1620216745,
+            "sender": "you",
+            "contents": "You turned her against me!"
+        }
     },
-    "message-1620216891": {
-        "timestamp": 1620216891,
-        "sender": "Gernot Liebchen",
-        "contents": "Etiam consequat eu mauris quis ultrices."
+    {
+        "message-1620216891": {
+            "timestamp": 1620216891,
+            "sender": "Other",
+            "contents": "You have done that yourself."
+        }
     },
-    "message-1620216928": {
-        "timestamp": 1620216928,
-        "sender": "Gernot Liebchen",
-        "contents": "Nam porta velit nisl, quis tristique dui ultrices a."
+    {
+        "message-1620216928": {
+            "timestamp": 1620216928,
+            "sender": "you",
+            "contents": "You will not take her from me!"
+        }
     },
-    "message-1620216960": {
-        "timestamp": 1620216960,
-        "sender": "you",
-        "contents": "Donec elementum diam massa, eget pellentesque arcu imperdiet quis."
+    {
+        "message-1620216960": {
+            "timestamp": 1620216960,
+            "sender": "Other",
+            "contents": "Your anger and your lust for power have already done that. You have allowed this dark lord to twist your mind, until now... until now you have become the very thing you swore to destroy."
+        }
+    },
+    {
+        "message-1620216960": {
+            "timestamp": 1620216961,
+            "sender": "you",
+            "contents": "Don't lecture me, Obi-Wan. I see through the lies of the Jedi. I do not fear the dark side as you do. I have brought peace, freedom, justice and security to my new Empire!"
+        }
+    },
+    {
+        "message-1620216960": {
+            "timestamp": 1620216962,
+            "sender": "Other",
+            "contents": "Your new Empire?"
+        }
+    },
+    {
+        "message-1620216960": {
+            "timestamp": 1620216963,
+            "sender": "you",
+            "contents": "Don't make me kill you."
+        }
+    },
+    {
+        "message-1620216960": {
+            "timestamp": 1620216964,
+            "sender": "Gernot Liebchen",
+            "contents": "Anakin, my allegiance is to the Republic, to Democracy!"
+        }
+    },
+    {
+        "message-1620216960": {
+            "timestamp": 1620216965,
+            "sender": "you",
+            "contents": "If you're not with me, then you're my enemy."
+        }
+    },
+    {
+        "message-1620216960": {
+            "timestamp": 1620216966,
+            "sender": "Gernot Liebchen",
+            "contents": "Only a Sith deals in absolutes. I will do what I must."
+        }
+    },
+    {
+        "message-1620216960": {
+            "timestamp": 1620216967,
+            "sender": "you",
+            "contents": "You will try."
+        }
     }
-    
-}
+]

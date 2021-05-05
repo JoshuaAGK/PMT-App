@@ -8,10 +8,12 @@ const scaleFontSize = (fontSize) => {
 
 const styles = StyleSheet.create({
     container: {
-        position: "absolute",
+        position: "relative",
         width: "100%",
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
+        paddingLeft: 50/4,
+        paddingRight: 50/4
     },
     messageContainerMe: {
         backgroundColor: "skyblue",
@@ -28,7 +30,7 @@ const styles = StyleSheet.create({
         marginBottom: 50/4
     },
     messageContainerOther: {
-        backgroundColor: "#CCCCCC",
+        backgroundColor: "#DDDDDD",
         maxWidth: "75%",
         alignSelf: "flex-start",
         display: "flex",

@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
     chatPage: {
         width: "100%",
         overflow: "visible",
-        marginTop: "15%",
+        marginTop: "5%",
         marginBottom: "5%"
     },
 })

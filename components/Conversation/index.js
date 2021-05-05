@@ -6,46 +6,9 @@ import convo from './convo.json'
 
 const CONVOLENGTH = Object.keys(convo).length
 
-
-// const TEMPCONVO = [
-//   {
-//     "message-1620216745": {
-//       "timestamp": 1620216745,
-//       "sender": "you",
-//       "contents": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-//     }
-//   },
-//   {
-//     "message-1620216891": {
-//       "timestamp": 1620216891,
-//       "sender": "Gernot Liebchen",
-//       "contents": "Etiam consequat eu mauris quis ultrices."
-//     }
-//   }
-// ]
-
-const TEMPCONVO = [
-  {
-    "message-1620216745": {
-      "timestamp": 1620216745,
-      "sender": "you",
-      "contents": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-    }
-  }
-]
-
-
 class Conversation extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      contents0: convo[Object.keys(convo)[0]]["contents"],
-      sender0: convo[Object.keys(convo)[0]]["sender"],
-      timestamp0: convo[Object.keys(convo)[0]]["timestamp"],
-      contents1: convo[Object.keys(convo)[1]]["contents"],
-      sender1: convo[Object.keys(convo)[1]]["sender"],
-      timestamp1: convo[Object.keys(convo)[1]]["timestamp"]
-    }
   }
 
   forceUpdateHandler() {
@@ -54,18 +17,14 @@ class Conversation extends React.Component {
 
   render() {
     return (
-      // <View style={styles.container}>
-      //   <Message sender={this.state.sender0} contents={this.state.contents0} timestamp={this.state.timestamp0}/>
-      //   <Message sender={this.state.sender1} contents={this.state.contents1} timestamp={this.state.timestamp1}/>
-      // </View>
       <View style={styles.container}>
-        {TEMPCONVO.map((message) => {
-          var myObj = message[Object.keys(message)[0]]
-          myObj = JSON.stringify(myObj)
-
+        {convo.map((message) => {
+          var timestamp = message[Object.keys(message)[0]]["timestamp"]
+          var sender = message[Object.keys(message)[0]]["sender"]
+          var contents = message[Object.keys(message)[0]]["contents"]
 
           return (
-            <Text>{myObj}</Text>
+            <Message sender={sender} contents={contents} timestamp={timestamp}/>
           );
       })}
       </View>
