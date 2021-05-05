@@ -45,7 +45,7 @@ export const Calendar = (props) => {
             querySnapshot.forEach((doc) => {
                 let data = doc.data();
                 if (data.hasOwnProperty('date') && data.hasOwnProperty('text')) {
-                    let dataDate = new Date((data.date.nanoseconds / 1000) + (data.date.seconds * 1000));
+                    let dataDate = data.date.toDate();
                     let dataText = data.text;
                     let dataMood = data.mood;
                     journalEntries.push({
