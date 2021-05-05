@@ -8,7 +8,7 @@ import Advertisement from '../Advertisement/Advertisement';
 import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
 import UpperContents from '../UpperContents/UpperContents';
 import EmotionTrackerInput from '../EmotionTracker/EmotionTrackerInput';
-import { getUserCollection } from '../../src/firebase/firestore/firestoreService';
+import { getUserCollection, incrementBalance } from '../../src/firebase/firestore/firestoreService';
 import { setText, setMood, selectJournal } from '../../src/features/journal/journalSlice';
 import { addToBalance } from '../../src/features/auth/authSlice';
 import {Formik} from 'formik';
@@ -16,6 +16,8 @@ import * as Yup from 'yup';
 import points from '../../src/features/points/points';
 
 export const Journal = (props) => {
+    const balanceSelector = useSelector(state => state.auth);
+    let currentBalance = balanceSelector.currentUser ? balanceSelector.currentUser.balance : 0;
     const dispatch = useDispatch();
     const journal = useSelector(state => state.journal);
     const auth = useSelector(state => state.auth);
@@ -30,8 +32,9 @@ export const Journal = (props) => {
             text: values.text,
             mood: values.emotionTracker,
             date: new Date()
-        }).then(() => {
+        }).then( async () => {
             dispatch(addToBalance(points.JOURNAL_SUBMISSION_POINTS));
+            await incrementBalance(currentBalance,points.JOURNAL_SUBMISSION_POINTS);
             dispatch(setText(''));
             dispatch(setMood(-1));
             console.log('Saved journal entry!');
@@ -64,6 +67,7 @@ export const Journal = (props) => {
             })}
             onSubmit={async (values, {setSubmitting, setErrors}) => {
                 onSave(values);
+                values.text = '';
             }}
             >
             {({

@@ -11,7 +11,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { capitalize } from './utils/StringUtils';
 import { ChatPage } from './components/ChatPage/ChatPage'
 import store from './src/features/store/store';
-import { getPremiumStatus } from './src/firebase/firestore/firestoreService';
+import { setPremium } from './src/features/auth/authSlice';
 
 String.prototype.capitalize = capitalize;
 
@@ -22,10 +22,10 @@ const SOCIAL = 'social';
 const SHOP = 'shop';
 
 // Temporary solution
-var tempVarNameOfFriend = "";
+var tempVarNameOfFriend = '';
 
 function setFriendName(x) {
-  tempVarNameOfFriend = x
+  tempVarNameOfFriend = x;
 }
 
 function LogInScreen({ navigation }) {
@@ -38,7 +38,7 @@ function LogInScreen({ navigation }) {
 
 function JournalScreen({ navigation }) {
     let auth = useSelector(state => state.auth);
-    let premiumStatus = auth.currentUser.premium;
+    let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
     return (
         <View style={styles.container}>
         <Journal premium={premiumStatus} />
@@ -52,7 +52,7 @@ function JournalScreen({ navigation }) {
 
 function AccountScreen({ navigation }) {
     let auth = useSelector(state => state.auth);
-    let premiumStatus = auth.currentUser.premium;
+    let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
     return (
         <View style={styles.container}>
         <Account premium={premiumStatus} />
@@ -68,7 +68,7 @@ const Stack = createStackNavigator();
 
 function socialHomeScreen({ navigation }) {
     let auth = useSelector(state => state.auth);
-    let premiumStatus = auth.currentUser.premium;
+    let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
     return (
         <View style={styles.container}>
         <Social nav={navigation} loadFriendData={setFriendName}/>
@@ -81,11 +81,14 @@ function socialHomeScreen({ navigation }) {
 }
 
 function socialChatScreen({ navigation }) {
+  let auth = useSelector(state => state.auth);
+  let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
   return (
     <View style={styles.container}>
       <ChatPage friendName={tempVarNameOfFriend}/>
-      <Advertisement type="banner" content="ADVERTISEMENT" />
-
+      { !premiumStatus &&
+        <Advertisement type="banner" content="ADVERTISEMENT" />
+      }
       <StatusBar style="auto" />
     </View>
   );
@@ -106,10 +109,8 @@ function SocialScreen({ navigation }) {
 }
 
 function ShopScreen({ navigation }) {
-  let premiumStatus = false;
-  var { data, error } = useAsync({ promiseFn: getPremiumStatus});
-  if (error) premiumStatus = false;
-  if (data) premiumStatus = data.premiumStatus;
+  let auth = useSelector(state => state.auth);
+  let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
   return (
     <View style={styles.container}>
       <Shop premium={premiumStatus} />
