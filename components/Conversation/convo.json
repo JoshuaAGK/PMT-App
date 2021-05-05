@@ -1,0 +1,23 @@
+{
+    "message-1620216745": {
+        "timestamp": 1620216745,
+        "sender": "you",
+        "contents": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    },
+    "message-1620216891": {
+        "timestamp": 1620216891,
+        "sender": "Gernot Liebchen",
+        "contents": "Etiam consequat eu mauris quis ultrices."
+    },
+    "message-1620216928": {
+        "timestamp": 1620216928,
+        "sender": "Gernot Liebchen",
+        "contents": "Nam porta velit nisl, quis tristique dui ultrices a."
+    },
+    "message-1620216960": {
+        "timestamp": 1620216960,
+        "sender": "you",
+        "contents": "Donec elementum diam massa, eget pellentesque arcu imperdiet quis."
+    }
+    
+}

@@ -6,6 +6,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import capitalize from './utils/StringUtils';
+import { createStackNavigator } from '@react-navigation/stack';
+import { ChatPage } from './components/ChatPage/ChatPage'
 
 String.prototype.capitalize = capitalize;
 
@@ -13,6 +15,13 @@ const JOURNAL = 'journal';
 const ME = 'me';
 const SOCIAL = 'social';
 const SHOP = 'shop';
+
+// Temporary solution
+var tempVarNameOfFriend = "";
+
+function setFriendName(x) {
+  tempVarNameOfFriend = x
+}
 
 function JournalScreen({ navigation }) {
   return (
@@ -34,13 +43,39 @@ function AccountScreen({ navigation }) {
   );
 }
 
-function SocialScreen({ navigation }) {
+const Stack = createStackNavigator();
+
+function socialHomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Social />
+      <Social nav={navigation} loadFriendData={setFriendName}/>
       <Advertisement type="banner" content="ADVERTISEMENT" />
       <StatusBar style="auto" />
     </View>
+  );
+}
+
+function socialChatScreen({ navigation }) {
+  return (
+    <View style={styles.container}>
+      <ChatPage friendName={tempVarNameOfFriend}/>
+      <Advertisement type="banner" content="ADVERTISEMENT" />
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+
+function SocialScreen({ navigation }) {
+  return (
+    <Stack.Navigator
+      initialRouteName="socialHomeScreen"
+      screenOptions={{
+        headerShown: true
+      }}
+    >
+      <Stack.Screen name="socialHomeScreen" options={{ title: "Social" }} component={socialHomeScreen} />
+      <Stack.Screen name="socialChatScreen" options={{ title: tempVarNameOfFriend }} component={socialChatScreen} />
+    </Stack.Navigator>
   );
 }
 
