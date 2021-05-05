@@ -5,7 +5,7 @@ import emotionStyles from './styles';
 import Emotion from './Emotion';
 
 export const EMOTIONS = {
-    CRY: {
+    VERY_SAD: {
         value: 0,
         emoji: "😢"
     },
@@ -20,6 +20,10 @@ export const EMOTIONS = {
     HAPPY: {
         value: 3,
         emoji: "🙂"
+    },
+    VERY_HAPPY: {
+        value: 4,
+        emoji: "😃"
     }
 };
 
@@ -35,12 +39,15 @@ export function getEmoji(mood) {
 }
 
 export const EmotionTracker = ({ handleClick }) => {
+    let emotions = Object.keys(EMOTIONS).map((emotionKey, index) => {
+        let emotion = EMOTIONS[emotionKey];
+        return (
+            <Emotion emotionType={emotion.value} emoji={emotion.emoji} handleClick={handleClick}/>
+        );
+    });
     return (
         <View style={emotionStyles.emotionContainer}>
-            <Emotion emotionType={EMOTIONS.CRY.value} emoji={EMOTIONS.CRY.emoji} handleClick={handleClick}/>
-            <Emotion emotionType={EMOTIONS.SAD.value} emoji={EMOTIONS.SAD.emoji} handleClick={handleClick}/>
-            <Emotion emotionType={EMOTIONS.NORMAL.value} emoji={EMOTIONS.NORMAL.emoji} handleClick={handleClick}/>
-            <Emotion emotionType={EMOTIONS.HAPPY.value} emoji={EMOTIONS.HAPPY.emoji} handleClick={handleClick}/>
+            {emotions}
         </View>
       );
 };

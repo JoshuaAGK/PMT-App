@@ -147,8 +147,7 @@ export const Calendar = (props) => {
         let emoji = getEmoji(mood);
         let hours = pad(displayEntry.date.getHours());
         let minutes = pad(displayEntry.date.getMinutes());
-        let seconds = pad(displayEntry.date.getSeconds());
-        let time = `${hours}:${minutes}:${seconds}`;
+        let time = `${hours}:${minutes}`;
         return (
             <View style={calendarStyles.journalEntry} key={index}>
                 <View style={calendarStyles.journalEntryHeader}>
