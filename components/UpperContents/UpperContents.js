@@ -1,9 +1,12 @@
 import React from 'react';
 import { Text, View, Pressable } from 'react-native';
+import { useAsync } from 'react-async';
 import { useNavigation } from '@react-navigation/native';
 import { dateString } from '../../utils/StringUtils';
 import styles from './styles';
 import { signOutFirebase } from '../../src/firebase/firestore/firebaseService';
+import { getUserBalance } from '../../src/firebase/firestore/firestoreService';
+import { useSelector } from 'react-redux';
 
 function UpperContents(props) {
     const navigation = useNavigation();
@@ -26,10 +29,12 @@ function UpperContents(props) {
                 </View>
                 );
             break;
-        case 'currency':
+        case 'currency':            
+            var balance = useSelector(state => state.auth);
+            var currentBalance = balance.currentUser ? balance.currentUser.balance : '0';
             content = (
                 <Pressable style={styles.rightBox} onPress={() => navigation.navigate('Shop')}>
-                    <Text>₩4.20</Text>
+                    <Text>₩{currentBalance}</Text>
                 </Pressable>
             );
             break;

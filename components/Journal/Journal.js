@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Pressable, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,15 +8,12 @@ import Advertisement from '../Advertisement/Advertisement';
 import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
 import UpperContents from '../UpperContents/UpperContents';
 import EmotionTrackerInput from '../EmotionTracker/EmotionTrackerInput';
-import firebase from '../../src/firebase/config';
 import { getUserCollection } from '../../src/firebase/firestore/firestoreService';
-import {
-    setText,
-    setMood,
-    selectJournal
-} from '../../src/features/journal/journalSlice';
+import { setText, setMood, selectJournal } from '../../src/features/journal/journalSlice';
+import { addToBalance } from '../../src/features/auth/authSlice';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
+import points from '../../src/features/points/points';
 
 export const Journal = (props) => {
     const dispatch = useDispatch();
@@ -29,16 +26,17 @@ export const Journal = (props) => {
     }
 
     function onSave(values) {
-        getUserCollection("journal").add({
+        getUserCollection('journal').add({
             text: values.text,
             mood: values.emotionTracker,
             date: new Date()
         }).then(() => {
+            dispatch(addToBalance(points.JOURNAL_SUBMISSION_POINTS));
             dispatch(setText(''));
             dispatch(setMood(-1));
-            console.log("Document successfully written!");
+            console.log('Document successfully written!');
         }).catch((error) => {
-            console.error("Error writing document: ", error);
+            console.error('Error writing document: ', error);
         });
     }
 
@@ -65,7 +63,7 @@ export const Journal = (props) => {
                 text: Yup.string().required()
             })}
             onSubmit={async (values, {setSubmitting, setErrors}) => {
-                onSave(values)
+                onSave(values);
             }}
             >
             {({
@@ -101,7 +99,9 @@ export const Journal = (props) => {
                 <Text style={mainStyles.buttonText}>Save</Text>
             </Pressable>
         </View>*/}
-        <Advertisement type="inline" content="ADVERTISEMENT" />
+        { !props.premium &&
+            <Advertisement type="inline" content="ADVERTISEMENT" />
+        }
         <Text style={mainStyles.bigText}>Brain Training</Text>
         <InlineBigComponent type="brainTraining"/>
         </ScrollView>
