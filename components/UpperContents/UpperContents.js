@@ -5,12 +5,13 @@ import { useNavigation } from '@react-navigation/native';
 import { dateString } from '../../utils/StringUtils';
 import styles from './styles';
 import { signOutFirebase } from '../../src/firebase/firestore/firebaseService';
-import { getUserBalance } from '../../src/firebase/firestore/firestoreService';
 import { useSelector } from 'react-redux';
 
 function UpperContents(props) {
     const navigation = useNavigation();
-    
+    const auth = useSelector(state => state.auth);
+    console.log(auth);
+
     const containerType = props.content;
 
     let content = null;
@@ -30,12 +31,15 @@ function UpperContents(props) {
                 );
             break;
         case 'currency':            
-            var balance = useSelector(state => state.auth);
-            var currentBalance = balance.currentUser ? balance.currentUser.balance : '0';
+            let currentBalance = auth.currentUser ? auth.currentUser.balance : '0';
+            let streak = auth.currentUser ? auth.currentUser.streak : '0';
             content = (
-                <Pressable style={styles.rightBox} onPress={() => navigation.navigate('Shop')}>
-                    <Text>₩{currentBalance}</Text>
-                </Pressable>
+                <View>
+                    <Text>Streak: {streak}</Text>
+                    <Pressable style={styles.rightBox} onPress={() => navigation.navigate('Shop')}>
+                        <Text>₩{currentBalance}</Text>
+                    </Pressable>
+                </View>
             );
             break;
     }

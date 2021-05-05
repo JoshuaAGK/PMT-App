@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useAsync } from 'react-async';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { Advertisement, Journal, Account, Social, Shop, LogIn, Calendar, Registration } from './components';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -37,53 +37,47 @@ function LogInScreen({ navigation }) {
 }
 
 function JournalScreen({ navigation }) {
-  let premiumStatus = false;
-  var { data, error } = useAsync({ promiseFn: getPremiumStatus});
-  if (error) premiumStatus = false;
-  if (data) premiumStatus = data.premiumStatus;
-  return (
-    <View style={styles.container}>
-      <Journal premium={premiumStatus} />
-      { !premiumStatus &&
-        <Advertisement type="banner" content="ADVERTISEMENT" />
-      }
-      <StatusBar style="auto" />
-    </View>
-  );
+    let auth = useSelector(state => state.auth);
+    let premiumStatus = auth.currentUser.premium;
+    return (
+        <View style={styles.container}>
+        <Journal premium={premiumStatus} />
+        { !premiumStatus &&
+            <Advertisement type="banner" content="ADVERTISEMENT" />
+        }
+        <StatusBar style="auto" />
+        </View>
+    );
 }
 
 function AccountScreen({ navigation }) {
-  let premiumStatus = false;
-  var { data, error } = useAsync({ promiseFn: getPremiumStatus});
-  if (error) premiumStatus = false;
-  if (data) premiumStatus = data.premiumStatus;
-  return (
-    <View style={styles.container}>
-      <Account premium={premiumStatus} />
-      { !premiumStatus &&
-        <Advertisement type="banner" content="ADVERTISEMENT" />
-      }
-      <StatusBar style="auto" />
-    </View>
-  );
+    let auth = useSelector(state => state.auth);
+    let premiumStatus = auth.currentUser.premium;
+    return (
+        <View style={styles.container}>
+        <Account premium={premiumStatus} />
+        { !premiumStatus &&
+            <Advertisement type="banner" content="ADVERTISEMENT" />
+        }
+        <StatusBar style="auto" />
+        </View>
+    );
 }
 
 const Stack = createStackNavigator();
 
 function socialHomeScreen({ navigation }) {
-  let premiumStatus = false;
-  var { data, error } = useAsync({ promiseFn: getPremiumStatus});
-  if (error) premiumStatus = false;
-  if (data) premiumStatus = data.premiumStatus;
-  return (
-    <View style={styles.container}>
-      <Social nav={navigation} loadFriendData={setFriendName}/>
-      { !premiumStatus &&
-        <Advertisement type="banner" content="ADVERTISEMENT" />
-      }
-      <StatusBar style="auto" />
-    </View>
-  );
+    let auth = useSelector(state => state.auth);
+    let premiumStatus = auth.currentUser.premium;
+    return (
+        <View style={styles.container}>
+        <Social nav={navigation} loadFriendData={setFriendName}/>
+        { !premiumStatus &&
+            <Advertisement type="banner" content="ADVERTISEMENT" />
+        }
+        <StatusBar style="auto" />
+        </View>
+    );
 }
 
 function socialChatScreen({ navigation }) {
@@ -167,19 +161,32 @@ const stackOptions = {
     headerShown: false
 };
 
-export default function App() {
-  return (
-    <Provider store={store}>
+function StackApp() {
+    const auth = useSelector(state => state.auth);
+    let loggedIn = false;
+    if (auth.currentUser) {
+        loggedIn = true;
+    }
+    return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen name="Log In" component={LogIn}/>
-                <Stack.Screen name="Registration" component={Registration}/>
+                { !loggedIn && 
+                    <Stack.Screen name="Log In" component={LogIn}/> }
+                { !loggedIn && 
+                    <Stack.Screen name="Registration" component={Registration}/> }
                 <Stack.Screen name="App" component={AppTabs} options={stackOptions} />
                 <Stack.Screen name="Calendar" component={Calendar} options={stackOptions} />
             </Stack.Navigator>
         </NavigationContainer>
-    </Provider>
-  );
+    );
+}
+
+export default function App() {
+    return (
+        <Provider store={store}>
+            <StackApp/>
+        </Provider>
+    );
 }
 
 const styles = StyleSheet.create({

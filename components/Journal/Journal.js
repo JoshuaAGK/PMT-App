@@ -34,7 +34,7 @@ export const Journal = (props) => {
             dispatch(addToBalance(points.JOURNAL_SUBMISSION_POINTS));
             dispatch(setText(''));
             dispatch(setMood(-1));
-            console.log('Document successfully written!');
+            console.log('Saved journal entry!');
         }).catch((error) => {
             console.error('Error writing document: ', error);
         });
@@ -94,11 +94,6 @@ export const Journal = (props) => {
                 </View>
             )}
         </Formik>
-        {/*<View style={mainStyles.buttonContainer}>
-            <Pressable style={mainStyles.button} onPress={onSave}>
-                <Text style={mainStyles.buttonText}>Save</Text>
-            </Pressable>
-        </View>*/}
         { !props.premium &&
             <Advertisement type="inline" content="ADVERTISEMENT" />
         }
