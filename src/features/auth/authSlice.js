@@ -6,6 +6,8 @@ const authSlice = createSlice({
     initialState: {
         authenticated: false,
         currentUser: null,
+        premium: false,
+        balance: 0
     },
     reducers: {
         signInUser: (state = initialState, action) => {
@@ -19,11 +21,20 @@ const authSlice = createSlice({
             state.authenticated = false;
             state.currentUser = null;
         },
+        addToBalance: (state = initialState, action) => {
+            state.balance += action.payload;
+        },
+        setBalance: (state = initialState, action) => {
+            state.balance = action.payload;
+        },
+        setPremium: (state = initialState, action) => {
+            state.premium = action.payload;
+        }
     }
 });
 
 const { actions, reducer } = authSlice;
-const { signInUser, signOutUser } = actions;
+const { signInUser, signOutUser, setBalance, setPremium, addToBalance } = actions;
 
 export function verifyAuth() {
     return function(dispatch) {
@@ -42,5 +53,5 @@ export function verifyAuth() {
     }
 }
 
-export { signInUser, signOutUser };
+export { signInUser, signOutUser, setBalance, setPremium, addToBalance };
 export default reducer;

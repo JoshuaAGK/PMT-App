@@ -7,7 +7,7 @@ import journalStyles from './styles';
 import Advertisement from '../Advertisement/Advertisement';
 import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
 import UpperContents from '../UpperContents/UpperContents';
-import EmotionTracker from '../EmotionTracker/EmotionTracker';
+import EmotionTrackerInput from '../EmotionTracker/EmotionTrackerInput';
 import firebase from '../../src/firebase/config';
 import { getUserCollection } from '../../src/firebase/firestore/firestoreService';
 import {
@@ -78,7 +78,7 @@ export const Journal = (props) => {
                   isValid
               }) => (
                 <View style={mainStyles.container}>
-                    <EmotionTracker />
+                    <EmotionTrackerInput />
                     <TextInput
                         style={journalStyles.journalInput}
                         placeholder="Journal entry for today"

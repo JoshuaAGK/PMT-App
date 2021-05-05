@@ -7,7 +7,7 @@ import {
     setMood
 } from '../../src/features/journal/journalSlice';
 
-export const Emotion = ({ emotionType, emoji, handleClick}) => {
+export const Emotion = ({ emotionType, emoji, handleClick }) => {
     const dispatch = useDispatch();
     const journal = useSelector(state => state.journal);
 
