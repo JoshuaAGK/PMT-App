@@ -12,19 +12,19 @@ import '@firebase/auth';
 import { TextInput } from 'react-native-gesture-handler';
 
 export const Account = (props) => {
-    return (
-        <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={mainStyles.mainPage}
-        >
-        <UpperContents content="logout" />
-        <Text style={mainStyles.bigText}>Alarm</Text>
-        <AlarmItem />
-        <Advertisement type="inline" content="ADVERTISEMENT" />
-        <Text style={mainStyles.bigText}>Customise Avatar</Text>
-        <InlineBigComponent content="AVATAR CUSTOMISATION (TBD)" tbd={true} />
-        </ScrollView>
-    );
+  return (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={mainStyles.mainPage}
+    >
+      <UpperContents content="logout" />
+      <Text style={mainStyles.bigText}>Alarm</Text>
+      <AlarmItem />
+      <Advertisement type="inline" content="ADVERTISEMENT" />
+      <Text style={mainStyles.bigText}>Customise Avatar</Text>
+      <InlineBigComponent type="customiseAvatar" />
+    </ScrollView>
+  );
 };
 
 export default Account;

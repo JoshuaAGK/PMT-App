@@ -24,32 +24,12 @@ export const Shop = (props) => {
       <Text style={mainStyles.bigText}>Buy in-app currency</Text>
       <View style={shopStyles.shopContainer}>
         <View style={shopStyles.shopFlex}>
-          {/* <View style={styles.shopItem}><Text style={styles.shopItemText}>₩1.00</Text></View> */}
           <PurchaseCurrency amount={1.0} />
           <PurchaseCurrency amount={2.0} />
           <PurchaseCurrency amount={5.0} />
           <PurchaseCurrency amount={10.0} />
           <PurchaseCurrency amount={20.0} />
           <PurchaseCurrency amount="Custom" />
-          {/*<Pressable style={shopStyles.shopItem} onPress={() => alert("Thank you for purchasing ₩1.00 of in-app currency!")}>
-                        <Text style={shopStyles.shopItemText}>₩1.00</Text>
-                    </Pressable>
-                
-                    <Pressable style={shopStyles.shopItem} onPress={() => alert("Thank you for purchasing ₩2.00 of in-app currency!")}>
-                        <Text style={shopStyles.shopItemText}>₩2.00</Text>
-                    </Pressable>
-                    <Pressable style={shopStyles.shopItem} onPress={() => alert("Thank you for purchasing ₩5.00 of in-app currency!")}>
-                        <Text style={shopStyles.shopItemText}>₩5.00</Text>
-                    </Pressable>
-                    <Pressable style={shopStyles.shopItem} onPress={() => alert("Thank you for purchasing ₩10.00 of in-app currency!")}>
-                        <Text style={shopStyles.shopItemText}>₩10.00</Text>
-                    </Pressable>
-                    <Pressable style={shopStyles.shopItem} onPress={() => alert("Thank you for purchasing ₩20.00 of in-app currency!")}>
-                        <Text style={shopStyles.shopItemText}>₩20.00</Text>
-                    </Pressable>
-                    <Pressable style={shopStyles.shopItem} onPress={() => alert("Thank you for purchasing an indeterminate in-app currency!")}>
-                        <Text style={shopStyles.shopItemText}>Custom</Text>
-                    </Pressable>*/}
         </View>
         <View style={shopStyles.premiumUpsellContainer}>
           <Text style={shopStyles.premiumTitle}>Premium</Text>
@@ -68,7 +48,7 @@ export const Shop = (props) => {
         </View>
       </View>
       <Text style={mainStyles.bigText}>Avatar Accessories</Text>
-      <InlineBigComponent content="AVATAR SHOP (TBD)" tbd={true} />
+      <InlineBigComponent type="avatarShop" />
     </ScrollView>
   );
 };

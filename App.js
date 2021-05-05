@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { capitalize } from './utils/StringUtils';
+import { ChatPage } from './components/ChatPage/ChatPage'
 import store from './src/features/store/store';
 
 String.prototype.capitalize = capitalize;
@@ -17,6 +18,13 @@ const JOURNAL = 'journal';
 const ME = 'me';
 const SOCIAL = 'social';
 const SHOP = 'shop';
+
+// Temporary solution
+var tempVarNameOfFriend = "";
+
+function setFriendName(x) {
+  tempVarNameOfFriend = x
+}
 
 function LogInScreen({ navigation }) {
     return (
@@ -46,13 +54,39 @@ function AccountScreen({ navigation }) {
   );
 }
 
-function SocialScreen({ navigation }) {
+const Stack = createStackNavigator();
+
+function socialHomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Social />
+      <Social nav={navigation} loadFriendData={setFriendName}/>
       <Advertisement type="banner" content="ADVERTISEMENT" />
       <StatusBar style="auto" />
     </View>
+  );
+}
+
+function socialChatScreen({ navigation }) {
+  return (
+    <View style={styles.container}>
+      <ChatPage friendName={tempVarNameOfFriend}/>
+      <Advertisement type="banner" content="ADVERTISEMENT" />
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+
+function SocialScreen({ navigation }) {
+  return (
+    <Stack.Navigator
+      initialRouteName="socialHomeScreen"
+      screenOptions={{
+        headerShown: true
+      }}
+    >
+      <Stack.Screen name="socialHomeScreen" options={{ title: "Social (WIP)" }} component={socialHomeScreen} />
+      <Stack.Screen name="socialChatScreen" options={{ title: tempVarNameOfFriend }} component={socialChatScreen} />
+    </Stack.Navigator>
   );
 }
 
@@ -66,7 +100,6 @@ function ShopScreen({ navigation }) {
   );
 }
 
-const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function AppTabs() {
