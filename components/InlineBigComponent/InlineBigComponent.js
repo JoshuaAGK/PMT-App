@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
-import EmotionTracker from '../EmotionTracker/EmotionTracker';
+import { Text, View, FlatList } from 'react-native';
 import styles from './styles';
 import BrainTraining from '../BrainTraining'
 import AvatarShop from '../AvatarShop'

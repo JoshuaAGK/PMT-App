@@ -1,34 +1,34 @@
 import {createSlice} from '@reduxjs/toolkit';
 import firebase from 'firebase';
+import { getUserBalance } from '../../firebase/firestore/firestoreService';
 
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
         authenticated: false,
-        currentUser: null,
-        premium: false,
-        balance: 0
+        currentUser: null
     },
     reducers: {
-        signInUser: (state = initialState, action) => {
+        signInUser: (state = this.initialState, action) => {
             state.authenticated = true;
             state.currentUser = {
                 email: action.payload.email,
-                uid: action.payload.uid
+                uid: action.payload.uid,
+                balance: action.payload.balance
             };
         },
-        signOutUser: (state = initialState, action) => {
+        signOutUser: (state = this.initialState, action) => {
             state.authenticated = false;
             state.currentUser = null;
         },
         addToBalance: (state = initialState, action) => {
-            state.balance += action.payload;
+            state.currentUser.balance += action.payload;
         },
         setBalance: (state = initialState, action) => {
-            state.balance = action.payload;
+            state.currentUser.balance = action.payload;
         },
         setPremium: (state = initialState, action) => {
-            state.premium = action.payload;
+            state.currentUser.premium = action.payload;
         }
     }
 });
@@ -38,19 +38,20 @@ const { signInUser, signOutUser, setBalance, setPremium, addToBalance } = action
 
 export function verifyAuth() {
     return function(dispatch) {
-        return firebase.auth().onAuthStateChanged((user) => {
-            //console.log(user);
+        return firebase.auth().onAuthStateChanged( async (user) => {
             if(user) {
+                let currentBalance = await getUserBalance();
                 let authObj = {
                     uid: user.uid,
-                    email: user.email
+                    email: user.email,
+                    balance: currentBalance.balance
                 };
-                dispatch(signInUser(authObj))
+                dispatch(signInUser(authObj));
             } else {
-                dispatch(signOutUser())
+                dispatch(signOutUser());
             }
-        })
-    }
+        });
+    };
 }
 
 export { signInUser, signOutUser, setBalance, setPremium, addToBalance };

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Pressable, Modal, ScrollView, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -27,6 +27,7 @@ export const LogIn = ({navigation}) => {
     };
 
     return (
+        <ScrollView>
         <Formik
             initialValues={{email: '', password: ''}}
             validationSchema={Yup.object({
@@ -98,6 +99,7 @@ export const LogIn = ({navigation}) => {
                 </View>
             )}
         </Formik>
+        </ScrollView>
     );
 }
 

@@ -4,25 +4,25 @@ const scaleFontSize = (fontSize) => {
   const ratio = fontSize / 375;
   const newSize = Math.round(ratio * Dimensions.get('window').width);
   return newSize; 
-}
+};
 
 const styles = StyleSheet.create({
     container: {
-        width: "100%",
-        backgroundColor: "white",
+        width: '100%',
+        backgroundColor: 'white',
         borderRadius: 50/4,
         padding: 50/4,
         borderWidth: 1,
     },
     tbd: {
-      width: "100%",
-      backgroundColor: "white",
+      width: '100%',
+      backgroundColor: 'white',
       borderRadius: 50/4,
       padding: 50/4,
-      alignItems: "center",
-      justifyContent: "center",
+      alignItems: 'center',
+      justifyContent: 'center',
       minHeight: 160,
-      shadowColor: "black",
+      shadowColor: 'black',
       shadowOffset: {
         width: 0,
         height: 5,
@@ -57,16 +57,16 @@ const styles = StyleSheet.create({
       fontSize: scaleFontSize(14)
     },
     listContainer: {
-        width: "100%",
-        backgroundColor: "white",
+        width: '100%',
+        backgroundColor: 'white',
         borderRadius: 50/4,
         padding: 50/4,
         borderWidth: 1,
-        shadowColor: "black",
-        shadowOffset: {
-          width: 0,
-          height: 5,
-        },
+        shadowColor: 'black',
+      shadowOffset: {
+        width: 0,
+        height: 5,
+      },
       shadowOpacity: 0.2,
       shadowRadius: 15,
     },
@@ -102,6 +102,6 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.2,
       shadowRadius: 15,
     }
-})
+});
 
 export default styles;

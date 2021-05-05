@@ -28,10 +28,10 @@ export const EMOTIONS = {
 };
 
 export function getEmoji(mood) {
-    var result = "😐";
+    let result = '😐';
     for (const emotionKey in EMOTIONS) {
         let emotion = EMOTIONS[emotionKey];
-        if (emotion.value == mood) {
+        if (emotion.value === mood) {
             result = emotion.emoji;
         }
     }
@@ -42,7 +42,7 @@ export const EmotionTracker = ({ handleClick }) => {
     let emotions = Object.keys(EMOTIONS).map((emotionKey, index) => {
         let emotion = EMOTIONS[emotionKey];
         return (
-            <Emotion emotionType={emotion.value} emoji={emotion.emoji} handleClick={handleClick}/>
+            <Emotion key={index} emotionType={emotion.value} emoji={emotion.emoji} handleClick={handleClick}/>
         );
     });
     return (

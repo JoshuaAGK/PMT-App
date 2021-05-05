@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useAsync } from 'react-async';
 import { Provider } from 'react-redux';
 import { Advertisement, Journal, Account, Social, Shop, LogIn, Calendar, Registration } from './components';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
@@ -10,6 +11,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { capitalize } from './utils/StringUtils';
 import { ChatPage } from './components/ChatPage/ChatPage'
 import store from './src/features/store/store';
+import { getPremiumStatus } from './src/firebase/firestore/firestoreService';
 
 String.prototype.capitalize = capitalize;
 
@@ -35,20 +37,32 @@ function LogInScreen({ navigation }) {
 }
 
 function JournalScreen({ navigation }) {
+  let premiumStatus = false;
+  var { data, error } = useAsync({ promiseFn: getPremiumStatus});
+  if (error) premiumStatus = false;
+  if (data) premiumStatus = data.premiumStatus;
   return (
     <View style={styles.container}>
-      <Journal />
-      <Advertisement type="banner" content="ADVERTISEMENT" />
+      <Journal premium={premiumStatus} />
+      { !premiumStatus &&
+        <Advertisement type="banner" content="ADVERTISEMENT" />
+      }
       <StatusBar style="auto" />
     </View>
   );
 }
 
 function AccountScreen({ navigation }) {
+  let premiumStatus = false;
+  var { data, error } = useAsync({ promiseFn: getPremiumStatus});
+  if (error) premiumStatus = false;
+  if (data) premiumStatus = data.premiumStatus;
   return (
     <View style={styles.container}>
-      <Account />
-      <Advertisement type="banner" content="ADVERTISEMENT" />
+      <Account premium={premiumStatus} />
+      { !premiumStatus &&
+        <Advertisement type="banner" content="ADVERTISEMENT" />
+      }
       <StatusBar style="auto" />
     </View>
   );
@@ -57,10 +71,16 @@ function AccountScreen({ navigation }) {
 const Stack = createStackNavigator();
 
 function socialHomeScreen({ navigation }) {
+  let premiumStatus = false;
+  var { data, error } = useAsync({ promiseFn: getPremiumStatus});
+  if (error) premiumStatus = false;
+  if (data) premiumStatus = data.premiumStatus;
   return (
     <View style={styles.container}>
       <Social nav={navigation} loadFriendData={setFriendName}/>
-      <Advertisement type="banner" content="ADVERTISEMENT" />
+      { !premiumStatus &&
+        <Advertisement type="banner" content="ADVERTISEMENT" />
+      }
       <StatusBar style="auto" />
     </View>
   );
@@ -71,6 +91,7 @@ function socialChatScreen({ navigation }) {
     <View style={styles.container}>
       <ChatPage friendName={tempVarNameOfFriend}/>
       <Advertisement type="banner" content="ADVERTISEMENT" />
+
       <StatusBar style="auto" />
     </View>
   );
@@ -91,10 +112,16 @@ function SocialScreen({ navigation }) {
 }
 
 function ShopScreen({ navigation }) {
+  let premiumStatus = false;
+  var { data, error } = useAsync({ promiseFn: getPremiumStatus});
+  if (error) premiumStatus = false;
+  if (data) premiumStatus = data.premiumStatus;
   return (
     <View style={styles.container}>
-      <Shop />
-      <Advertisement type="banner" content="ADVERTISEMENT" />
+      <Shop premium={premiumStatus} />
+      { !premiumStatus &&
+        <Advertisement type="banner" content="ADVERTISEMENT"/>
+      }
       <StatusBar style="auto" />
     </View>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import {ScrollView, Text, ToastAndroid, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
-import {Formik} from 'formik'
+import {Formik} from 'formik';
 
 import {TextInput} from 'react-native-gesture-handler';
 import {registerInFirebase} from '../../src/firebase/firestore/firebaseService';
@@ -16,17 +16,19 @@ export const Registration = ({navigation}) => {
                 ToastAndroid.BOTTOM,
                 25,
                 50
-            )
+            );
         } else {
             return <Text style={styles.errorStyle}>{error}</Text>;
         }
-    }
+    };
 
     const onFooterLinkPress = () => {
         navigation.navigate('Log In');
-    }
+    };
 
     return (
+        <ScrollView
+        showsVerticalScrollIndicator={false}>
         <Formik
             initialValues={{displayName: '', email: '', password: ''}}
             onSubmit={async (values, {setSubmitting, setErrors}) => {
@@ -97,7 +99,8 @@ export const Registration = ({navigation}) => {
                 </View>
             )}
         </Formik>
+        </ScrollView>
     );
-}
+};
 
 export default Registration;

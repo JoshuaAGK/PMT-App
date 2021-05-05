@@ -20,8 +20,8 @@ export const Calendar = (props) => {
     const [displayEntries, setDisplayEntries] = useState([]);
 
     let date = new Date(year, month + 1, 0);
-    let dateParts = dateString(date).split(" ");
-    let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    let dateParts = dateString(date).split(' ');
+    let daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
     let monthStr = dateParts[2];
     let yearStr = dateParts[3];
@@ -37,8 +37,8 @@ export const Calendar = (props) => {
     useEffect(() => {
         let date = new Date(year, month, 0);
         let endDate = new Date(year, month, daysInMonth + 1);
-        let journalRef = getUserCollection("journal");
-        let query = journalRef.where("date", ">=", date).where("date", "<=", endDate);
+        let journalRef = getUserCollection('journal');
+        let query = journalRef.where('date', '>=', date).where('date', '<=', endDate);
 
         query.get().then((querySnapshot) => {
             let journalEntries = [];
@@ -57,14 +57,12 @@ export const Calendar = (props) => {
             });
             setJournalEntries(journalEntries);
         }).catch((error) => {
-            console.error("Error getting document: ", error);
+            alert('Error getting document: ', error);
         });
     }, [selectedDay, month, year, setJournalEntries]);
 
     useEffect(() => {
-        setDisplayEntries((displayEntries) => {
-            return getJournalEntries(journalEntries, selectedDay)
-        });
+        setDisplayEntries(getJournalEntries(journalEntries, selectedDay));
     }, [selectedDay, setDisplayEntries]);
 
     let calendarDayRows = [];
@@ -76,7 +74,7 @@ export const Calendar = (props) => {
             calendarDayRow = [];
         }
     }
-    for (var i = calendarDayRow.length; i < 7; i++) {
+    for (var j = calendarDayRow.length; j < 7; j++) {
         calendarDayRow.push(0);
     }
     calendarDayRows.push(calendarDayRow);
@@ -88,7 +86,7 @@ export const Calendar = (props) => {
                 prev = 11;
                 setYear((year) => {
                     return year - 1;
-                })
+                });
             }
             setSelectedDay(0);
             return prev;
@@ -102,7 +100,7 @@ export const Calendar = (props) => {
                 next = 0;
                 setYear((year) => {
                     return year + 1;
-                })
+                });
             }
             setSelectedDay(0);
             return next;
@@ -111,10 +109,10 @@ export const Calendar = (props) => {
 
     let calendarRows = calendarDayRows.map((row, index) => {
         let calendarDayCells = row.map((day, index) => {
-            let content = (day == 0) ? " " : day;
+            let content = (day == 0) ? ' ' : day;
             let style;
             if (day == 0) {
-                style = [calendarStyles.cell, calendarStyles.emptyCell] 
+                style = [calendarStyles.cell, calendarStyles.emptyCell];
             } else if (hasJournalEntry(journalEntries, day)) {
                 if (day == selectedDay) {
                     style = [calendarStyles.cell, calendarStyles.selected];

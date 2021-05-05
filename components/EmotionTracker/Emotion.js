@@ -11,7 +11,7 @@ export const Emotion = ({ emotionType, emoji, handleClick }) => {
     const dispatch = useDispatch();
     const journal = useSelector(state => state.journal);
 
-    let style = (emotionType == journal.mood) ? [emotionStyles.emoteIcon, emotionStyles.selected] : emotionStyles.emoteIcon;
+    let style = (emotionType === journal.mood) ? [emotionStyles.emoteIcon, emotionStyles.selected] : emotionStyles.emoteIcon;
 
     return (
         <Pressable onPress={() => {
