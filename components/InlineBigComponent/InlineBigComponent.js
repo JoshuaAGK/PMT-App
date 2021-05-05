@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
+import EmotionTracker from '../EmotionTracker/EmotionTracker';
 import styles from './styles';
 import BrainTraining from '../BrainTraining'
 import AvatarShop from '../AvatarShop'
@@ -10,15 +11,6 @@ const InlineBigComponent = ({ content, tbd, type }) => {
     return (
       <View style={styles.tbd}>
         <Text>{content}</Text>
-      </View>
-    );
-  } else if (type == 'emotionSubmit') {
-    return (
-      <View style={styles.emote}>
-        <Text style={styles.emoteIcon}>😢</Text>
-        <Text style={styles.emoteIcon}>🙁</Text>
-        <Text style={styles.emoteIcon}>😐</Text>
-        <Text style={styles.emoteIcon}>🙂</Text>
       </View>
     );
   } else if (type == 'list') {

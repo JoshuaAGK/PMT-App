@@ -1,16 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Advertisement, Journal, Account, Social, Shop } from './components';
-import { NavigationContainer } from '@react-navigation/native';
+import { Provider } from 'react-redux';
+import { Advertisement, Journal, Account, Social, Shop, LogIn, Calendar, Registration } from './components';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import capitalize from './utils/StringUtils';
-import { createStackNavigator } from '@react-navigation/stack';
+import { capitalize } from './utils/StringUtils';
 import { ChatPage } from './components/ChatPage/ChatPage'
+import store from './src/features/store/store';
 
 String.prototype.capitalize = capitalize;
 
+const LOGIN = 'Log-In';
 const JOURNAL = 'journal';
 const ME = 'me';
 const SOCIAL = 'social';
@@ -21,6 +24,14 @@ var tempVarNameOfFriend = "";
 
 function setFriendName(x) {
   tempVarNameOfFriend = x
+}
+
+function LogInScreen({ navigation }) {
+    return (
+        <View stlye={styles.container}>
+            <LogIn/>
+        </View>
+    );
 }
 
 function JournalScreen({ navigation }) {
@@ -73,7 +84,7 @@ function SocialScreen({ navigation }) {
         headerShown: true
       }}
     >
-      <Stack.Screen name="socialHomeScreen" options={{ title: "Social" }} component={socialHomeScreen} />
+      <Stack.Screen name="socialHomeScreen" options={{ title: "Social (WIP)" }} component={socialHomeScreen} />
       <Stack.Screen name="socialChatScreen" options={{ title: tempVarNameOfFriend }} component={socialChatScreen} />
     </Stack.Navigator>
   );
@@ -91,39 +102,56 @@ function ShopScreen({ navigation }) {
 
 const Tab = createBottomTabNavigator();
 
+function AppTabs() {
+    return (
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+                let iconName;
+
+                switch (route.name) {
+                    case JOURNAL.capitalize():
+                        iconName = focused ? 'book' : 'book';
+                        break;
+                    case ME.capitalize():
+                        iconName = focused ? 'person' : 'person';
+                        break;
+                    case SOCIAL.capitalize():
+                        iconName = focused ? 'people-alt' : 'people-alt';
+                        break;
+                    case SHOP.capitalize():
+                        iconName = focused ? 'shopping-cart' : 'shopping-cart';
+                        break;
+                }
+
+                return <MaterialIcons name={iconName} size={size} color={color} />;
+            },
+            })}
+        >
+            <Tab.Screen name={JOURNAL.capitalize()} component={JournalScreen} />
+            <Tab.Screen name={ME.capitalize()} component={AccountScreen} />
+            <Tab.Screen name={SOCIAL.capitalize()} component={SocialScreen} />
+            <Tab.Screen name={SHOP.capitalize()} component={ShopScreen} />
+        </Tab.Navigator>
+    );
+}
+
+const stackOptions = {
+    headerShown: false
+};
+
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            switch (route.name) {
-              case JOURNAL.capitalize():
-                iconName = focused ? 'book' : 'book';
-                break;
-              case ME.capitalize():
-                iconName = focused ? 'person' : 'person';
-                break;
-              case SOCIAL.capitalize():
-                iconName = focused ? 'people-alt' : 'people-alt';
-                break;
-              case SHOP.capitalize():
-                iconName = focused ? 'shopping-cart' : 'shopping-cart';
-                break;
-            }
-
-            return <MaterialIcons name={iconName} size={size} color={color} />;
-          },
-        })}
-      >
-        <Tab.Screen name={JOURNAL.capitalize()} component={JournalScreen} />
-        <Tab.Screen name={ME.capitalize()} component={AccountScreen} />
-        <Tab.Screen name={SOCIAL.capitalize()} component={SocialScreen} />
-        <Tab.Screen name={SHOP.capitalize()} component={ShopScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+        <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name="Log In" component={LogIn}/>
+                <Stack.Screen name="Registration" component={Registration}/>
+                <Stack.Screen name="App" component={AppTabs} options={stackOptions} />
+                <Stack.Screen name="Calendar" component={Calendar} options={stackOptions} />
+            </Stack.Navigator>
+        </NavigationContainer>
+    </Provider>
   );
 }
 
