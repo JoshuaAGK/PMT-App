@@ -21,6 +21,9 @@ const authSlice = createSlice({
             state.authenticated = false;
             state.currentUser = null;
         },
+        addToBalance: (state = initialState, action) => {
+            state.balance += action.payload;
+        },
         setBalance: (state = initialState, action) => {
             state.balance = action.payload;
         },
@@ -31,7 +34,7 @@ const authSlice = createSlice({
 });
 
 const { actions, reducer } = authSlice;
-const { signInUser, signOutUser, setBalance, setPremium } = actions;
+const { signInUser, signOutUser, setBalance, setPremium, addToBalance } = actions;
 
 export function verifyAuth() {
     return function(dispatch) {
@@ -50,5 +53,5 @@ export function verifyAuth() {
     }
 }
 
-export { signInUser, signOutUser, setBalance, setPremium };
+export { signInUser, signOutUser, setBalance, setPremium, addToBalance };
 export default reducer;
