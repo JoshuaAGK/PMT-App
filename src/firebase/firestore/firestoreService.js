@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import firebase from '../config';
 
 const USER_COLLECTION = 'users';
@@ -67,10 +68,9 @@ export async function getUserBalance() {
     return await getUserProperty(BALANCE);
 }
 
-export async function buyBalance(amount) {
-    let balance = await getUserBalance();
+export async function incrementBalance(currentBalance, amount) {
     let updateData = {};
-    updateData[BALANCE] = balance + amount;
+    updateData[BALANCE] = currentBalance + amount;
     getUserDocument().update(updateData);
 }
 
@@ -81,5 +81,11 @@ export async function getPremiumStatus() {
 export async function becomePremium() {
     let updateData = {};
     updateData[PREMIUM] = true;
+    getUserDocument().update(updateData);
+}
+
+export async function leavePremium() {
+    let updateData = {};
+    updateData[PREMIUM] = false;
     getUserDocument().update(updateData);
 }

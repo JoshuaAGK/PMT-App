@@ -54,18 +54,19 @@ class Conversation extends React.Component {
 
   render() {
     return (
-      // <View style={styles.container}>
-      //   <Message sender={this.state.sender0} contents={this.state.contents0} timestamp={this.state.timestamp0}/>
-      //   <Message sender={this.state.sender1} contents={this.state.contents1} timestamp={this.state.timestamp1}/>
-      // </View>
+      // 
       <View style={styles.container}>
-        {TEMPCONVO.map((message) => {
-          var myObj = message[Object.keys(message)[0]]
-          myObj = JSON.stringify(myObj)
+        {TEMPCONVO.map((message, index) => {
+          var myObj = message[Object.keys(message)[0]];
+          myObj = JSON.stringify(myObj);
 
 
           return (
-            <Text>{myObj}</Text>
+            <View style={styles.container} key={index}>
+              <Message sender={this.state.sender0} contents={this.state.contents0} timestamp={this.state.timestamp0}/>
+              <Message sender={this.state.sender1} contents={this.state.contents1} timestamp={this.state.timestamp1}/>
+            </View>
+            //<Text key={index}>{myObj}</Text>
           );
       })}
       </View>

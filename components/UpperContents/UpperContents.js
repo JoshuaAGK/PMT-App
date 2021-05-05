@@ -10,8 +10,6 @@ import { useSelector } from 'react-redux';
 function UpperContents(props) {
     const navigation = useNavigation();
     const auth = useSelector(state => state.auth);
-    console.log(auth);
-
     const containerType = props.content;
 
     let content = null;

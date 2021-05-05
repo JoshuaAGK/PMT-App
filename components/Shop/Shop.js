@@ -5,11 +5,12 @@ import shopStyles from './styles';
 
 import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
 import UpperContents from '../UpperContents/UpperContents';
-import { becomePremium, buyBalance } from '../../src/firebase/firestore/firestoreService';
+import { becomePremium, leavePremium, incrementBalance } from '../../src/firebase/firestore/firestoreService';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToBalance, setPremium } from '../../src/features/auth/authSlice';
 
 export const Shop = (props) => {
+  let dispatch = useDispatch();
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -26,26 +27,32 @@ export const Shop = (props) => {
           <PurchaseCurrency amount={20.0} />
           <PurchaseCurrency amount="Custom" />
         </View>
-        { !props.premium && 
-          <View style={shopStyles.premiumUpsellContainer}>
-            <Text style={shopStyles.premiumTitle}>Premium</Text>
-            <Text style={shopStyles.premiumLower}>No adverts, etc</Text>
-            <Text style={shopStyles.premiumLower}>
-              £X.XX per month, or{'\n'}₩X.XX per month
-            </Text>
-            <Pressable
-              style={shopStyles.premiumButton}
-              onPress={
-                async () => {
+        <View style={shopStyles.premiumUpsellContainer}>
+          <Text style={shopStyles.premiumTitle}>Premium</Text>
+          <Text style={shopStyles.premiumLower}>No adverts, etc</Text>
+          <Text style={shopStyles.premiumLower}>
+            £X.XX per month, or{'\n'}₩X.XX per month
+          </Text>
+          <Pressable
+            style={shopStyles.premiumButton}
+            onPress={
+              async () => {
+                if(!props.premium){
                   await becomePremium();
+                  dispatch(setPremium(true));
                   alert('Thank you for upgrading! You are now a premium user.');
+                } else {
+                  await leavePremium();
+                  dispatch(setPremium(false));
+                  alert('We\'re sorry to hear you go... You are no longer a premium member.');
                 }
+                
               }
-            >
-              <Text style={shopStyles.premiumButtonText}>Upgrade</Text>
-            </Pressable>
-          </View>
-        }
+            }
+          >
+            <Text style={shopStyles.premiumButtonText}>{props.premium ? 'Downgrade' : 'Upgrade'}</Text>
+          </Pressable>
+        </View>
       </View>
       <Text style={mainStyles.bigText}>Avatar Accessories</Text>
       <InlineBigComponent type="avatarShop" />
@@ -55,12 +62,13 @@ export const Shop = (props) => {
 
 const PurchaseCurrency = (props) => {
   const dispatch = useDispatch();
-  const balance = useSelector(state => state.auth);
+  const balanceSelector = useSelector(state => state.auth);
+  let currentBalance = balanceSelector.currentUser ? balanceSelector.currentUser.balance : 0;
   return (
     <Pressable
       style={shopStyles.shopItem}
       onPress={ async () => {
-        buyBalance(props.amount);
+        await incrementBalance(currentBalance,props.amount);
         dispatch(addToBalance(props.amount));
         alert(`Thank you for purchasing ₩${props.amount} of in-app currency!`);
         }
