@@ -7,11 +7,11 @@ const journalSlice = createSlice({
         mood: -1
     },
     reducers: {
-        setText: (state = initialState, action) => {
+        setText: (state = this.initialState, action) => {
             state.text = action.payload;
         },
-        setMood: (state = initialState, action) => {
-            state.mood = action.payload
+        setMood: (state = this.initialState, action) => {
+            state.mood = action.payload;
         }
     }
 });

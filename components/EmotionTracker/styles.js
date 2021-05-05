@@ -1,17 +1,17 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     emotionContainer: {
-        width: "100%",
-        backgroundColor: "white",
+        width: '100%',
+        backgroundColor: 'white',
         borderRadius: 50/4,
         //padding: 50/4,
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-around",
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         //paddingTop: 5,
         //paddingBottom: 5,
-        shadowColor: "black",
+        shadowColor: 'black',
         shadowOffset: {
           width: 0,
           height: 5,
@@ -24,9 +24,9 @@ const styles = StyleSheet.create({
       fontSize: 40
     },
     selected: {
-        backgroundColor: "limegreen",
+        backgroundColor: 'limegreen',
         borderRadius: 20
     }
-})
+});
 
 export default styles;
