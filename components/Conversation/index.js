@@ -1,27 +1,24 @@
 import React from 'react';
-import { UseState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable, Button } from 'react-native';
+import { Text, View } from 'react-native';
 import styles from './styles';
-import convo from './convo.json'
-
-const CONVOLENGTH = Object.keys(convo).length
+import convo from './convo.json';
 
 class Conversation extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   forceUpdateHandler() {
     this.forceUpdate();
-  };
+  }
 
   render() {
     return (
       <View style={styles.container}>
         {convo.map((message, index) => {
-          var timestamp = message[Object.keys(message)[0]]["timestamp"]
-          var sender = message[Object.keys(message)[0]]["sender"]
-          var contents = message[Object.keys(message)[0]]["contents"]
+          var timestamp = message[Object.keys(message)[0]]['timestamp'];
+          var sender = message[Object.keys(message)[0]]['sender'];
+          var contents = message[Object.keys(message)[0]]['contents'];
 
           return (
             <Message key={index} sender={sender} contents={contents} timestamp={timestamp}/>
@@ -34,11 +31,11 @@ class Conversation extends React.Component {
 
 class Message extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   render() {
-    if (this.props.sender == "you") {
+    if (this.props.sender == 'you') {
       return (
         <View style={styles.messageContainerMe}>
           <Text>{this.props.contents}</Text>

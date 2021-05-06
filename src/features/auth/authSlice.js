@@ -6,7 +6,7 @@ const authSlice = createSlice({
     name: 'auth',
     initialState: {
         authenticated: false,
-        currentUser: null
+        currentUser: null,
     },
     reducers: {
         signInUser: (state = this.initialState, action) => {
@@ -38,6 +38,7 @@ const authSlice = createSlice({
             state.currentUser = null;
         },
         addToBalance: (state = this.initialState, action) => {
+            console.log(state.currentUser);
             state.currentUser.balance += action.payload;
         },
         setBalance: (state = this.initialState, action) => {

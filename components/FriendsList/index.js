@@ -1,34 +1,73 @@
 import React from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import styles from './styles';
+import mainStyles from '../../styles/styles';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { acceptFriendRequest } from '../../src/firebase/firestore/firestoreService';
+import { useDispatch } from 'react-redux';
+import { addFriend, removeFriendRequest } from '../../src/features/friends/friendsSlice';
 
-class FriendsList extends React.Component {
-  constructor(props) {
-    super(props)
-  }
+const FriendsList = (props) => {
+  return (
+    <View style={styles.bigContainer}>
+      {props.listOfFriends.length > 0 && props.listOfFriends.map((friend, index) => {
+        return (
+          <Pressable key={index}
+          onPress={() => {
+            props.nav.navigate('socialChatScreen');
+            props.loadFriendData(friend.displayName);
+          }}
+        >
+          <Text style={[styles.friend, friend.status === 'pending' ? styles.friendPending : null]}>{friend.displayName} {friend.status === 'pending' ? '(pending)' : null}</Text>
+        </Pressable>
+        );
+      })
+      }
+      {props.listOfFriends.length == 0 && 
+        <Text style={styles.friend}>You have no friends.</Text>
+      }
+    </View>
+  );
+};
 
-  render() {
-    return (
-      <View style={styles.bigContainer}>
-        {this.props.listOfFriends.map((friendName, index) => {
-          return (
-            <Pressable key={index}
-            onPress={() => {
-              this.props.nav.navigate('socialChatScreen');
-              this.props.loadFriendData(friendName.text);
-            }}
-          >
-            <Text>{friendName.text}</Text>
-          </Pressable>
-          );
-        })
-        }
-      </View>
-    )
-  }
-}
+export const FriendRequestsList = (props) => {
+
+  const acceptFriend = (friend) => {
+    acceptFriendRequest(friend.id);
+    props.dispatch(removeFriendRequest(friend));
+    let newFriend = friend;
+    newFriend.status = 'accepted';
+    props.dispatch(addFriend(newFriend));
+  };
+  return (
+    <View style={styles.bigContainer}>
+      {props.listOfFriendRequests.length > 0 && props.listOfFriendRequests.map((friend, index) => {
+        return (
+          <View
+            key={index}
+            style={styles.friendRequestRow}>
+            <Text style={styles.friend}>{friend.displayName}</Text>
+            <Pressable
+            style={[mainStyles.button, styles.friendRequestButton]}
+            onPress={() => {acceptFriend(friend);}}>
+              <Text>Accept</Text>
+            </Pressable>
+            <Pressable
+            style={[mainStyles.button, styles.friendRequestButton, styles.declineButton]}
+            onPress={() => null}>
+              <Text>Decline</Text>
+            </Pressable>
+          </View>
+        );
+      })
+      }
+      {props.listOfFriendRequests.length == 0 && 
+        <Text style={styles.friend}>You have no pending friend requests.</Text>
+      }
+    </View>
+  );
+};
 
 
 export default FriendsList;
