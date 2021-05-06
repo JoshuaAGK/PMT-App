@@ -18,13 +18,13 @@ class Conversation extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {convo.map((message) => {
+        {convo.map((message, index) => {
           var timestamp = message[Object.keys(message)[0]]["timestamp"]
           var sender = message[Object.keys(message)[0]]["sender"]
           var contents = message[Object.keys(message)[0]]["contents"]
 
           return (
-            <Message sender={sender} contents={contents} timestamp={timestamp}/>
+            <Message key={index} sender={sender} contents={contents} timestamp={timestamp}/>
           );
       })}
       </View>

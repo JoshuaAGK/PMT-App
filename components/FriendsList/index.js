@@ -12,23 +12,19 @@ class FriendsList extends React.Component {
   render() {
     return (
       <View style={styles.bigContainer}>
-        <Pressable
-          onPress={() => {
-            this.props.nav.navigate('socialChatScreen')
-            this.props.loadFriendData(this.props.listOfFriends[0].text)
-          }}
-        >
-          <Text>{this.props.listOfFriends[0].text}</Text>
-        </Pressable>
-        
-        <Pressable
-          onPress={() => {
-            this.props.nav.navigate('socialChatScreen')
-            this.props.loadFriendData(this.props.listOfFriends[1].text)
-          }}
-        >
-          <Text>{this.props.listOfFriends[1].text}</Text>
-        </Pressable>
+        {this.props.listOfFriends.map((friendName, index) => {
+          return (
+            <Pressable key={index}
+            onPress={() => {
+              this.props.nav.navigate('socialChatScreen');
+              this.props.loadFriendData(friendName.text);
+            }}
+          >
+            <Text>{friendName.text}</Text>
+          </Pressable>
+          );
+        })
+        }
       </View>
     )
   }

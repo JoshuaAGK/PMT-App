@@ -15,6 +15,10 @@ var listOfFriends = [
   { id: '5', text: 'Gernot Liebchen' },
 ];
 
+function addElement(friendName) {
+  listOfFriends.push({ id: listOfFriends.lastIndex+1, text: friendName});
+}
+
 
 class Social extends React.Component {
   constructor(props) {
