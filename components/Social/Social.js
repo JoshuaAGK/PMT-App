@@ -20,11 +20,8 @@ class Social extends React.Component {
   constructor(props) {
     super(props)
 
-    var sugma = this.props.test
-
     this.state = {
       listOfFriends: listOfFriends,
-      aidsass: sugma
     }
   }
 
