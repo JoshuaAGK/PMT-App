@@ -51,13 +51,29 @@ const styles = StyleSheet.create({
     button: {
         padding: 10,
         width: "30%",
-        backgroundColor: "limegreen",
+        backgroundColor: 'limegreen',
         borderRadius: 5
+    },
+    buttonDisabled: {
+        backgroundColor: '#80d180'
     },
     buttonText: {
         color: "white",
         textAlign: "center"
+    },
+    buttonErrorContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        width: '100%',
+        alignItems: 'center',
+        alignContent: 'center',
+        marginBottom: 10
+    },
+    errorText: {
+        marginLeft: 10,
+        fontWeight: 'bold',
+        color: '#c20a0a'
     }
-})
+});
 
 export default styles;

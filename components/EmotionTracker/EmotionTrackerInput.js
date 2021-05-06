@@ -12,15 +12,15 @@ export const EmotionTrackerInput = (props) => {
     const validateMood = (value) => {
         let error;
         if (!value || value === -1) {
-            error = 'Mood Required'
+            error = 'Mood Required';
         }
-        return error
-    }
+        return error;
+    };
 
     return (
         <Field name={fieldName} id={fieldName} type="number" validate={validateMood}>
-            {({field: {value}, form: {setFieldValue, touched, errors}}) => (
-                <EmotionTracker handleClick={number => setFieldValue(fieldName, number)}/>
+            {({field: {value}, form: {setFieldValue, setFieldTouched,  touched, errors}}) => (
+                <EmotionTracker handleClick={ (number) => {setFieldTouched(fieldName,true); setFieldValue(fieldName, number);}}/>
 
             )}
         </Field>

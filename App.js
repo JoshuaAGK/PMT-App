@@ -11,7 +11,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { capitalize } from './utils/StringUtils';
 import { ChatPage } from './components/ChatPage/ChatPage'
 import store from './src/features/store/store';
-import { setPremium } from './src/features/auth/authSlice';
 
 String.prototype.capitalize = capitalize;
 

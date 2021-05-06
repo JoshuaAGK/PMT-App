@@ -48,6 +48,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 16
     },
+    errorBoxStyle: {
+        marginTop: 10,
+        alignItems: 'baseline',
+        flexDirection: 'column'
+
+    },
     errorStyle: {
         marginLeft: 20,
         marginRight: 20,

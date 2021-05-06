@@ -85,8 +85,6 @@ export const Journal = (props) => {
                   }) => (
                     <View style={mainStyles.container}>
                         <EmotionTrackerInput/>
-                        {errors.emotionTracker && touched.emotionTracker ? (<Text
-                            style={styles.errorStyle}>{errors.emotionTracker}</Text>) : null}
                         <TextInput
                             style={journalStyles.journalInput}
                             placeholder="Journal entry for today"
@@ -95,14 +93,20 @@ export const Journal = (props) => {
                             onBlur={handleBlur('text')}
                             value={values.text}
                         />
-                        {errors.text && touched.text ? (<Text
-                            style={styles.errorStyle}>{errors.text}</Text>) : null}
-                        <TouchableOpacity
-                            style={mainStyles.button}
+                        <View style={mainStyles.buttonErrorContainer}>
+                            <TouchableOpacity
+                            style={[mainStyles.button, !isValid || !dirty || isSubmitting ? mainStyles.buttonDisabled : null]}
                             disabled={!isValid || !dirty || isSubmitting}
                             onPress={handleSubmit}>
-                            <Text style={mainStyles.buttonText}>Save</Text>
-                        </TouchableOpacity>
+                                <Text style={mainStyles.buttonText}>Save</Text>
+                            </TouchableOpacity>
+                            <View style={[mainStyles.buttonErrorContainer, styles.errorBoxStyle]}>
+                                {errors.text && touched.text ? (<Text
+                                    style={styles.errorStyle}>{errors.text}</Text>) : null}
+                                {errors.emotionTracker && touched.emotionTracker ? (<Text
+                                    style={styles.errorStyle}>{errors.emotionTracker}</Text>) : null}
+                            </View>
+                        </View>
                     </View>
                 )}
             </Formik>

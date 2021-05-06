@@ -41,8 +41,8 @@ export const LogIn = ({navigation}) => {
                     navigation.navigate('App');
                     navigation.reset({index: 0, routes: [{name: 'App'}]});
                 } catch (e) {
-                    setErrors({auth: 'Incorrect username or password'});
-                    setSubmitting(false)
+                    setErrors({auth: e.message});
+                    setSubmitting(false);
                 }
             }}
         >
