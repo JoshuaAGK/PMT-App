@@ -38,7 +38,6 @@ const authSlice = createSlice({
             state.currentUser = null;
         },
         addToBalance: (state = this.initialState, action) => {
-            console.log(state.currentUser);
             state.currentUser.balance += action.payload;
         },
         setBalance: (state = this.initialState, action) => {

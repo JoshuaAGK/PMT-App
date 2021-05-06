@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, LogBox } from 'react-native';
 import { useAsync } from 'react-async';
 import { Provider, useSelector } from 'react-redux';
 import { Advertisement, Journal, Account, Social, Shop, LogIn, Calendar, Registration } from './components';
@@ -11,6 +11,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { capitalize } from './utils/StringUtils';
 import { ChatPage } from './components/ChatPage/ChatPage'
 import store from './src/features/store/store';
+
+LogBox.ignoreLogs(['Setting a timer']);
 
 String.prototype.capitalize = capitalize;
 

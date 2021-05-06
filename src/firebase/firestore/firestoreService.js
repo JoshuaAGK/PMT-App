@@ -13,7 +13,8 @@ export function setUserProfileData(user) {
         displayName: user.displayName,
         email: user.email,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        balance: 0
+        balance: 0,
+        premium: false
     });
 }
 
