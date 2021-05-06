@@ -24,6 +24,15 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 15,
         marginBottom: 10
+    },
+    fullImage: {
+        width: '100%',
+        height: 50,
+    },
+    image: {
+        width: '100%',
+        borderRadius: 50/4,
+        height: 50
     }
 })
 

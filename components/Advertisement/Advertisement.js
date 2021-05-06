@@ -1,18 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import styles from './styles';
+
+const advertBanner = require('../../assets/adverts/placeholder.gif');
 
 const Advertisement = ({ type, content }) => {
   if (type == 'banner') {
     return (
       <View style={styles.banner}>
-        <Text>{content}</Text>
+        <Image source={advertBanner} style={styles.fullImage} />
       </View>
     );
   } else {
     return (
       <View style={styles.normal}>
-        <Text>{content}</Text>
+        <Image source={advertBanner} style={styles.image} />
       </View>
     );
   }

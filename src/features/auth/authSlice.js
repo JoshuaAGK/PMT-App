@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import firebase from 'firebase';
-import { getUserBalance } from '../../firebase/firestore/firestoreService';
+import { getUserBalance, updateLastLogIn, getUserLastLogIn, resetStreak, getUserStreak, incrementStreak, getPremiumStatus } from '../../firebase/firestore/firestoreService';
 
 const authSlice = createSlice({
     name: 'auth',
@@ -14,20 +14,36 @@ const authSlice = createSlice({
             state.currentUser = {
                 email: action.payload.email,
                 uid: action.payload.uid,
-                balance: action.payload.balance
+                balance: action.payload.balance,
+                lastLogIn: action.payload.lastLogIn,
+                streak: action.payload.streak,
+                premium: action.payload.premium
             };
+
+            let today = new Date().getTime();
+            let lastLogIn = new Date(state.currentUser.lastLogIn);
+            let streakEnd = lastLogIn;
+            if (today > streakEnd) {
+                state.currentUser.streak = 0;
+                resetStreak();
+            } else {
+                state.currentUser.streak = state.currentUser.streak + 1;
+                incrementStreak();
+            }
+
+            updateLastLogIn();
         },
         signOutUser: (state = this.initialState, action) => {
             state.authenticated = false;
             state.currentUser = null;
         },
-        addToBalance: (state = initialState, action) => {
+        addToBalance: (state = this.initialState, action) => {
             state.currentUser.balance += action.payload;
         },
-        setBalance: (state = initialState, action) => {
+        setBalance: (state = this.initialState, action) => {
             state.currentUser.balance = action.payload;
         },
-        setPremium: (state = initialState, action) => {
+        setPremium: (state = this.initialState, action) => {
             state.currentUser.premium = action.payload;
         }
     }
@@ -41,10 +57,16 @@ export function verifyAuth() {
         return firebase.auth().onAuthStateChanged( async (user) => {
             if(user) {
                 let currentBalance = await getUserBalance();
+                let lastLogIn = await getUserLastLogIn();
+                let streak = await getUserStreak();
+                let premiumStatus = await getPremiumStatus();
                 let authObj = {
                     uid: user.uid,
                     email: user.email,
-                    balance: currentBalance.balance
+                    balance: currentBalance,
+                    lastLogIn: lastLogIn.getTime(),
+                    streak: streak,
+                    premium: premiumStatus.premiumStatus
                 };
                 dispatch(signInUser(authObj));
             } else {

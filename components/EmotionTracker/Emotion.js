@@ -15,8 +15,13 @@ export const Emotion = ({ emotionType, emoji, handleClick }) => {
 
     return (
         <Pressable onPress={() => {
-            dispatch(setMood(emotionType));
-            handleClick(emotionType);
+            if(journal.mood == emotionType){
+                dispatch(setMood(-1));
+                handleClick(-1);
+            }else{
+                dispatch(setMood(emotionType));
+                handleClick(emotionType);
+            }
         }}>
             <Text style={style}>{emoji}</Text>
         </Pressable>
