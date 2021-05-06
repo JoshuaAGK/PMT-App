@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ScrollView } from 'react-native';
 import mainStyles from '../../styles/styles';
 import Conversation from '../Conversation';
+import styles from './styles';
 
 export const ChatPage = (props) => {
   
