@@ -1,6 +1,6 @@
 import firebase from '../config';
 import {useEffect} from 'react';
-import { CRIMSON, MID } from '../../../components/CustomiseAvatar';
+import { CRIMSON, MID } from '../../../components/CustomiseAvatar/avatar';
 
 const USER_COLLECTION = 'users';
 const DISPLAY_NAME = 'displayName';
