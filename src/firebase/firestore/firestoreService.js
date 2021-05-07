@@ -1,20 +1,34 @@
 import firebase from '../config';
 
 const USER_COLLECTION = 'users';
+const DISPLAY_NAME = 'displayName';
+const EMAIL = 'email';
+const CREATED_AT = 'createdAt';
 const LAST_LOG_IN = 'lastLogIn';
 const BALANCE = 'balance';
 const PREMIUM = 'premium';
 const STREAK = 'streak';
+const SKIN_TONE = 'skinTone';
+const SHIRT_COLOUR = 'shirtColour';
+
+const DEFAULT = {};
+DEFAULT[BALANCE] = 0;
+DEFAULT[PREMIUM] = false;
+DEFAULT[SKIN_TONE] = 'mid';
+DEFAULT[SHIRT_COLOUR] = 'crimson';
 
 const db = firebase.firestore();
 
 export function setUserProfileData(user) {
+    let userData = {};
+    userData[DISPLAY_NAME] = user.displayName;
     return db.collection(USER_COLLECTION).doc(user.uid).set({
         displayName: user.displayName,
         email: user.email,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         balance: 0,
-        premium: false
+        premium: false,
+
     });
 }
 
@@ -30,7 +44,16 @@ async function getUserProperty(prop) {
     let result = await getUserDocument().get().then(query => {
         return query.get(prop);
     });
-    return result;
+    if (result) {
+        return result;
+    }
+    return DEFAULT[prop];
+}
+
+async function updateUserProperty(prop, value) {
+    let updateData = {};
+    updateData[prop] = value;
+    getUserDocument().update(updateData);
 }
 
 export async function getUserStreak() {
@@ -39,15 +62,11 @@ export async function getUserStreak() {
 
 export async function incrementStreak() {
     let streak = await getUserStreak();
-    let updateData = {};
-    updateData[STREAK] = streak + 1;
-    getUserDocument().update(updateData);
+    updateUserProperty(STREAK, streak + 1);
 }
 
 export async function resetStreak() {
-    let updateData = {};
-    updateData[STREAK] = 0;
-    getUserDocument().update(updateData);
+    updateUserProperty(STREAK, 0);
 }
 
 export async function getUserLastLogIn() {
@@ -59,9 +78,7 @@ export async function getUserLastLogIn() {
 }
 
 export async function updateLastLogIn() {
-    let updateData = {};
-    updateData[LAST_LOG_IN] = new Date();
-    getUserDocument().update(updateData);
+    updateUserProperty(LAST_LOG_IN, new Date());
 }
 
 export async function getUserBalance() {
@@ -69,31 +86,39 @@ export async function getUserBalance() {
 }
 
 export async function incrementBalance(currentBalance, amount) {
-    let updateData = {};
-    updateData[BALANCE] = currentBalance + amount;
-    getUserDocument().update(updateData);
+    updateUserProperty(BALANCE, currentBalance + amount);
 }
 
 export async function decrementBalance(currentBalance, amount) {
-    let updateData = {};
-    updateData[BALANCE] = currentBalance - amount;
-    getUserDocument().update(updateData);
+    updateUserProperty(BALANCE, currentBalance - amount);
 }
 
 export async function getPremiumStatus() {
-    return getUserProperty(PREMIUM);
+    return await getUserProperty(PREMIUM);
 }
 
 export async function becomePremium() {
-    let updateData = {};
-    updateData[PREMIUM] = true;
-    getUserDocument().update(updateData);
+    updateUserProperty(PREMIUM, true);
 }
 
 export async function leavePremium() {
-    let updateData = {};
-    updateData[PREMIUM] = false;
-    getUserDocument().update(updateData);
+    updateUserProperty(PREMIUM, false);
+}
+
+export async function getSkinTone() {
+    return await getUserProperty(SKIN_TONE);
+}
+
+export async function setSkinTone(skinTone) {
+    updateUserProperty(SKIN_TONE, skinTone);
+}
+
+export async function getShirtColour() {
+    return await getUserProperty(SHIRT_COLOUR);
+}
+
+export async function setShirtColour(colour) {
+    updateUserProperty(SHIRT_COLOUR, colour);
 }
 
 export async function addFriend(friendName) {
