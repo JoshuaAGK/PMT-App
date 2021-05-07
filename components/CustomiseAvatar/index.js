@@ -11,7 +11,8 @@ const SKINTONES = [
   require("../../assets/avatar_images/skintones/skin-light.png"),
   require("../../assets/avatar_images/skintones/skin-mid.png"),
   require("../../assets/avatar_images/skintones/skin-dark.png"),
-  require("../../assets/avatar_images/skintones/skin-darker.png")
+  require("../../assets/avatar_images/skintones/skin-darker.png"),
+  require("../../assets/avatar_images/skintones/skin-gold.png")
 ]
 
 const SHIRTCOLOURS = [
@@ -20,6 +21,7 @@ const SHIRTCOLOURS = [
   require("../../assets/avatar_images/shirtcolours/shirt-blue.png"),
   require("../../assets/avatar_images/shirtcolours/shirt-skyblue.png"),
   require("../../assets/avatar_images/shirtcolours/shirt-darkorange.png"),
+  require("../../assets/avatar_images/shirtcolours/shirt-gold.png")
 ]
 
 class CustomiseAvatar extends React.Component {

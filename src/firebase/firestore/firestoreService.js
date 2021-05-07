@@ -73,6 +73,12 @@ export async function incrementBalance(currentBalance, amount) {
     getUserDocument().update(updateData);
 }
 
+export async function decrementBalance(currentBalance, amount) {
+    let updateData = {};
+    updateData[BALANCE] = currentBalance - amount;
+    getUserDocument().update(updateData);
+}
+
 export async function getPremiumStatus() {
     return getUserProperty(PREMIUM);
 }
