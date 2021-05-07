@@ -9,7 +9,7 @@ const scaleFontSize = (fontSize) => {
 const styles = StyleSheet.create({
     journalInput: {
         marginTop: 15,
-        marginBottom: 15,
+        marginBottom: 30,
         width: '100%',
         backgroundColor: 'white',
         borderRadius: 50/4,
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
         minHeight: 100,
         paddingTop: 10,
         paddingBottom: 10,
+        elevation: 4,
         shadowColor: 'black',
         shadowOffset: {
             width: 0,
@@ -42,6 +43,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 50/4,
         padding: 50/4,
+        elevation: 4,
         shadowColor: "black",
         shadowOffset: {
             width: 0,
@@ -49,6 +51,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.2,
         shadowRadius: 15,
+        marginBottom: 10
     },
     flatList: {
         width: "100%",

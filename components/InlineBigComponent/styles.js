@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       minHeight: 160,
+      elevation: 4,
       shadowColor: 'black',
       shadowOffset: {
         width: 0,
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         paddingTop: 5,
         paddingBottom: 5,
+        elevation: 4,
         shadowColor: "black",
         shadowOffset: {
           width: 0,
@@ -57,12 +59,13 @@ const styles = StyleSheet.create({
       fontSize: scaleFontSize(14)
     },
     listContainer: {
-        width: '100%',
-        backgroundColor: 'white',
-        borderRadius: 50/4,
-        padding: 50/4,
-        borderWidth: 1,
-        shadowColor: 'black',
+      width: '100%',
+      backgroundColor: 'white',
+      borderRadius: 50/4,
+      padding: 50/4,
+      borderWidth: 1,
+      elevation: 4,
+      shadowColor: 'black',
       shadowOffset: {
         width: 0,
         height: 5,
@@ -94,6 +97,7 @@ const styles = StyleSheet.create({
       backgroundColor: "white",
       borderRadius: 50/4,
       padding: 50/4,
+      elevation: 4,
       shadowColor: "black",
       shadowOffset: {
         width: 0,
