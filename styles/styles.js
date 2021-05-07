@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 50/4,
         padding: 50/4,
+        elevation: 4,
         shadowColor: "black",
         shadowOffset: {
             width: 0,
@@ -38,6 +39,7 @@ const styles = StyleSheet.create({
         padding: 50/4,
         paddingTop: 10,
         paddingBottom: 10,
+        elevation: 4,
         shadowColor: "black",
         shadowOffset: {
             width: 0,

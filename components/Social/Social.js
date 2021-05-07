@@ -115,8 +115,8 @@ export const Social = (props) => {
                 returnKeyType="search"
                 clearButtonMode="while-editing"
                 onSubmitEditing={async (event) => {
-                    await addElement(event.nativeEvent.text);
                     addFriendInput.clear();
+                    await addElement(event.nativeEvent.text);
                     onRefresh();
                 }}
                 ref={input => {
