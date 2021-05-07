@@ -1,5 +1,5 @@
 import firebase from '../config';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import { CRIMSON, MID } from '../../../components/CustomiseAvatar/avatar';
 
 const USER_COLLECTION = 'users';
@@ -22,220 +22,261 @@ DEFAULT[SHIRT_COLOUR] = CRIMSON;
 const db = firebase.firestore();
 
 export function setUserProfileData(user) {
-    let userData = {};
-    userData[DISPLAY_NAME] = user.displayName;
-    return db.collection(USER_COLLECTION).doc(user.uid).set({
-        displayName: user.displayName,
-        email: user.email,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        balance: DEFAULT[BALANCE],
-        premium: DEFAULT[PREMIUM],
-        skinTone: DEFAULT[SKIN_TONE],
-        shirtColour: DEFAULT[SHIRT_COLOUR]
-    });
+  let userData = {};
+  userData[DISPLAY_NAME] = user.displayName;
+  return db.collection(USER_COLLECTION).doc(user.uid).set({
+    displayName: user.displayName,
+    email: user.email,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    balance: DEFAULT[BALANCE],
+    premium: DEFAULT[PREMIUM],
+    skinTone: DEFAULT[SKIN_TONE],
+    shirtColour: DEFAULT[SHIRT_COLOUR],
+  });
 }
 
 export function getUserCollection(collectionName) {
-    return getUserDocument().collection(collectionName);
+  return getUserDocument().collection(collectionName);
 }
 
 export function getUserDocument() {
-    return db.collection(USER_COLLECTION).doc(firebase.auth().currentUser.uid);
+  return db.collection(USER_COLLECTION).doc(firebase.auth().currentUser.uid);
 }
 
 export async function getUserPropertyByDisplayName(displayName, prop) {
-    let user = await db.collection(USER_COLLECTION).where('displayName', '==', displayName).get().then(query => {
-        if (query.docs.length !== 1) {
-            return null;
-        }
-        return query.docs[0].data();
+  let user = await db
+    .collection(USER_COLLECTION)
+    .where('displayName', '==', displayName)
+    .get()
+    .then((query) => {
+      if (query.docs.length !== 1) {
+        return null;
+      }
+      return query.docs[0].data();
     });
-    let result = user[prop];
-    if (!result) {
-        return DEFAULT[prop];
-    }
-    return result;
+  let result = user[prop];
+  if (!result) {
+    return DEFAULT[prop];
+  }
+  return result;
 }
 
 async function getUserProperty(prop) {
-    let result = await getUserDocument().get().then(query => {
-        return query.get(prop);
+  let result = await getUserDocument()
+    .get()
+    .then((query) => {
+      return query.get(prop);
     });
-    if (result) {
-        return result;
-    }
-    return DEFAULT[prop];
+  if (result) {
+    return result;
+  }
+  return DEFAULT[prop];
 }
 
 async function updateUserProperty(prop, value) {
-    let updateData = {};
-    updateData[prop] = value;
-    await getUserDocument().update(updateData);
+  let updateData = {};
+  updateData[prop] = value;
+  await getUserDocument().update(updateData);
 }
 
 export async function getUserStreak() {
-    return await getUserProperty(STREAK);
+  return await getUserProperty(STREAK);
 }
 
 export async function incrementStreak() {
-    let streak = await getUserStreak();
-    await updateUserProperty(STREAK, streak + 1);
+  let streak = await getUserStreak();
+  await updateUserProperty(STREAK, streak + 1);
 }
 
 export async function resetStreak() {
-    await updateUserProperty(STREAK, 0);
+  await updateUserProperty(STREAK, 0);
 }
 
 export async function getUserLastLogIn() {
-    let lastLogIn = await getUserProperty(LAST_LOG_IN);
-    if (lastLogIn) {
-        return lastLogIn.toDate();
-    }
-    return new Date();
+  let lastLogIn = await getUserProperty(LAST_LOG_IN);
+  if (lastLogIn) {
+    return lastLogIn.toDate();
+  }
+  return new Date();
 }
 
 export async function updateLastLogIn() {
-    await updateUserProperty(LAST_LOG_IN, new Date());
+  await updateUserProperty(LAST_LOG_IN, new Date());
 }
 
 export async function getUserBalance() {
-    return await getUserProperty(BALANCE);
+  return await getUserProperty(BALANCE);
 }
 
 export async function incrementBalance(currentBalance, amount) {
-    await updateUserProperty(BALANCE, currentBalance + amount);
+  await updateUserProperty(BALANCE, currentBalance + amount);
 }
 
 export async function decrementBalance(currentBalance, amount) {
-    await updateUserProperty(BALANCE, currentBalance - amount);
+  await updateUserProperty(BALANCE, currentBalance - amount);
 }
 
 export async function getPremiumStatus() {
-    return await getUserProperty(PREMIUM);
+  return await getUserProperty(PREMIUM);
 }
 
 export async function becomePremium() {
-    await updateUserProperty(PREMIUM, true);
+  await updateUserProperty(PREMIUM, true);
 }
 
 export async function leavePremium() {
-    await updateUserProperty(PREMIUM, false);
+  await updateUserProperty(PREMIUM, false);
 }
 
 export async function getSkinTone() {
-    return await getUserProperty(SKIN_TONE);
+  return await getUserProperty(SKIN_TONE);
 }
 
 export async function setSkinTone(skinTone) {
-    await updateUserProperty(SKIN_TONE, skinTone);
+  await updateUserProperty(SKIN_TONE, skinTone);
 }
 
 export async function getShirtColour() {
-    return await getUserProperty(SHIRT_COLOUR);
+  return await getUserProperty(SHIRT_COLOUR);
 }
 
 export async function setShirtColour(colour) {
-    await updateUserProperty(SHIRT_COLOUR, colour);
+  await updateUserProperty(SHIRT_COLOUR, colour);
 }
 
-export async function findUser(userID){
-    return await db.collection(USER_COLLECTION).doc(userID).get();
+export async function findUser(userID) {
+  return await db.collection(USER_COLLECTION).doc(userID).get();
 }
 
 export async function addFriend(friendName) {
-    let userQuery = await db.collection(USER_COLLECTION).where('displayName', '==', friendName).get();
-    let userID;
-    if (userQuery.size === 1) {
-        userQuery.forEach(doc => userID = doc.id);
-    }
-    if (userID === firebase.auth().currentUser.uid) return {
-        success: false,
-        message: 'You cannot add yourself as a friend'
+  let userQuery = await db
+    .collection(USER_COLLECTION)
+    .where('displayName', '==', friendName)
+    .get();
+  let userID;
+  if (userQuery.size === 1) {
+    userQuery.forEach((doc) => (userID = doc.id));
+  }
+  if (userID === firebase.auth().currentUser.uid)
+    return {
+      success: false,
+      message: 'You cannot add yourself as a friend',
     };
-    let myFriend = await getUserCollection('friends').doc(userID).get();
-    if (myFriend.exists){
-        return {success: false, message: 'User is already your friend'};
-    }
-    if (userID) {
-        await getUserCollection('friends').doc(userID).set({status: 'pending'});
-        await db.collection(USER_COLLECTION).doc(userID).collection('friend_requests')
-            .doc(firebase.auth().currentUser.uid).set({status: 'pending'});
-        return {success: true};
-    } else {
-        return {success: false, message: 'User does not exist'};
-    }
+  let myFriend = await getUserCollection('friends').doc(userID).get();
+  if (myFriend.exists) {
+    return { success: false, message: 'User is already your friend' };
+  }
+  if (userID) {
+    await getUserCollection('friends').doc(userID).set({ status: 'pending' });
+    await db
+      .collection(USER_COLLECTION)
+      .doc(userID)
+      .collection('friend_requests')
+      .doc(firebase.auth().currentUser.uid)
+      .set({ status: 'pending' });
+    return { success: true };
+  } else {
+    return { success: false, message: 'User does not exist' };
+  }
 }
 
 export async function getFriends() {
-    let friendsList = [];
-    let friendsQuery = await getUserCollection('friends').get();
-    friendsQuery.forEach((doc) => {
-        friendsList.push({
-            id: doc.id,
-            status: doc.data().status
-        });
+  let friendsList = [];
+  let friendsQuery = await getUserCollection('friends').get();
+  friendsQuery.forEach((doc) => {
+    friendsList.push({
+      id: doc.id,
+      status: doc.data().status,
     });
+  });
 
-    for (const friend in friendsList) {
-        if (Object.hasOwnProperty.call(friendsList, friend)) {
-            let displayNameQuery = await db.collection(USER_COLLECTION).doc(friendsList[friend].id).get();
-            friendsList[friend].displayName = displayNameQuery.data().displayName;
-        }
+  for (const friend in friendsList) {
+    if (Object.hasOwnProperty.call(friendsList, friend)) {
+      let displayNameQuery = await db
+        .collection(USER_COLLECTION)
+        .doc(friendsList[friend].id)
+        .get();
+      friendsList[friend].displayName = displayNameQuery.data().displayName;
     }
+  }
 
-    return friendsList;
+  return friendsList;
 }
 
 export async function getFriendRequests() {
-    let friendRequestsList = [];
-    let friendRequestsQuery = await getUserCollection('friend_requests').get();
-    friendRequestsQuery.forEach((doc) => {
-        friendRequestsList.push({
-            id: doc.id,
-            status: doc.data().status
-        });
+  let friendRequestsList = [];
+  let friendRequestsQuery = await getUserCollection('friend_requests').get();
+  friendRequestsQuery.forEach((doc) => {
+    friendRequestsList.push({
+      id: doc.id,
+      status: doc.data().status,
     });
+  });
 
-    for (const friend in friendRequestsList) {
-        if (Object.hasOwnProperty.call(friendRequestsList, friend)) {
-            let displayNameQuery = await db.collection(USER_COLLECTION).doc(friendRequestsList[friend].id).get();
-            friendRequestsList[friend].displayName = displayNameQuery.data().displayName;
-        }
+  for (const friend in friendRequestsList) {
+    if (Object.hasOwnProperty.call(friendRequestsList, friend)) {
+      let displayNameQuery = await db
+        .collection(USER_COLLECTION)
+        .doc(friendRequestsList[friend].id)
+        .get();
+      friendRequestsList[
+        friend
+      ].displayName = displayNameQuery.data().displayName;
     }
+  }
 
-    return friendRequestsList;
+  return friendRequestsList;
 }
 
 export async function acceptFriendRequest(friendID) {
-    await getUserCollection('friends').doc(friendID).set({status: 'accepted'});
-    await getUserCollection('friend_requests').doc(friendID).delete();
-    await db.collection(USER_COLLECTION).doc(friendID).collection('friends')
-        .doc(firebase.auth().currentUser.uid).set({status: 'accepted'});
+  await getUserCollection('friends').doc(friendID).set({ status: 'accepted' });
+  await getUserCollection('friend_requests').doc(friendID).delete();
+  await db
+    .collection(USER_COLLECTION)
+    .doc(friendID)
+    .collection('friends')
+    .doc(firebase.auth().currentUser.uid)
+    .set({ status: 'accepted' });
 }
 
-export async function declineFriendRequest(friendID){
-    await getUserCollection('friends').doc(friendID).delete();
-    await db.collection(USER_COLLECTION).doc(friendID).collection('friends')
-        .doc(firebase.auth().currentUser.uid).delete();
+export async function declineFriendRequest(friendID) {
+  await getUserCollection('friends').doc(friendID).delete();
+  await db
+    .collection(USER_COLLECTION)
+    .doc(friendID)
+    .collection('friends')
+    .doc(firebase.auth().currentUser.uid)
+    .delete();
 }
 
-export async function removeFriend(friendID){
-    await getUserCollection('friends').doc(friendID).delete();
-    await db.collection(USER_COLLECTION).doc(friendID).collection('friends')
-        .doc(firebase.auth().currentUser.uid).delete();
+export async function removeFriend(friendID) {
+  await getUserCollection('friends').doc(friendID).delete();
+  await db
+    .collection(USER_COLLECTION)
+    .doc(friendID)
+    .collection('friends')
+    .doc(firebase.auth().currentUser.uid)
+    .delete();
 }
 
-export async function attachListenerAndDo(collectionName, userId, action) {
-    useEffect(() => {
-        const subscriber = db
-            .collection('users')
-            .doc(userId)
-            .collection(collectionName)
-            .onSnapshot(async (documentSnapshot) => {
-                await action(documentSnapshot);
-            });
+export async function attachListenerAndDo(
+  collectionName,
+  userId,
+  action,
+  deps
+) {
+  useEffect(() => {
+    if (!userId) return;
 
-        // Stop listening for updates when no longer required
-        return () => subscriber();
-    }, [userId]);
+    const subscriber = db
+      .collection('users')
+      .doc(userId)
+      .collection(collectionName)
+      .onSnapshot(async (documentSnapshot) => {
+        await action(documentSnapshot);
+      });
+
+    // Stop listening for updates when no longer required
+    return () => subscriber();
+  }, deps);
 }
