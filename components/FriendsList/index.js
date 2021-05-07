@@ -4,7 +4,7 @@ import styles from './styles';
 import mainStyles from '../../styles/styles';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { acceptFriendRequest } from '../../src/firebase/firestore/firestoreService';
+import { acceptFriendRequest, declineFriendRequest } from '../../src/firebase/firestore/firestoreService';
 import { useDispatch } from 'react-redux';
 import { addFriend, removeFriendRequest } from '../../src/features/friends/friendsSlice';
 
@@ -40,6 +40,11 @@ export const FriendRequestsList = (props) => {
     newFriend.status = 'accepted';
     props.dispatch(addFriend(newFriend));
   };
+
+  const declineFriend = (friend) => {
+    declineFriendRequest(friend.id);
+    props.dispatch(removeFriendRequest(friend));
+  };
   return (
     <View style={styles.bigContainer}>
       {props.listOfFriendRequests.length > 0 && props.listOfFriendRequests.map((friend, index) => {
@@ -55,7 +60,7 @@ export const FriendRequestsList = (props) => {
             </Pressable>
             <Pressable
             style={[mainStyles.button, styles.friendRequestButton, styles.declineButton]}
-            onPress={() => null}>
+            onPress={() => {declineFriend(friend);}}>
               <Text>Decline</Text>
             </Pressable>
           </View>
