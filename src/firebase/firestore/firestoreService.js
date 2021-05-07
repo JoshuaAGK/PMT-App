@@ -185,6 +185,12 @@ export async function acceptFriendRequest(friendID){
         .doc(firebase.auth().currentUser.uid).set({status: 'accepted'});
 }
 
+export async function declineFriendRequest(friendID){
+    await getUserCollection('friends').doc(friendID).delete();
+    await db.collection(USER_COLLECTION).doc(friendID).collection('friends')
+        .doc(firebase.auth().currentUser.uid).delete();
+}
+
 export async function removeFriend(friendID){
     await getUserCollection('friends').doc(friendID).delete();
     await db.collection(USER_COLLECTION).doc(friendID).collection('friends')

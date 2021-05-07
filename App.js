@@ -114,16 +114,11 @@ function socialProfileScreen({navigation}) {
 function SocialScreen({navigation}) {
 
     const button = (
-        // <View>
-        //     <Touchable
-        //         style={styles.profileButton}
-        //         onPress={() => {
-        //             navigation.navigate('socialProfileScreen');
-        //         }}
-        //     ><Text style={styles.profileButton}>Profile</Text></Touchable>
-        // </View>
-        <Pressable style={styles.profileButton}><Text>Profile</Text></Pressable>
-    )
+        <Pressable onPress={() => { navigation.navigate('socialProfileScreen');}}
+            style={styles.profileButton}>
+            <Text>Profile</Text>
+        </Pressable>
+    );
 
     return (
         <Stack.Navigator
