@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text, View, FlatList } from 'react-native';
 import styles from './styles';
-import BrainTraining from '../BrainTraining'
-import AvatarShop from '../AvatarShop'
-import CustomiseAvatar from '../CustomiseAvatar'
+import BrainTraining from '../DailyActivity/BrainTraining';
+import AvatarShop from '../AvatarShop';
+import CustomiseAvatar from '../CustomiseAvatar';
 
 const InlineBigComponent = ({ content, tbd, type }) => {
   if (tbd) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, FlatList } from 'react-native';
 import styles from './styles';
-import BrainTraining from '../BrainTraining'
+import BrainTraining from './BrainTraining'
 
 const InlineBigComponent = ({ type }) => {
   switch(type) {
@@ -11,7 +11,6 @@ const InlineBigComponent = ({ type }) => {
           <BrainTraining/>
         </View>
       );
-      break;
   }
 }
 
