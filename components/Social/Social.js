@@ -4,7 +4,12 @@ import mainStyles from '../../styles/styles';
 import socialStyles from './styles';
 import UpperContents from '../UpperContents/UpperContents';
 import FriendsList, { FriendRequestsList } from '../FriendsList';
-import { addFriend, getFriendRequests, getFriends } from '../../src/firebase/firestore/firestoreService';
+import {
+  addFriend,
+  attachListenerAndDo,
+  getFriendRequests,
+  getFriends
+} from '../../src/firebase/firestore/firestoreService';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFriend as addFriendStore, resetFriendsList, addFriendRequest, resetFriendRequestsList } from '../../src/features/friends/friendsSlice';
 
@@ -31,6 +36,7 @@ const refreshFriendsLists = async () => {
 export const Social = (props) => {
   const dispatch = useDispatch();
   const friendsSelector = useSelector(state => state.friends);
+  const authSelector = useSelector(state => state.auth);
   const [refreshing, setRefreshing] = React.useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -52,7 +58,11 @@ export const Social = (props) => {
   }, []);
 
   let addFriendInput;
-  
+
+  if(authSelector.currentUser) {
+    attachListenerAndDo("friends", authSelector.currentUser.uid, () => {})
+  }
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}

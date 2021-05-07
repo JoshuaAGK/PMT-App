@@ -1,4 +1,5 @@
 import firebase from '../config';
+import {useEffect} from 'react';
 
 const USER_COLLECTION = 'users';
 const LAST_LOG_IN = 'lastLogIn';
@@ -101,21 +102,24 @@ export async function addFriend(friendName) {
     if (userQuery.size === 1) {
         userQuery.forEach(doc => userID = doc.id);
     }
-    if(userID === firebase.auth().currentUser.uid) return { success: false, message: 'You cannot add yourself as a friend'};
-    if(userID){
+    if (userID === firebase.auth().currentUser.uid) return {
+        success: false,
+        message: 'You cannot add yourself as a friend'
+    };
+    if (userID) {
         await getUserCollection('friends').doc(userID).set({status: 'pending'});
         await db.collection(USER_COLLECTION).doc(userID).collection('friend_requests')
             .doc(firebase.auth().currentUser.uid).set({status: 'pending'});
-        return { success: true };
-    }else{
-        return { success: false, message: 'User does not exist'};
+        return {success: true};
+    } else {
+        return {success: false, message: 'User does not exist'};
     }
 }
 
-export async function getFriends(){
+export async function getFriends() {
     let friendsList = [];
     let friendsQuery = await getUserCollection('friends').get();
-    friendsQuery.forEach( (doc) => {
+    friendsQuery.forEach((doc) => {
         friendsList.push({
             id: doc.id,
             status: doc.data().status
@@ -132,10 +136,10 @@ export async function getFriends(){
     return friendsList;
 }
 
-export async function getFriendRequests(){
+export async function getFriendRequests() {
     let friendRequestsList = [];
     let friendRequestsQuery = await getUserCollection('friend_requests').get();
-    friendRequestsQuery.forEach( (doc) => {
+    friendRequestsQuery.forEach((doc) => {
         friendRequestsList.push({
             id: doc.id,
             status: doc.data().status
@@ -152,19 +156,32 @@ export async function getFriendRequests(){
     return friendRequestsList;
 }
 
-export async function acceptFriendRequest(friendID){
+export async function acceptFriendRequest(friendID) {
     await getUserCollection('friends').doc(friendID).set({status: 'accepted'});
     await getUserCollection('friend_requests').doc(friendID).delete();
     await db.collection(USER_COLLECTION).doc(friendID).collection('friends')
         .doc(firebase.auth().currentUser.uid).set({status: 'accepted'});
 }
 
-export async function removeFriend(friendID){
+export async function removeFriend(friendID) {
     await getUserCollection('friends').doc(friendID).delete();
     await db.collection(USER_COLLECTION).doc(friendID).collection('friends')
         .doc(firebase.auth().currentUser.uid).delete();
 }
 
-export async function attachListenerAndDo(userId, action) {
+export async function attachListenerAndDo(collectionName, userId, action) {
+    useEffect(() => {
+        const subscriber = db
+            .collection('users')
+            .doc(userId)
+            .collection(collectionName)
+            .onSnapshot(documentSnapshot => {
+                console.log('User data: ', documentSnapshot.size);
+                documentSnapshot.forEach((doc) => console.log(doc.data()))
+                action()
+            });
 
+        // Stop listening for updates when no longer required
+        return () => subscriber();
+    }, [userId]);
 }
