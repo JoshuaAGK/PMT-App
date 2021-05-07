@@ -1,6 +1,6 @@
 import firebase from '../config';
 import {useEffect} from 'react';
-import { CRIMSON, MID } from '../../../components/CustomiseAvatar';
+import { CRIMSON, MID } from '../../../components/CustomiseAvatar/avatar';
 
 const USER_COLLECTION = 'users';
 const DISPLAY_NAME = 'displayName';
@@ -10,8 +10,8 @@ const LAST_LOG_IN = 'lastLogIn';
 const BALANCE = 'balance';
 const PREMIUM = 'premium';
 const STREAK = 'streak';
-const SKIN_TONE = 'skinTone';
-const SHIRT_COLOUR = 'shirtColour';
+export const SKIN_TONE = 'skinTone';
+export const SHIRT_COLOUR = 'shirtColour';
 
 const DEFAULT = {};
 DEFAULT[BALANCE] = 0;
@@ -28,9 +28,10 @@ export function setUserProfileData(user) {
         displayName: user.displayName,
         email: user.email,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        balance: 0,
-        premium: false,
-
+        balance: DEFAULT[BALANCE],
+        premium: DEFAULT[PREMIUM],
+        skinTone: DEFAULT[SKIN_TONE],
+        shirtColour: DEFAULT[SHIRT_COLOUR]
     });
 }
 
@@ -40,6 +41,20 @@ export function getUserCollection(collectionName) {
 
 export function getUserDocument() {
     return db.collection(USER_COLLECTION).doc(firebase.auth().currentUser.uid);
+}
+
+export async function getUserPropertyByDisplayName(displayName, prop) {
+    let user = await db.collection(USER_COLLECTION).where('displayName', '==', displayName).get().then(query => {
+        if (query.docs.length != 1) {
+            return null;
+        }
+        return query.docs[0].data();
+    });
+    let result = user[prop];
+    if (!result) {
+        return DEFAULT[prop];
+    }
+    return result;
 }
 
 async function getUserProperty(prop) {
@@ -124,7 +139,7 @@ export async function setShirtColour(colour) {
 }
 
 export async function addFriend(friendName) {
-    let userQuery = await db.collection(USER_COLLECTION).where('displayName', '==', friendName).get();
+    let userQuery = getUserByDisplayName(friendName);
     let userID;
     if (userQuery.size === 1) {
         userQuery.forEach(doc => userID = doc.id);
