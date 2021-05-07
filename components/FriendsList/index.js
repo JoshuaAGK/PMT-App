@@ -36,7 +36,7 @@ export const FriendRequestsList = (props) => {
   const acceptFriend = (friend) => {
     acceptFriendRequest(friend.id);
     props.dispatch(removeFriendRequest(friend));
-    let newFriend = friend;
+    let newFriend = {...friend};
     newFriend.status = 'accepted';
     props.dispatch(addFriend(newFriend));
   };

@@ -73,6 +73,12 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         fontWeight: 'bold',
         color: '#c20a0a'
+    },
+    profileButton: {
+        // paddingVertical: 100,
+        // paddingHorizontal: 30,
+        fontWeight: 'bold',
+        backgroundColor: '#2ecc71'
     }
 });
 

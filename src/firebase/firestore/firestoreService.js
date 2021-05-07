@@ -124,14 +124,14 @@ export async function setShirtColour(colour) {
 export async function addFriend(friendName) {
     let userQuery = await db.collection(USER_COLLECTION).where('displayName', '==', friendName).get();
     let userID;
-    if (userQuery.size == 1) {
+    if (userQuery.size === 1) {
         userQuery.forEach(doc => userID = doc.id);
     }
     if(userID === firebase.auth().currentUser.uid) return { success: false, message: 'You cannot add yourself as a friend'};
     if(userID){
-        getUserCollection('friends').doc(userID).set({status: 'pending'});
-        db.collection(USER_COLLECTION).doc(userID).collection('friend_requests')
-        .doc(firebase.auth().currentUser.uid).set({status: 'pending'});
+        await getUserCollection('friends').doc(userID).set({status: 'pending'});
+        await db.collection(USER_COLLECTION).doc(userID).collection('friend_requests')
+            .doc(firebase.auth().currentUser.uid).set({status: 'pending'});
         return { success: true };
     }else{
         return { success: false, message: 'User does not exist'};
@@ -179,14 +179,18 @@ export async function getFriendRequests(){
 }
 
 export async function acceptFriendRequest(friendID){
-    getUserCollection('friends').doc(friendID).set({status: 'accepted'});
-    getUserCollection('friend_requests').doc(friendID).delete();
-    db.collection(USER_COLLECTION).doc(friendID).collection('friends')
-    .doc(firebase.auth().currentUser.uid).set({status: 'accepted'});
+    await getUserCollection('friends').doc(friendID).set({status: 'accepted'});
+    await getUserCollection('friend_requests').doc(friendID).delete();
+    await db.collection(USER_COLLECTION).doc(friendID).collection('friends')
+        .doc(firebase.auth().currentUser.uid).set({status: 'accepted'});
 }
 
 export async function removeFriend(friendID){
-    getUserCollection('friends').doc(friendID).delete();
-    db.collection(USER_COLLECTION).doc(friendID).collection('friends')
-    .doc(firebase.auth().currentUser.uid).delete();
+    await getUserCollection('friends').doc(friendID).delete();
+    await db.collection(USER_COLLECTION).doc(friendID).collection('friends')
+        .doc(firebase.auth().currentUser.uid).delete();
+}
+
+export async function attachListenerAndDo(userId, action) {
+
 }
