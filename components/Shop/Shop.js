@@ -2,12 +2,12 @@ import React from 'react';
 import { Text, View, ScrollView, Pressable } from 'react-native';
 import mainStyles from '../../styles/styles';
 import shopStyles from './styles';
-
 import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
 import UpperContents from '../UpperContents/UpperContents';
 import { becomePremium, leavePremium, incrementBalance } from '../../src/firebase/firestore/firestoreService';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToBalance, setPremium } from '../../src/features/auth/authSlice';
+import AvatarShop from '../AvatarShop'
 
 export const Shop = (props) => {
   let dispatch = useDispatch();
@@ -54,8 +54,10 @@ export const Shop = (props) => {
           </Pressable>
         </View>
       </View>
-      <Text style={mainStyles.bigText}>Avatar Accessories</Text>
-      <InlineBigComponent type="avatarShop" />
+      <Text style={mainStyles.bigText}>Avatar Skin</Text>
+      <AvatarShop type="skintone" />
+      <Text style={mainStyles.bigText}>Avatar Shirt</Text>
+      <AvatarShop type="shirtcolour" />
     </ScrollView>
   );
 };
