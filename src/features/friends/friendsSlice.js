@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import {  } from '../../firebase/firestore/firestoreService';
 
 const authSlice = createSlice({
-    name: 'auth',
+    name: 'friends',
     initialState: {
         friendsList: [],
         friendRequestsList: []
