@@ -153,3 +153,9 @@ export async function acceptFriendRequest(friendID){
     db.collection(USER_COLLECTION).doc(friendID).collection('friends')
     .doc(firebase.auth().currentUser.uid).set({status: 'accepted'});
 }
+
+export async function removeFriend(friendID){
+    getUserCollection('friends').doc(friendID).delete();
+    db.collection(USER_COLLECTION).doc(friendID).collection('friends')
+    .doc(firebase.auth().currentUser.uid).delete();
+}

@@ -9,14 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addFriend as addFriendStore, resetFriendsList, addFriendRequest, resetFriendRequestsList } from '../../src/features/friends/friendsSlice';
 
 
-var listOfFriends = [
-  { id: '0', text: 'Joe Bloggs' },
-  { id: '1', text: 'Obi-Wan Kenobi' },
-  { id: '2', text: 'Firstname Lastname' },
-  { id: '3', text: 'This is just an example name' },
-  { id: '4', text: 'Yeet' },
-  { id: '5', text: 'Gernot Liebchen' },
-];
+var listOfFriends = [];
 
 async function addElement(friendName) {
   let friendRequest = await addFriend(friendName);
@@ -54,11 +47,11 @@ export const Social = (props) => {
         dispatch(addFriendRequest(friend));
       });
 
-      
-
       setRefreshing(false);
     });
   }, []);
+
+  let addFriendInput;
   
   return (
     <ScrollView
@@ -73,12 +66,12 @@ export const Social = (props) => {
         placeholder="Friend's username"
         returnKeyType="search"
         clearButtonMode="while-editing"
-        onSubmitEditing={async (event) => {
-          await addElement(event.nativeEvent.text);
+        onSubmitEditing={(event) => {
+          addElement(event.nativeEvent.text);
           onRefresh();
-          this.textInput.clear();
+          addFriendInput.clear();
         }}
-        ref={input => {this.textInput = input;}}
+        ref={input => {addFriendInput = input;}}
       />
 
       <Text style={mainStyles.bigText}>My Friends</Text>

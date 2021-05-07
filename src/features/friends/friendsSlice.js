@@ -11,6 +11,10 @@ const authSlice = createSlice({
         addFriend: (state = this.initialState, action) => {
             state.friendsList.push(action.payload);
         },
+        removeFriend: (state = this.initialState, action) => {
+            let friendIndex = state.friendsList.indexOf(action.payload);
+            state.friendsList.splice(friendIndex, 1);
+        },
         resetFriendsList: (state = this.initialState) => {
             state.friendsList = [];
         },
@@ -28,7 +32,7 @@ const authSlice = createSlice({
 });
 
 const { actions, reducer } = authSlice;
-const { addFriend, resetFriendsList, addFriendRequest, removeFriendRequest, resetFriendRequestsList } = actions;
+const { addFriend, removeFriend, resetFriendsList, addFriendRequest, removeFriendRequest, resetFriendRequestsList } = actions;
 
-export { addFriend, resetFriendsList, addFriendRequest, removeFriendRequest, resetFriendRequestsList };
+export { addFriend, removeFriend, resetFriendsList, addFriendRequest, removeFriendRequest, resetFriendRequestsList };
 export default reducer;

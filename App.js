@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, View, LogBox } from 'react-native';
+import { StyleSheet, View, Button, LogBox } from 'react-native';
 import { useAsync } from 'react-async';
 import { Provider, useSelector } from 'react-redux';
 import { Advertisement, Journal, Account, Social, Shop, LogIn, Calendar, Registration } from './components';
@@ -9,8 +9,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { capitalize } from './utils/StringUtils';
-import { ChatPage } from './components/ChatPage/ChatPage'
+import { ChatPage } from './components/ChatPage/ChatPage';
 import store from './src/features/store/store';
+import Profile from './components/Profile/Profile';
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -95,16 +96,39 @@ function socialChatScreen({ navigation }) {
   );
 }
 
+function socialProfileScreen({ navigation }) {
+  let auth = useSelector(state => state.auth);
+  let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
+  return (
+    <View style={styles.container}>
+      <Profile friendName={tempVarNameOfFriend}/>
+      { !premiumStatus &&
+        <Advertisement type="banner" content="ADVERTISEMENT" />
+      }
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+
 function SocialScreen({ navigation }) {
+  
+  const button = <Button
+  onPress={() => {navigation.navigate('socialProfileScreen');}}
+  title='Profile'
+/>;
+
   return (
     <Stack.Navigator
       initialRouteName="socialHomeScreen"
-      screenOptions={{
-        headerShown: true
-      }}
     >
-      <Stack.Screen name="socialHomeScreen" options={{ title: "Social (WIP)" }} component={socialHomeScreen} />
-      <Stack.Screen name="socialChatScreen" options={{ title: tempVarNameOfFriend }} component={socialChatScreen} />
+      <Stack.Screen name="socialHomeScreen" options={{ headerShown: false, title: 'Social' }} component={socialHomeScreen} />
+      <Stack.Screen name="socialChatScreen" options={{
+        headerShown: true,
+        title: tempVarNameOfFriend,
+        headerRight: () => button
+       }}
+        component={socialChatScreen} />
+      <Stack.Screen name="socialProfileScreen" options={{ headerShown: true, title: tempVarNameOfFriend+'\'s Profile' }} component={socialProfileScreen} />
     </Stack.Navigator>
   );
 }
