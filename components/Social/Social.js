@@ -36,7 +36,7 @@ export const Social = (props) => {
     setRefreshing(true);
 
     refreshFriendsLists().then((query) => {
-
+      
       dispatch(resetFriendsList());
       query[0].forEach((friend) => {
         dispatch(addFriendStore(friend));
@@ -66,10 +66,10 @@ export const Social = (props) => {
         placeholder="Friend's username"
         returnKeyType="search"
         clearButtonMode="while-editing"
-        onSubmitEditing={(event) => {
-          addElement(event.nativeEvent.text);
-          onRefresh();
+        onSubmitEditing={ async (event) => {
+          await addElement(event.nativeEvent.text);
           addFriendInput.clear();
+          onRefresh();
         }}
         ref={input => {addFriendInput = input;}}
       />
