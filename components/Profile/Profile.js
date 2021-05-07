@@ -28,20 +28,17 @@ export const Profile = (props) => {
 
     useEffect(() => {
         getUserPropertyByDisplayName(props.friendName, SKIN_TONE).then((skinTone) => {
-            console.log("SET SKIN TONE: " + skinTone);
             setSkinTone(skinTone);
         });
     }, [setSkinTone]);
     useEffect(() => {
         getUserPropertyByDisplayName(props.friendName, SHIRT_COLOUR).then((shirtColour) => {
-            console.log("SET SHIRT COLOUR: " + shirtColour);
             setShirtColour(shirtColour);
         });
     }, [setShirtColour]);
 
     let avatarContent;
 
-    console.log("SKIN TONE: " + skinTone + " SHIRT COLOUR: " + shirtColour);
     if (!skinTone || !shirtColour) {
         avatarContent = (
             <Text>Loading...</Text>

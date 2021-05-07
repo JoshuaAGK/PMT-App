@@ -7,6 +7,7 @@ import FriendsList, {FriendRequestsList} from '../FriendsList';
 import {
     addFriend,
     attachListenerAndDo,
+    findUser,
     getFriendRequests,
     getFriends
 } from '../../src/firebase/firestore/firestoreService';
@@ -66,10 +67,36 @@ export const Social = (props) => {
 
 
     if (authSelector.currentUser) {
-        attachListenerAndDo('friends', authSelector.currentUser.uid, () => {
+        attachListenerAndDo('friends', authSelector.currentUser.uid, (collectionSnapshot) => {
+          dispatch(resetFriendsList());
+          collectionSnapshot.forEach(async (document) => {
+            let friend = {};
+            friend.id = document.id;
+            friend.status = document.data().status;
+
+            let displayNameQuery = await findUser(document.id);
+            friend.displayName = displayNameQuery.data().displayName;
+            dispatch(addFriendStore(friend));
+          });
         })
-            .then(() => {})
-            .catch((error) => console.log(error))
+        .then(() => {})
+        .catch((error) => alert(error));
+
+        attachListenerAndDo('friend_requests', authSelector.currentUser.uid, (collectionSnapshot) => {
+          dispatch(resetFriendRequestsList());
+          //if(collectionSnapshot.size === 0) return;
+          collectionSnapshot.forEach(async (document) => {
+            let friend = {};
+            friend.id = document.id;
+            friend.status = document.data().status;
+
+            let displayNameQuery = await findUser(document.id);
+            friend.displayName = displayNameQuery.data().displayName;
+            dispatch(addFriendRequest(friend));
+          });
+        })
+        .then(() => {})
+        .catch((error) => alert(error));
 
     }
 
