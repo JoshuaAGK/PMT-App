@@ -45,7 +45,7 @@ export function getUserDocument() {
 
 export async function getUserPropertyByDisplayName(displayName, prop) {
     let user = await db.collection(USER_COLLECTION).where('displayName', '==', displayName).get().then(query => {
-        if (query.docs.length != 1) {
+        if (query.docs.length !== 1) {
             return null;
         }
         return query.docs[0].data();
@@ -70,7 +70,7 @@ async function getUserProperty(prop) {
 async function updateUserProperty(prop, value) {
     let updateData = {};
     updateData[prop] = value;
-    getUserDocument().update(updateData);
+    await getUserDocument().update(updateData);
 }
 
 export async function getUserStreak() {
@@ -79,11 +79,11 @@ export async function getUserStreak() {
 
 export async function incrementStreak() {
     let streak = await getUserStreak();
-    updateUserProperty(STREAK, streak + 1);
+    await updateUserProperty(STREAK, streak + 1);
 }
 
 export async function resetStreak() {
-    updateUserProperty(STREAK, 0);
+    await updateUserProperty(STREAK, 0);
 }
 
 export async function getUserLastLogIn() {
@@ -95,7 +95,7 @@ export async function getUserLastLogIn() {
 }
 
 export async function updateLastLogIn() {
-    updateUserProperty(LAST_LOG_IN, new Date());
+    await updateUserProperty(LAST_LOG_IN, new Date());
 }
 
 export async function getUserBalance() {
@@ -103,11 +103,11 @@ export async function getUserBalance() {
 }
 
 export async function incrementBalance(currentBalance, amount) {
-    updateUserProperty(BALANCE, currentBalance + amount);
+    await updateUserProperty(BALANCE, currentBalance + amount);
 }
 
 export async function decrementBalance(currentBalance, amount) {
-    updateUserProperty(BALANCE, currentBalance - amount);
+    await updateUserProperty(BALANCE, currentBalance - amount);
 }
 
 export async function getPremiumStatus() {
@@ -115,11 +115,11 @@ export async function getPremiumStatus() {
 }
 
 export async function becomePremium() {
-    updateUserProperty(PREMIUM, true);
+    await updateUserProperty(PREMIUM, true);
 }
 
 export async function leavePremium() {
-    updateUserProperty(PREMIUM, false);
+    await updateUserProperty(PREMIUM, false);
 }
 
 export async function getSkinTone() {
@@ -127,7 +127,7 @@ export async function getSkinTone() {
 }
 
 export async function setSkinTone(skinTone) {
-    updateUserProperty(SKIN_TONE, skinTone);
+    await updateUserProperty(SKIN_TONE, skinTone);
 }
 
 export async function getShirtColour() {
@@ -135,7 +135,7 @@ export async function getShirtColour() {
 }
 
 export async function setShirtColour(colour) {
-    updateUserProperty(SHIRT_COLOUR, colour);
+    await updateUserProperty(SHIRT_COLOUR, colour);
 }
 
 export async function addFriend(friendName) {

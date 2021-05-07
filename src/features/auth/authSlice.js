@@ -80,19 +80,25 @@ export function verifyAuth() {
             if(user) {
                 const currentUser = await getUserDocument().get();
                 const currentUserData = currentUser.data()
-                console.log(currentUserData)
+
+                let lastLogIn;
+                if (!currentUserData.lastLogIn) {
+                    lastLogIn = new Date();
+                } else {
+                    lastLogIn = currentUserData.lastLogIn.toDate()
+                }
+
                 let authObj = {
                     uid: user.uid,
                     email: user.email,
                     displayName: currentUserData.displayName,
                     balance: currentUserData.balance,
-                    lastLogIn: currentUserData.lastLogIn.toDate().getTime(),
+                    lastLogIn: lastLogIn.getTime(),
                     streak: currentUserData.streak,
                     premium: currentUserData.premium,
                     skinTone: currentUserData.skinTone,
                     shirtColour: currentUserData.shirtColour,
                 };
-                console.log(`authObj: ${authObj.forEach(el => console.log(el))}`)
                 dispatch(signInUser(authObj));
             } else {
                 dispatch(signOutUser());
