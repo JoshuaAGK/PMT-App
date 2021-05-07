@@ -37,6 +37,30 @@ const styles = StyleSheet.create({
         flexWrap: 'nowrap',
         width: '100%'
     },
+    dailyActivityList: {
+        width: "100%",
+        backgroundColor: "white",
+        borderRadius: 50/4,
+        padding: 50/4,
+        shadowColor: "black",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 15,
+    },
+    flatList: {
+        width: "100%",
+        height: 160,
+        overflow: "scroll"
+    },
+    flatListItem: {
+        position: "relative",
+        backgroundColor: "green",
+        width: "100%",
+        height: 160
+    }
 });
 
 export default styles;

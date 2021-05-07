@@ -1,11 +1,10 @@
 import React from 'react';
-import {View, Pressable, Text, ScrollView, TextInput, TouchableOpacity} from 'react-native';
+import {View, Pressable, Text, ScrollView, TextInput, TouchableOpacity, FlatList} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import mainStyles from '../../styles/styles';
 import journalStyles from './styles';
 import Advertisement from '../Advertisement/Advertisement';
-import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
 import UpperContents from '../UpperContents/UpperContents';
 import EmotionTrackerInput from '../EmotionTracker/EmotionTrackerInput';
 import {getUserCollection, incrementBalance} from '../../src/firebase/firestore/firestoreService';
@@ -15,6 +14,7 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 import points from '../../src/features/points/points';
 import styles from '../LogIn/styles';
+import DailyActivity from '../DailyActivity'
 
 export const Journal = (props) => {
     const balanceSelector = useSelector(state => state.auth);
@@ -46,6 +46,16 @@ export const Journal = (props) => {
 
     let mood = journal.mood;
     let text = journal.text;
+
+    const renderItem = ({ item }) => (
+        <DailyActivity type={item.type}/>
+      );
+
+    const ACTIVITIES = [
+        {
+            type: 'braintraining',
+        },
+    ];
 
     return (
         <ScrollView
@@ -113,8 +123,21 @@ export const Journal = (props) => {
             {!props.premium &&
             <Advertisement type="inline" content="ADVERTISEMENT"/>
             }
-            <Text style={mainStyles.bigText}>Brain Training</Text>
-            <InlineBigComponent type="brainTraining"/>
+            <Text style={mainStyles.bigText}>Daily Activity</Text>
+
+            <View style={journalStyles.dailyActivityList}>
+                <FlatList
+                    style={journalStyles.flatList}
+                    data={ACTIVITIES}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                    snapToAlignment={"start"}
+                    decelerationRate={"fast"}
+                    snapToInterval={160}
+                    showsVerticalScrollIndicator={false}
+                />
+            </View>
+            
         </ScrollView>
     );
 };

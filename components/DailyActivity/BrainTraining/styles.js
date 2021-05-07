@@ -81,6 +81,13 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 0,
         right: 0
+    },
+    titleText: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        fontSize: scaleFontSize(24),
+        fontWeight: "500"
     }
 })
 

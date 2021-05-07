@@ -82,6 +82,7 @@ class brainTraining extends React.Component {
     if (index == -1) {
       return (
         <View style={styles.brainTraining}>
+          <Text style={styles.titleText}>Brain Training</Text>
           <Pressable style={styles.beginGameButton} onPress={() => this.forceUpdateHandler()}>
             <Text style={styles.beginGameText}>Begin game!</Text>
           </Pressable>
