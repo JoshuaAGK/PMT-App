@@ -182,7 +182,7 @@ class AvatarItem extends React.Component {
             style={styles.itemImage}
             source={this.props.all[this.props.value].image}
           />
-          <Text style={styles.gridItemText}>{this.props.name}</Text>
+          <Text style={styles.gridItemText}>{this.props.all[this.props.value].name}</Text>
         </Pressable>
       </View>
     )

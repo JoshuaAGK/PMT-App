@@ -1,4 +1,5 @@
 import firebase from '../config';
+import { CRIMSON, MID } from '../../../components/CustomiseAvatar';
 
 const USER_COLLECTION = 'users';
 const DISPLAY_NAME = 'displayName';
@@ -14,8 +15,8 @@ const SHIRT_COLOUR = 'shirtColour';
 const DEFAULT = {};
 DEFAULT[BALANCE] = 0;
 DEFAULT[PREMIUM] = false;
-DEFAULT[SKIN_TONE] = 'mid';
-DEFAULT[SHIRT_COLOUR] = 'crimson';
+DEFAULT[SKIN_TONE] = MID;
+DEFAULT[SHIRT_COLOUR] = CRIMSON;
 
 const db = firebase.firestore();
 
