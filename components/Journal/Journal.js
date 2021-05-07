@@ -47,8 +47,8 @@ export const Journal = (props) => {
     let mood = journal.mood;
     let text = journal.text;
 
-    const renderItem = ({ item }) => (
-        <DailyActivity type={item.type}/>
+    const renderItem = ( item, key ) => (
+        <DailyActivity type={item.type} key={key}/>
       );
 
     const ACTIVITIES = [
@@ -127,16 +127,11 @@ export const Journal = (props) => {
             <Text style={mainStyles.bigText}>Daily Activity</Text>
 
             <View style={journalStyles.dailyActivityList}>
-                <FlatList
-                    style={journalStyles.flatList}
-                    data={ACTIVITIES}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
-                    snapToAlignment={"start"}
-                    decelerationRate={"fast"}
-                    snapToInterval={160}
-                    showsVerticalScrollIndicator={false}
-                />
+                {
+                    ACTIVITIES.map((el, index) => (
+                        renderItem(el, index)
+                    ))
+                }
             </View>
             
         </ScrollView>
