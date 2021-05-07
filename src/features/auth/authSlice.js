@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import firebase from 'firebase';
-import { getUserBalance, updateLastLogIn, getUserLastLogIn, resetStreak, getUserStreak, incrementStreak, getPremiumStatus } from '../../firebase/firestore/firestoreService';
+import { getUserBalance, updateLastLogIn, getUserLastLogIn, resetStreak, getUserStreak, incrementStreak, getPremiumStatus, getSkinTone, getShirtColour } from '../../firebase/firestore/firestoreService';
 
 const authSlice = createSlice({
     name: 'auth',
@@ -17,7 +17,9 @@ const authSlice = createSlice({
                 balance: action.payload.balance,
                 lastLogIn: action.payload.lastLogIn,
                 streak: action.payload.streak,
-                premium: action.payload.premium
+                premium: action.payload.premium,
+                skinTone: action.payload.skinTone,
+                shirtColour: action.payload.shirtColour
             };
 
             let today = new Date().getTime();
@@ -41,7 +43,6 @@ const authSlice = createSlice({
             state.currentUser.balance += action.payload;
         },
         removeFromBalance: (state = this.initialState, action) => {
-            console.log(state.currentUser);
             state.currentUser.balance -= action.payload;
         },
         setBalance: (state = this.initialState, action) => {
@@ -49,6 +50,12 @@ const authSlice = createSlice({
         },
         setPremium: (state = this.initialState, action) => {
             state.currentUser.premium = action.payload;
+        },
+        setSkinTone: (state = this.initialState, action) => {
+            state.currentUser.skinTone = action.payload;
+        },
+        setShirtColour: (state = this.initialState, action) => {
+            state.currentUser.shirtColour = action.payload;
         }
     }
 });
@@ -64,13 +71,17 @@ export function verifyAuth() {
                 let lastLogIn = await getUserLastLogIn();
                 let streak = await getUserStreak();
                 let premiumStatus = await getPremiumStatus();
+                let skinTone = await getSkinTone();
+                let shirtColour = await getShirtColour();
                 let authObj = {
                     uid: user.uid,
                     email: user.email,
                     balance: currentBalance,
                     lastLogIn: lastLogIn.getTime(),
                     streak: streak,
-                    premium: premiumStatus.premiumStatus
+                    premium: premiumStatus,
+                    skinTone: skinTone,
+                    shirtColour: shirtColour
                 };
                 dispatch(signInUser(authObj));
             } else {

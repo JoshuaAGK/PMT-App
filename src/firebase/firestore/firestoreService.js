@@ -1,21 +1,36 @@
 import firebase from '../config';
 import {useEffect} from 'react';
+import { CRIMSON, MID } from '../../../components/CustomiseAvatar';
 
 const USER_COLLECTION = 'users';
+const DISPLAY_NAME = 'displayName';
+const EMAIL = 'email';
+const CREATED_AT = 'createdAt';
 const LAST_LOG_IN = 'lastLogIn';
 const BALANCE = 'balance';
 const PREMIUM = 'premium';
 const STREAK = 'streak';
+const SKIN_TONE = 'skinTone';
+const SHIRT_COLOUR = 'shirtColour';
+
+const DEFAULT = {};
+DEFAULT[BALANCE] = 0;
+DEFAULT[PREMIUM] = false;
+DEFAULT[SKIN_TONE] = MID;
+DEFAULT[SHIRT_COLOUR] = CRIMSON;
 
 const db = firebase.firestore();
 
 export function setUserProfileData(user) {
+    let userData = {};
+    userData[DISPLAY_NAME] = user.displayName;
     return db.collection(USER_COLLECTION).doc(user.uid).set({
         displayName: user.displayName,
         email: user.email,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         balance: 0,
-        premium: false
+        premium: false,
+
     });
 }
 
@@ -28,9 +43,19 @@ export function getUserDocument() {
 }
 
 async function getUserProperty(prop) {
-    return await getUserDocument().get().then(query => {
+    let result = await getUserDocument().get().then(query => {
         return query.get(prop);
     });
+    if (result) {
+        return result;
+    }
+    return DEFAULT[prop];
+}
+
+async function updateUserProperty(prop, value) {
+    let updateData = {};
+    updateData[prop] = value;
+    getUserDocument().update(updateData);
 }
 
 export async function getUserStreak() {
@@ -39,15 +64,11 @@ export async function getUserStreak() {
 
 export async function incrementStreak() {
     let streak = await getUserStreak();
-    let updateData = {};
-    updateData[STREAK] = streak + 1;
-    await getUserDocument().update(updateData);
+    updateUserProperty(STREAK, streak + 1);
 }
 
 export async function resetStreak() {
-    let updateData = {};
-    updateData[STREAK] = 0;
-    await getUserDocument().update(updateData);
+    updateUserProperty(STREAK, 0);
 }
 
 export async function getUserLastLogIn() {
@@ -59,9 +80,7 @@ export async function getUserLastLogIn() {
 }
 
 export async function updateLastLogIn() {
-    let updateData = {};
-    updateData[LAST_LOG_IN] = new Date();
-    await getUserDocument().update(updateData);
+    updateUserProperty(LAST_LOG_IN, new Date());
 }
 
 export async function getUserBalance() {
@@ -69,31 +88,39 @@ export async function getUserBalance() {
 }
 
 export async function incrementBalance(currentBalance, amount) {
-    let updateData = {};
-    updateData[BALANCE] = currentBalance + amount;
-    await getUserDocument().update(updateData);
+    updateUserProperty(BALANCE, currentBalance + amount);
 }
 
 export async function decrementBalance(currentBalance, amount) {
-    let updateData = {};
-    updateData[BALANCE] = currentBalance - amount;
-    await getUserDocument().update(updateData);
+    updateUserProperty(BALANCE, currentBalance - amount);
 }
 
 export async function getPremiumStatus() {
-    return getUserProperty(PREMIUM);
+    return await getUserProperty(PREMIUM);
 }
 
 export async function becomePremium() {
-    let updateData = {};
-    updateData[PREMIUM] = true;
-    await getUserDocument().update(updateData);
+    updateUserProperty(PREMIUM, true);
 }
 
 export async function leavePremium() {
-    let updateData = {};
-    updateData[PREMIUM] = false;
-    await getUserDocument().update(updateData);
+    updateUserProperty(PREMIUM, false);
+}
+
+export async function getSkinTone() {
+    return await getUserProperty(SKIN_TONE);
+}
+
+export async function setSkinTone(skinTone) {
+    updateUserProperty(SKIN_TONE, skinTone);
+}
+
+export async function getShirtColour() {
+    return await getUserProperty(SHIRT_COLOUR);
+}
+
+export async function setShirtColour(colour) {
+    updateUserProperty(SHIRT_COLOUR, colour);
 }
 
 export async function addFriend(friendName) {
@@ -163,7 +190,13 @@ export async function acceptFriendRequest(friendID) {
         .doc(firebase.auth().currentUser.uid).set({status: 'accepted'});
 }
 
-export async function removeFriend(friendID) {
+export async function declineFriendRequest(friendID){
+    await getUserCollection('friends').doc(friendID).delete();
+    await db.collection(USER_COLLECTION).doc(friendID).collection('friends')
+        .doc(firebase.auth().currentUser.uid).delete();
+}
+
+export async function removeFriend(friendID){
     await getUserCollection('friends').doc(friendID).delete();
     await db.collection(USER_COLLECTION).doc(friendID).collection('friends')
         .doc(firebase.auth().currentUser.uid).delete();
