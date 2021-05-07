@@ -1,6 +1,17 @@
 import {createSlice} from '@reduxjs/toolkit';
 import firebase from 'firebase';
-import { getUserBalance, updateLastLogIn, getUserLastLogIn, resetStreak, getUserStreak, incrementStreak, getPremiumStatus, getSkinTone, getShirtColour } from '../../firebase/firestore/firestoreService';
+import {
+    getUserBalance,
+    updateLastLogIn,
+    getUserLastLogIn,
+    resetStreak,
+    getUserStreak,
+    incrementStreak,
+    getPremiumStatus,
+    getSkinTone,
+    getShirtColour,
+    getUserDocument
+} from '../../firebase/firestore/firestoreService';
 
 const authSlice = createSlice({
     name: 'auth',
@@ -67,22 +78,21 @@ export function verifyAuth() {
     return function(dispatch) {
         return firebase.auth().onAuthStateChanged( async (user) => {
             if(user) {
-                let currentBalance = await getUserBalance();
-                let lastLogIn = await getUserLastLogIn();
-                let streak = await getUserStreak();
-                let premiumStatus = await getPremiumStatus();
-                let skinTone = await getSkinTone();
-                let shirtColour = await getShirtColour();
+                const currentUser = await getUserDocument().get();
+                const currentUserData = currentUser.data()
+                console.log(currentUserData)
                 let authObj = {
                     uid: user.uid,
                     email: user.email,
-                    balance: currentBalance,
-                    lastLogIn: lastLogIn.getTime(),
-                    streak: streak,
-                    premium: premiumStatus,
-                    skinTone: skinTone,
-                    shirtColour: shirtColour
+                    displayName: currentUserData.displayName,
+                    balance: currentUserData.balance,
+                    lastLogIn: currentUserData.lastLogIn.toDate().getTime(),
+                    streak: currentUserData.streak,
+                    premium: currentUserData.premium,
+                    skinTone: currentUserData.skinTone,
+                    shirtColour: currentUserData.shirtColour,
                 };
+                console.log(`authObj: ${authObj.forEach(el => console.log(el))}`)
                 dispatch(signInUser(authObj));
             } else {
                 dispatch(signOutUser());

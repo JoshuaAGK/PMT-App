@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text, View, Pressable } from 'react-native';
-import { useAsync } from 'react-async';
-import { useNavigation } from '@react-navigation/native';
-import { dateString } from '../../utils/StringUtils';
+import {Text, View, Pressable} from 'react-native';
+import {useAsync} from 'react-async';
+import {useNavigation} from '@react-navigation/native';
+import {dateString} from '../../utils/StringUtils';
 import styles from './styles';
-import { signOutFirebase } from '../../src/firebase/firestore/firebaseService';
-import { useSelector } from 'react-redux';
+import {signOutFirebase} from '../../src/firebase/firestore/firebaseService';
+import {useSelector} from 'react-redux';
 
 function UpperContents(props) {
     const navigation = useNavigation();
@@ -16,19 +16,22 @@ function UpperContents(props) {
     switch (containerType) {
         case 'logout':
             content = (
-                <Pressable style={styles.rightBox} onPress={async () => { await logOut(navigation); }}>
+
+                <Pressable style={styles.rightBox} onPress={async () => {
+                    await logOut(navigation);
+                }}>
                     <Text>Log out</Text>
                 </Pressable>
-                );
+            );
             break;
         case 'friends':
             content = (
                 <View style={styles.rightBox}>
                     <Text style={styles.rightInnerText}>Add Friends</Text>
                 </View>
-                );
+            );
             break;
-        case 'currency':            
+        case 'currency':
             let currentBalance = auth.currentUser ? auth.currentUser.balance : '0';
             let streak = auth.currentUser ? auth.currentUser.streak : '0';
             content = (
@@ -41,7 +44,7 @@ function UpperContents(props) {
             );
             break;
     }
-    
+
     return (
         <View style={styles.container}>
             <Text style={styles.dateText}>{dateString(new Date())}</Text>
