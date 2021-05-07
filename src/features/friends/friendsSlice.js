@@ -1,8 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {  } from '../../firebase/firestore/firestoreService';
 
-const authSlice = createSlice({
-    name: 'auth',
+const friendSlice = createSlice({
+    name: 'friends',
     initialState: {
         friendsList: [],
         friendRequestsList: []
@@ -31,7 +31,7 @@ const authSlice = createSlice({
     }
 });
 
-const { actions, reducer } = authSlice;
+const { actions, reducer } = friendSlice;
 const { addFriend, removeFriend, resetFriendsList, addFriendRequest, removeFriendRequest, resetFriendRequestsList } = actions;
 
 export { addFriend, removeFriend, resetFriendsList, addFriendRequest, removeFriendRequest, resetFriendRequestsList };

@@ -53,6 +53,7 @@ export const Journal = (props) => {
 
     const ACTIVITIES = [
         {
+            id: "1",
             type: 'braintraining',
         },
     ];

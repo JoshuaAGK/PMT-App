@@ -27,10 +27,9 @@ export function getUserDocument() {
 }
 
 async function getUserProperty(prop) {
-    let result = await getUserDocument().get().then(query => {
+    return await getUserDocument().get().then(query => {
         return query.get(prop);
     });
-    return result;
 }
 
 export async function getUserStreak() {
@@ -41,13 +40,13 @@ export async function incrementStreak() {
     let streak = await getUserStreak();
     let updateData = {};
     updateData[STREAK] = streak + 1;
-    getUserDocument().update(updateData);
+    await getUserDocument().update(updateData);
 }
 
 export async function resetStreak() {
     let updateData = {};
     updateData[STREAK] = 0;
-    getUserDocument().update(updateData);
+    await getUserDocument().update(updateData);
 }
 
 export async function getUserLastLogIn() {
@@ -61,7 +60,7 @@ export async function getUserLastLogIn() {
 export async function updateLastLogIn() {
     let updateData = {};
     updateData[LAST_LOG_IN] = new Date();
-    getUserDocument().update(updateData);
+    await getUserDocument().update(updateData);
 }
 
 export async function getUserBalance() {
@@ -71,13 +70,13 @@ export async function getUserBalance() {
 export async function incrementBalance(currentBalance, amount) {
     let updateData = {};
     updateData[BALANCE] = currentBalance + amount;
-    getUserDocument().update(updateData);
+    await getUserDocument().update(updateData);
 }
 
 export async function decrementBalance(currentBalance, amount) {
     let updateData = {};
     updateData[BALANCE] = currentBalance - amount;
-    getUserDocument().update(updateData);
+    await getUserDocument().update(updateData);
 }
 
 export async function getPremiumStatus() {
@@ -87,26 +86,26 @@ export async function getPremiumStatus() {
 export async function becomePremium() {
     let updateData = {};
     updateData[PREMIUM] = true;
-    getUserDocument().update(updateData);
+    await getUserDocument().update(updateData);
 }
 
 export async function leavePremium() {
     let updateData = {};
     updateData[PREMIUM] = false;
-    getUserDocument().update(updateData);
+    await getUserDocument().update(updateData);
 }
 
 export async function addFriend(friendName) {
     let userQuery = await db.collection(USER_COLLECTION).where('displayName', '==', friendName).get();
     let userID;
-    if (userQuery.size == 1) {
+    if (userQuery.size === 1) {
         userQuery.forEach(doc => userID = doc.id);
     }
     if(userID === firebase.auth().currentUser.uid) return { success: false, message: 'You cannot add yourself as a friend'};
     if(userID){
-        getUserCollection('friends').doc(userID).set({status: 'pending'});
-        db.collection(USER_COLLECTION).doc(userID).collection('friend_requests')
-        .doc(firebase.auth().currentUser.uid).set({status: 'pending'});
+        await getUserCollection('friends').doc(userID).set({status: 'pending'});
+        await db.collection(USER_COLLECTION).doc(userID).collection('friend_requests')
+            .doc(firebase.auth().currentUser.uid).set({status: 'pending'});
         return { success: true };
     }else{
         return { success: false, message: 'User does not exist'};
@@ -154,14 +153,18 @@ export async function getFriendRequests(){
 }
 
 export async function acceptFriendRequest(friendID){
-    getUserCollection('friends').doc(friendID).set({status: 'accepted'});
-    getUserCollection('friend_requests').doc(friendID).delete();
-    db.collection(USER_COLLECTION).doc(friendID).collection('friends')
-    .doc(firebase.auth().currentUser.uid).set({status: 'accepted'});
+    await getUserCollection('friends').doc(friendID).set({status: 'accepted'});
+    await getUserCollection('friend_requests').doc(friendID).delete();
+    await db.collection(USER_COLLECTION).doc(friendID).collection('friends')
+        .doc(firebase.auth().currentUser.uid).set({status: 'accepted'});
 }
 
 export async function removeFriend(friendID){
-    getUserCollection('friends').doc(friendID).delete();
-    db.collection(USER_COLLECTION).doc(friendID).collection('friends')
-    .doc(firebase.auth().currentUser.uid).delete();
+    await getUserCollection('friends').doc(friendID).delete();
+    await db.collection(USER_COLLECTION).doc(friendID).collection('friends')
+        .doc(firebase.auth().currentUser.uid).delete();
+}
+
+export async function attachListenerAndDo(userId, action) {
+
 }
