@@ -5,20 +5,18 @@ import convo from './convo.json';
 import { attachMessageListenerAndDo } from '../../src/firebase/firestore/firestoreService';
 import { useSelector } from 'react-redux';
 
-
-
 export const Conversation = (props) => {
-  const [conversation, setConversation ] = useState([]);
-  const authSelector = useSelector(state => state.auth);
+  const [conversation, setConversation] = useState([]);
+  const authSelector = useSelector((state) => state.auth);
 
-  attachMessageListenerAndDo(authSelector.currentUser.uid,props.friend.id,(snapshot) => {
-    //conversation.push(snapshot);
-    console.log(conversation);
-    let wholeConversation = [...conversation, snapshot];
-    console.log(wholeConversation);
-    //console.log(conversation);
-    setConversation(wholeConversation);
-  },[]);
+  attachMessageListenerAndDo(
+    authSelector.currentUser.uid,
+    props.friend.id,
+    (snapshot) => {
+      setConversation((prevConversation) => [...prevConversation, snapshot]);
+    },
+    []
+  );
 
   // console.log(conversation);
   return (
@@ -33,9 +31,15 @@ export const Conversation = (props) => {
         const contents = message['contents'];*/
 
         return (
-          <Message key={index} me={authSelector.currentUser.uid} sender={sender} contents={contents} timestamp={time}/>
+          <Message
+            key={index}
+            me={authSelector.currentUser.uid}
+            sender={sender}
+            contents={contents}
+            timestamp={time}
+          />
         );
-    })}
+      })}
     </View>
   );
 };
