@@ -284,14 +284,15 @@ export async function attachListenerAndDo(
 export async function attachMessageListenerAndDo(
   userId1,
   userId2,
-  action
+  action,
+  deps
 ) {
   useEffect(() => {
     if (!userId1) return;
     if (!userId2) return;
 
     let conversationID;
-    if( userId1 < userId2 ) conversationID = userId1 + ':' + userId2;
+    if ( userId1 < userId2 ) conversationID = userId1 + ':' + userId2;
     else conversationID = userId2 + ':' + userId1;
 
     const subscriber = firebase
@@ -306,5 +307,27 @@ export async function attachMessageListenerAndDo(
     .database()
       .ref('/conversations/'+conversationID)
       .off('child_added', subscriber);
-  });
+  },deps);
+}
+
+export async function sendMessage(userId, message) {
+  let conversationID;
+  const myUserId = firebase.auth().currentUser.uid;
+
+  if ( myUserId < userId ) conversationID =  myUserId + ':' + userId;
+  else  conversationID =  userId + ':' + myUserId;
+
+  const currentTime = new Date().getTime();
+  console.log('sending message to conversation '+conversationID);
+
+
+  let conversationObject = {
+    time: currentTime,
+    sender: myUserId,
+    contents: message
+  };
+  
+  await firebase.database().ref('/conversations/'+conversationID).push(conversationObject);
+  //const conversationRef = await firebase.database().ref('/conversations').push(conversationObject);
+  //await firebase.database().ref('/conversations').update(conversationObject);
 }

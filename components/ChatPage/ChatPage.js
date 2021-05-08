@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {  KeyboardAvoidingView, ScrollView, Text, TextInput, Pressable, Platform } from 'react-native';
+import { useSelector } from 'react-redux';
+import { attachMessageListenerAndDo, sendMessage } from '../../src/firebase/firestore/firestoreService';
 import Conversation from '../Conversation';
 import styles from './styles';
 
 export const ChatPage = (props) => {
-  let addFriendInput;
-
+  let sendMessageInput;
   let scrollView;
 
+  const onMessageSend = async (message) => {
+    await sendMessage(props.friend.id, message);
+  };
+
+  let changingText = '';
   return (
     <KeyboardAvoidingView
     behavior={Platform.OS == 'android' ? 'padding' : 'height'}
@@ -18,7 +24,7 @@ export const ChatPage = (props) => {
         ref={ref => {scrollView = ref;}}
         onContentSizeChange={() => scrollView.scrollToEnd({animated: true})}
       >
-        <Conversation friend={props.friend}/>
+        <Conversation friend={props.friend} />
       </ScrollView>
       <TextInput
         style={styles.chatInput}
@@ -26,20 +32,18 @@ export const ChatPage = (props) => {
         //returnKeyType="search"
         multiline={true}
         clearButtonMode="while-editing"
-        onSubmitEditing={async () => {
-          //addFriendInput.clear();
-          //await addElement(event.nativeEvent.text);
-          //onRefresh();
-        }}
+        onChangeText={(text) => {changingText = text;}}
         ref={(input) => {
-          addFriendInput = input;
+          sendMessageInput = input;
         }}
       />
       <Pressable
         style={styles.chatSendButton}
-        onPress={() => {
-          addFriendInput.blur();
-          addFriendInput.clear();
+        onPress={ async () => {
+          sendMessageInput.blur();
+          sendMessageInput.clear();
+          await onMessageSend(changingText);
+          changingText = '';
         }}>
         <Text style={styles.chatSendButtonText}>Send</Text>
       </Pressable>
