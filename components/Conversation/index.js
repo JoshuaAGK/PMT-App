@@ -2,8 +2,17 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import styles from './styles';
 import convo from './convo.json';
+import { attachMessageListenerAndDo } from '../../src/firebase/firestore/firestoreService';
+import { useSelector } from 'react-redux';
+
+
 
 export const Conversation = (props) => {
+  const authSelector = useSelector(state => state.auth);
+  attachMessageListenerAndDo(authSelector.currentUser.uid,props.friend.id,(snapshot) => {
+    console.log(snapshot);
+  });
+
   return (
     <View style={styles.container}>
       {convo.map((message, index) => {

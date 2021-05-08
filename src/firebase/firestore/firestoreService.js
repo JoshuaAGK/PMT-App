@@ -280,3 +280,31 @@ export async function attachListenerAndDo(
     return () => subscriber();
   }, deps);
 }
+
+export async function attachMessageListenerAndDo(
+  userId1,
+  userId2,
+  action
+) {
+  useEffect(() => {
+    if (!userId1) return;
+    if (!userId2) return;
+
+    let conversationID;
+    if( userId1 < userId2 ) conversationID = userId1 + ':' + userId2;
+    else conversationID = userId2 + ':' + userId1;
+
+    const subscriber = firebase
+      .database()
+      .ref('/conversations/'+conversationID)
+      .on('child_added', async (snapshot) => {
+        await action(snapshot);
+      });
+
+    // Stop listening for updates when no longer required
+    return () => firebase
+    .database()
+      .ref('/conversations/'+conversationID)
+      .off('child_added', subscriber);
+  });
+}

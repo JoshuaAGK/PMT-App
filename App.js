@@ -25,10 +25,10 @@ const SOCIAL = 'social';
 const SHOP = 'shop';
 
 // Temporary solution
-var tempVarNameOfFriend = '';
+var tempVarFriend = {displayName: 'N/A'};
 
-function setFriendName(x) {
-    tempVarNameOfFriend = x;
+function setFriend(x) {
+    tempVarFriend = x;
 }
 
 function LogInScreen({navigation}) {
@@ -74,7 +74,7 @@ function socialHomeScreen({navigation}) {
     let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
     return (
         <View style={styles.container}>
-            <Social nav={navigation} loadFriendData={setFriendName}/>
+            <Social nav={navigation} loadFriendData={setFriend}/>
             {!premiumStatus &&
             <Advertisement type="banner" content="ADVERTISEMENT"/>
             }
@@ -88,7 +88,7 @@ function socialChatScreen({navigation}) {
     let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
     return (
         <View style={styles.container}>
-            <ChatPage friendName={tempVarNameOfFriend}/>
+            <ChatPage friend={tempVarFriend}/>
             {/*{!premiumStatus &&*/}
             {/*<Advertisement type="banner" content="ADVERTISEMENT"/>*/}
             {/*}*/}
@@ -102,7 +102,7 @@ function socialProfileScreen({navigation}) {
     let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
     return (
         <View style={styles.container}>
-            <Profile friendName={tempVarNameOfFriend}/>
+            <Profile friend={tempVarFriend}/>
             {!premiumStatus &&
             <Advertisement type="banner" content="ADVERTISEMENT"/>
             }
@@ -128,7 +128,7 @@ function SocialScreen({navigation}) {
                           component={socialHomeScreen}/>
             <Stack.Screen name="socialChatScreen" options={{
                 headerShown: true,
-                title: tempVarNameOfFriend,
+                title: tempVarFriend.displayName,
                 headerRight: () => (button),
                 headerRightContainerStyle: {
                     marginTop: 5,
@@ -142,7 +142,7 @@ function SocialScreen({navigation}) {
             }}
                           component={socialChatScreen}/>
             <Stack.Screen name="socialProfileScreen"
-                          options={{headerShown: true, title: tempVarNameOfFriend + '\'s Profile'}}
+                          options={{headerShown: true, title: tempVarFriend.displayName + '\'s Profile'}}
                           component={socialProfileScreen}/>
         </Stack.Navigator>
     );

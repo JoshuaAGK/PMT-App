@@ -16,7 +16,7 @@ const FriendsList = (props) => {
           <Pressable key={index}
           onPress={() => {
             props.nav.navigate('socialChatScreen');
-            props.loadFriendData(friend.displayName);
+            props.loadFriendData(friend);
           }}
         >
           <Text style={[styles.friend, friend.status === 'pending' ? styles.friendPending : null]}>{friend.displayName} {friend.status === 'pending' ? '(pending)' : null}</Text>

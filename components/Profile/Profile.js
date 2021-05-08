@@ -23,16 +23,18 @@ async function removeFriend(dispatch, friendsSelector, friendName, nav){
 }
 
 export const Profile = (props) => {
+
+    const friendName = props.friend.displayName;
     const [skinTone, setSkinTone] = useState();
     const [shirtColour, setShirtColour] = useState();
 
     useEffect(() => {
-        getUserPropertyByDisplayName(props.friendName, SKIN_TONE).then((skinTone) => {
+        getUserPropertyByDisplayName(friendName, SKIN_TONE).then((skinTone) => {
             setSkinTone(skinTone);
         });
     }, [setSkinTone]);
     useEffect(() => {
-        getUserPropertyByDisplayName(props.friendName, SHIRT_COLOUR).then((shirtColour) => {
+        getUserPropertyByDisplayName(friendName, SHIRT_COLOUR).then((shirtColour) => {
             setShirtColour(shirtColour);
         });
     }, [setShirtColour]);
@@ -68,11 +70,11 @@ export const Profile = (props) => {
             <View style={avatarStyles.avatarUpper}>
                 {avatarContent}
             </View>
-            <Text style={styles.profileNameText}><Text>{props.friendName}</Text></Text>
+            <Text style={styles.profileNameText}><Text>{friendName}</Text></Text>
             <View style={styles.container}>
                 <Pressable
                     style={styles.button}
-                    onPress={async () => {await removeFriend(dispatch, friendsSelector, props.friendName, navigation);}}>
+                    onPress={async () => {await removeFriend(dispatch, friendsSelector, friendName, navigation);}}>
                         <Text style={styles.buttonText}>Remove from friends list</Text>
                 </Pressable>
             </View>
