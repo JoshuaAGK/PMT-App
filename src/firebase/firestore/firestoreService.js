@@ -1,6 +1,6 @@
 import firebase from '../config';
 import { useEffect } from 'react';
-import { CRIMSON, MID } from '../../../components/CustomiseAvatar/avatar';
+import * as Constants from '../../../components/CustomiseAvatar/avatar';
 
 const USER_COLLECTION = 'users';
 const DISPLAY_NAME = 'displayName';
@@ -12,12 +12,16 @@ const PREMIUM = 'premium';
 const STREAK = 'streak';
 export const SKIN_TONE = 'skinTone';
 export const SHIRT_COLOUR = 'shirtColour';
+const SKINS = 'skins';
+const SHIRTS = 'shirts';
 
 const DEFAULT = {};
 DEFAULT[BALANCE] = 0;
 DEFAULT[PREMIUM] = false;
-DEFAULT[SKIN_TONE] = MID;
-DEFAULT[SHIRT_COLOUR] = CRIMSON;
+DEFAULT[SKIN_TONE] = Constants.MID;
+DEFAULT[SHIRT_COLOUR] = Constants.CRIMSON;
+DEFAULT[SKINS] = [Constants.LIGHT, Constants.LIGHTER, Constants.MID, Constants.DARK, Constants.DARKER];
+DEFAULT[SHIRTS] = [Constants.CRIMSON];
 
 const db = firebase.firestore();
 
@@ -32,6 +36,7 @@ export function setUserProfileData(user) {
     premium: DEFAULT[PREMIUM],
     skinTone: DEFAULT[SKIN_TONE],
     shirtColour: DEFAULT[SHIRT_COLOUR],
+    shirts: DEFAULT[SHIRTS]
   });
 }
 
@@ -70,6 +75,7 @@ async function getUserProperty(prop) {
   if (result) {
     return result;
   }
+  updateUserProperty(prop, DEFAULT[prop]);
   return DEFAULT[prop];
 }
 
@@ -142,6 +148,24 @@ export async function getShirtColour() {
 
 export async function setShirtColour(colour) {
   await updateUserProperty(SHIRT_COLOUR, colour);
+}
+
+export async function getSkins() {
+    return await getUserProperty(SKINS);
+}
+
+export async function getShirts() {
+    return await getUserProperty(SHIRTS);
+}
+
+export async function addSkin(skin) {
+    console.log(skin);
+    updateUserProperty(SKINS, firebase.firestore.FieldValue.arrayUnion(skin));
+}
+
+export async function addShirt(shirt) {
+    console.log(skin);
+    updateUserProperty(SHIRTS, firebase.firestore.FieldValue.arrayUnion(shirt))
 }
 
 export async function findUser(userID) {
