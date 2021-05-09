@@ -1,13 +1,14 @@
 import React from 'react';
 import { Text, View, Image, Pressable } from 'react-native';
-import { getShirtColour, getSkinTone, setShirtColour, setSkinTone } from '../../src/firebase/firestore/firestoreService';
+import { getShirtColour, getSkinTone, setShirtColour, setSkinTone, getShirts, getSkins } from '../../src/firebase/firestore/firestoreService';
 import styles from './styles';
 import * as Constants from './avatar';
 
 class CustomiseAvatar extends React.Component {
     state = {
         skinTone: null,
-        shirtColour: null
+        shirtColour: null,
+        shirts: null
     };
 
     constructor(props) {
@@ -26,7 +27,17 @@ class CustomiseAvatar extends React.Component {
             shirtColour => {
                 this.setState({shirtColour: shirtColour});
             }
-        )
+        );
+        getShirts().then(
+            shirts => {
+                this.setState({shirts: shirts});
+            }
+        );
+        getSkins().then(
+            skins => {
+                this.setState({skins: skins});
+            }
+        );
     }
 
     updateSkinTone(value) {
@@ -67,30 +78,49 @@ class CustomiseAvatar extends React.Component {
             );
         }
 
+        let skinsContent;
+        if (!this.state.skins) {
+            skinsContent = (
+                <Text>Loading...</Text>
+            );
+        } else {
+            console.log(this.state.skins);
+            skinsContent = this.state.skins.map((skin, index) => {
+                return (
+                    <AvatarItem propFunction={this.updateSkinTone} all={Constants.SKIN_TONES} value={skin} key={index}/>
+                );
+            });
+        }
+
+        let shirtsContent;
+        if (!this.state.shirts) {
+            shirtsContent = (
+                <Text>Loading...</Text>
+            );
+        } else {
+            shirtsContent = this.state.shirts.map((shirt, index) => {
+                return (
+                    <AvatarItem propFunction={this.updateShirtColour} all={Constants.SHIRT_COLOURS} value={shirt} key={index}/>
+                );
+            });
+        }
+
         return (
-        <View style={styles.customiseAvatar}>
-            <View style={styles.avatarUpper}>
-                {avatarContent}
+            <View style={styles.customiseAvatar}>
+                <View style={styles.avatarUpper}>
+                    {avatarContent}
+                </View>
+                <View style={styles.avatarLower}>
+                <Text style={styles.itemHeader}>Skin tone</Text>
+                <View style={styles.itemGrid}>
+                    {skinsContent}
+                </View>
+                <Text style={styles.itemHeader}>Shirt colour</Text>
+                <View style={styles.itemGrid}>
+                    {shirtsContent}
+                </View>
+                </View>
             </View>
-            <View style={styles.avatarLower}>
-            <Text style={styles.itemHeader}>Skin tone</Text>
-            <View style={styles.itemGrid}>
-                <AvatarItem propFunction={this.updateSkinTone} all={Constants.SKIN_TONES} value={Constants.LIGHTER}/>
-                <AvatarItem propFunction={this.updateSkinTone} all={Constants.SKIN_TONES} value={Constants.LIGHT}/>
-                <AvatarItem propFunction={this.updateSkinTone} all={Constants.SKIN_TONES} value={Constants.MID}/>
-                <AvatarItem propFunction={this.updateSkinTone} all={Constants.SKIN_TONES} value={Constants.DARK}/>
-                <AvatarItem propFunction={this.updateSkinTone} all={Constants.SKIN_TONES} value={Constants.DARKER}/>
-            </View>
-            <Text style={styles.itemHeader}>Shirt colour</Text>
-            <View style={styles.itemGrid}>
-                <AvatarItem propFunction={this.updateShirtColour} all={Constants.SHIRT_COLOURS} value={Constants.CRIMSON}/>
-                <AvatarItem propFunction={this.updateShirtColour} all={Constants.SHIRT_COLOURS} value={Constants.FOREST_GREEN}/>
-                <AvatarItem propFunction={this.updateShirtColour} all={Constants.SHIRT_COLOURS} value={Constants.BLUE}/>
-                <AvatarItem propFunction={this.updateShirtColour} all={Constants.SHIRT_COLOURS} value={Constants.SKY_BLUE}/>
-                <AvatarItem propFunction={this.updateShirtColour} all={Constants.SHIRT_COLOURS} value={Constants.DARK_ORANGE}/>
-            </View>
-            </View>
-        </View>
         );
     }
 }
