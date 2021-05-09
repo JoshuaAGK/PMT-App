@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
     customiseAvatar: {
         width: "100%",
     },
+    avatarShop: {
+        marginBottom: 10
+    },
     avatarUpper: {
         width: "100%",
         height: Dimensions.get('window').width / 4,

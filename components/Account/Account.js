@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, ScrollView } from 'react-native';
+import { Text, ScrollView, View } from 'react-native';
 import mainStyles from '../../styles/styles';
 import Advertisement from '../Advertisement/Advertisement';
-import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
 import UpperContents from '../UpperContents/UpperContents';
-import AlarmItem from '../AlarmItem/AlarmItem';
+import CustomiseAvatar from '../CustomiseAvatar';
+
 
 export const Account = (props) => {
   return (
@@ -13,13 +13,14 @@ export const Account = (props) => {
       style={mainStyles.mainPage}
     >
       <UpperContents content="logout" />
-      <Text style={mainStyles.bigText}>Alarm</Text>
-      <AlarmItem />
+
       { !props.premium &&
         <Advertisement type="inline" content="ADVERTISEMENT" />
       }
       <Text style={mainStyles.bigText}>Customise Avatar</Text>
-      <InlineBigComponent type="customiseAvatar" />
+      <View style={[mainStyles.platformShadow, mainStyles.lowestElementOnPageToGiveItABottomMarginBecauseAndroidIsWeirdAndDoesntLikeShadowsForSomeReason]}>
+        <CustomiseAvatar />
+      </View>
     </ScrollView>
   );
 };

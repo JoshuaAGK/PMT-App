@@ -10,7 +10,7 @@ import { addFriend, removeFriendRequest } from '../../src/features/friends/frien
 
 const FriendsList = (props) => {
   return (
-    <View style={styles.bigContainer}>
+    <View style={[styles.bigContainer, mainStyles.platformShadow]}>
       {props.listOfFriends.length > 0 && props.listOfFriends.map((friend, index) => {
         return (
           <Pressable key={index}
@@ -46,7 +46,7 @@ export const FriendRequestsList = (props) => {
     props.dispatch(removeFriendRequest(friend));
   };
   return (
-    <View style={styles.bigContainer}>
+    <View style={[styles.bigContainer, mainStyles.platformShadow]}>
       {props.listOfFriendRequests.length > 0 && props.listOfFriendRequests.map((friend, index) => {
         return (
           <View

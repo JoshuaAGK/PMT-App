@@ -16,14 +16,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: 50/4,
         marginTop: 20,
-        shadowColor: "black",
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 15,
-        marginBottom: 10
+        overflow: "hidden"
     },
     fullImage: {
         width: '100%',

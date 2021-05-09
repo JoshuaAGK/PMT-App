@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
     avatarUpper: {
         width: "100%",
         height: Dimensions.get('window').width / 4,
-        marginBottom: 40,
+        marginTop: 20,
+        marginBottom: 20,
         display: "flex",
         alignItems: "center"
     },
@@ -44,7 +45,8 @@ const styles = StyleSheet.create({
     },
     itemHeader: {
         fontSize: scaleFontSize(24),
-        fontWeight: "500"
+        fontWeight: "500",
+        left: (Dimensions.get('window').width * 0.9 - ((Dimensions.get('window').width / 4) * 3)) / 4
     },
     itemGrid: {
         width: "100%",

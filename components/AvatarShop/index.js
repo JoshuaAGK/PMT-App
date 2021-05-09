@@ -5,8 +5,8 @@ import { decrementBalance, addSkin, addShirt } from '../../src/firebase/firestor
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromBalance } from '../../src/features/auth/authSlice';
 import { current } from 'immer';
+import mainStyles from '../../styles/styles';
 
-// This is set up for a single premium skin & shirt but can be easily modified to allow for multiple different cosmetics if needed
 
 var purchasedSkin = false
 var purchasedShirt = false
@@ -55,7 +55,7 @@ class AvatarShop extends React.Component {
     });
 
     return (
-        <View style={styles.avatarShop}>
+        <View style={[styles.avatarShop, mainStyles.platformShadow]}>
             <View style={styles.itemGrid}>
                 {shopItems}
             </View>

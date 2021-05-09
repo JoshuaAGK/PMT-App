@@ -111,14 +111,14 @@ class CustomiseAvatar extends React.Component {
                     {avatarContent}
                 </View>
                 <View style={styles.avatarLower}>
-                <Text style={styles.itemHeader}>Skin tone</Text>
-                <View style={styles.itemGrid}>
-                    {skinsContent}
-                </View>
-                <Text style={styles.itemHeader}>Shirt colour</Text>
-                <View style={styles.itemGrid}>
-                    {shirtsContent}
-                </View>
+                    <Text style={styles.itemHeader}>Skin tone</Text>
+                    <View style={styles.itemGrid}>
+                        {skinsContent}
+                    </View>
+                    <Text style={styles.itemHeader}>Shirt colour</Text>
+                    <View style={styles.itemGrid}>
+                        {shirtsContent}
+                    </View>
                 </View>
             </View>
         );

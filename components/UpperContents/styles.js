@@ -11,7 +11,9 @@ const styles = StyleSheet.create({
         width: "100%",
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        paddingLeft: "5%",
+        paddingRight: "5%"
     },
     dateText: {
         color: "#AAA",

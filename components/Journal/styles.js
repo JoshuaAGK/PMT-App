@@ -10,21 +10,18 @@ const styles = StyleSheet.create({
     journalInput: {
         marginTop: 15,
         marginBottom: 30,
-        width: '100%',
+        
         backgroundColor: 'white',
         borderRadius: 50/4,
         padding: 50/4,
-        minHeight: 100,
+        
         paddingTop: 10,
         paddingBottom: 10,
-        elevation: 4,
-        shadowColor: 'black',
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 15,
+
+    },
+    boxTest: {
+        width: '100%',
+        
     },
     journalHeader: {
         width: '100%',
@@ -36,7 +33,7 @@ const styles = StyleSheet.create({
     },
     calendarButton: {
         flexWrap: 'nowrap',
-        width: '100%'
+        width: '100%',
     },
     dailyActivityList: {
         width: "100%",

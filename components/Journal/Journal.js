@@ -57,7 +57,6 @@ export const Journal = (props) => {
             type: 'braintraining',
         },
     ];
-
     return (
         <ScrollView
             showsVerticalScrollIndicator={false}
@@ -95,18 +94,21 @@ export const Journal = (props) => {
                       isSubmitting
                   }) => (
                     <View style={mainStyles.container}>
-                        <EmotionTrackerInput/>
+                        <EmotionTrackerInput style={mainStyles.platformShadow}/>
+
                         <TextInput
-                            style={journalStyles.journalInput}
+                            style={[journalStyles.journalInput, mainStyles.platformShadow]}
                             placeholder="Journal entry for today"
                             multiline={true}
                             onChangeText={handleChange('text')}
                             onBlur={handleBlur('text')}
                             value={values.text}
                         />
+
+
                         <View style={mainStyles.buttonErrorContainer}>
                             <TouchableOpacity
-                            style={[mainStyles.button, !isValid || !dirty || isSubmitting ? mainStyles.buttonDisabled : null]}
+                            style={[mainStyles.button, mainStyles.leftMargin, !isValid || !dirty || isSubmitting ? mainStyles.buttonDisabled : null]}
                             disabled={!isValid || !dirty || isSubmitting}
                             onPress={handleSubmit}>
                                 <Text style={mainStyles.buttonText}>Save</Text>
@@ -126,7 +128,7 @@ export const Journal = (props) => {
             }
             <Text style={mainStyles.bigText}>Daily Activity</Text>
 
-            <View style={journalStyles.dailyActivityList}>
+            <View style={[journalStyles.dailyActivityList, mainStyles.platformShadow]}>
                 {
                     ACTIVITIES.map((el, index) => (
                         renderItem(el, index)

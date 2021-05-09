@@ -121,7 +121,7 @@ export const Social = (props) => {
       <UpperContents content="none" />
       <Text style={mainStyles.bigText}>Add Friend</Text>
       <TextInput
-        style={mainStyles.textInput}
+        style={[mainStyles.textInput, mainStyles.platformShadow]}
         placeholder="Friend's username"
         returnKeyType="search"
         clearButtonMode="while-editing"

@@ -46,7 +46,7 @@ export const EmotionTracker = ({ handleClick }) => {
         );
     });
     return (
-        <View style={emotionStyles.emotionContainer}>
+        <View style={[emotionStyles.emotionContainer, mainStyles.platformShadow]}>
             {emotions}
         </View>
       );

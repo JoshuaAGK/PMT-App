@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { Platform, StyleSheet, Dimensions } from 'react-native';
 
 const scaleFontSize = (fontSize) => {
     const ratio = fontSize / 375;
@@ -7,15 +7,40 @@ const scaleFontSize = (fontSize) => {
 }
 
 const styles = StyleSheet.create({
-    mainPage: {
+    platformShadow: {
         width: "90%",
+        alignSelf: "center",
+        backgroundColor: 'white',
+        borderRadius: 50/4,
+        ...Platform.select({
+            ios: {
+                shadowColor: "black",
+                shadowOffset: {
+                    width: 0,
+                    height: 5,
+                },
+                shadowOpacity: 0.2,
+                shadowRadius: 15,
+            },
+            default: {
+                elevation: 4,
+            }
+        })
+    },
+    lowestElementOnPageToGiveItABottomMarginBecauseAndroidIsWeirdAndDoesntLikeShadowsForSomeReason: {
+        marginBottom: 10
+    },
+    mainPage: {
+        width: "100%",
         overflow: "visible",
         marginTop: "15%",
-        marginBottom: "5%"
+        marginBottom: "5%",
     },
+
     bigText: {
         fontSize: scaleFontSize(30),
-        fontWeight: "500"
+        fontWeight: "500",
+        marginLeft: "5%"
     },
     textInput: {
         width: "100%",
@@ -48,13 +73,17 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 15,
     },
+    leftMargin: {
+        marginLeft: "5%"
+    },
     buttonContainer: {
+        paddingRight: "5%"
     },
     button: {
         padding: 10,
         width: "30%",
         backgroundColor: 'limegreen',
-        borderRadius: 5
+        borderRadius: 5,
     },
     buttonDisabled: {
         backgroundColor: '#80d180'

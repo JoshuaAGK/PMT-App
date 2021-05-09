@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import styles from './styles';
+import mainStyles from '../../styles/styles';
 
 const advertBanner = require('../../assets/adverts/placeholder.gif');
 
@@ -13,7 +14,7 @@ const Advertisement = ({ type, content }) => {
     );
   } else {
     return (
-      <View style={styles.normal}>
+      <View style={[styles.normal, mainStyles.platformShadow]}>
         <Image source={advertBanner} style={styles.image} />
       </View>
     );
