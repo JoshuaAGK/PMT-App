@@ -159,12 +159,10 @@ export async function getShirts() {
 }
 
 export async function addSkin(skin) {
-    console.log(skin);
     updateUserProperty(SKINS, firebase.firestore.FieldValue.arrayUnion(skin));
 }
 
 export async function addShirt(shirt) {
-    console.log(skin);
     updateUserProperty(SHIRTS, firebase.firestore.FieldValue.arrayUnion(shirt))
 }
 
@@ -181,14 +179,17 @@ export async function addFriend(friendName) {
   if (userQuery.size === 1) {
     userQuery.forEach((doc) => (userID = doc.id));
   }
-  if (userID === firebase.auth().currentUser.uid)
-    return {
-      success: false,
-      message: 'You cannot add yourself as a friend',
-    };
+  if (userID === firebase.auth().currentUser.uid) return {
+    success: false,
+    message: 'You cannot add yourself as a friend',
+  };
   let myFriend = await getUserCollection('friends').doc(userID).get();
   if (myFriend.exists) {
     return { success: false, message: 'User is already your friend' };
+  }
+  let pendingRequest = await getUserCollection('friend_requests').doc(userID).get();
+  if (pendingRequest.exists) {
+    return { success: false, message: 'The user has already sent you a friend request.' };
   }
   if (userID) {
     await getUserCollection('friends').doc(userID).set({ status: 'pending' });
@@ -342,8 +343,6 @@ export async function sendMessage(userId, message) {
   else  conversationID =  userId + ':' + myUserId;
 
   const currentTime = new Date().getTime();
-  console.log('sending message to conversation '+conversationID);
-
 
   let conversationObject = {
     time: currentTime,
@@ -352,6 +351,4 @@ export async function sendMessage(userId, message) {
   };
   
   await firebase.database().ref('/conversations/'+conversationID).push(conversationObject);
-  //const conversationRef = await firebase.database().ref('/conversations').push(conversationObject);
-  //await firebase.database().ref('/conversations').update(conversationObject);
 }

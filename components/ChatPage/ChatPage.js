@@ -10,6 +10,7 @@ export const ChatPage = (props) => {
   let scrollView;
 
   const onMessageSend = async (message) => {
+    if(message === '') return;
     await sendMessage(props.friend.id, message);
   };
 
