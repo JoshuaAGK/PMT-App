@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, Pressable, useState } from 'react-native';
 import styles from './styles';
-import dictionary from './dictionary.json'
+import dictionary from './dictionary.json';
+import mainStyles from '../../../styles/styles';
 
 const DICLENGTH = Object.keys(dictionary).length
 var index = -1
@@ -29,7 +30,6 @@ function updateWordsAnswers() {
       answer1 = dictionary[Object.keys(dictionary)[index]]["incorrect0"]
       answer2 = dictionary[Object.keys(dictionary)[index]]["incorrect1"]
       answer3 = dictionary[Object.keys(dictionary)[index]]["correct"]
-      answer4 = dictionary[Object.keys(dictionary)[index]]["incorrect2"]
       break;
     case 3:
       answer1 = dictionary[Object.keys(dictionary)[index]]["incorrect0"]
@@ -83,7 +83,7 @@ class brainTraining extends React.Component {
       return (
         <View style={styles.brainTraining}>
           <Text style={styles.titleText}>Brain Training</Text>
-          <Pressable style={styles.beginGameButton} onPress={() => this.forceUpdateHandler()}>
+          <Pressable style={[mainStyles.platformShadow, styles.beginGameButton]} onPress={() => this.forceUpdateHandler()}>
             <Text style={styles.beginGameText}>Begin game!</Text>
           </Pressable>
         </View>

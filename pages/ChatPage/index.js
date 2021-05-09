@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import {  KeyboardAvoidingView, ScrollView, Text, TextInput, Pressable, Platform } from 'react-native';
-import { useSelector } from 'react-redux';
-import { attachMessageListenerAndDo, sendMessage } from '../../src/firebase/firestore/firestoreService';
-import Conversation from '../Conversation';
+import React from 'react';
+import { KeyboardAvoidingView, ScrollView, Text, TextInput, Pressable, Platform } from 'react-native';
+import Conversation from '../../components/Conversation';
 import styles from './styles';
 
 export const ChatPage = (props) => {

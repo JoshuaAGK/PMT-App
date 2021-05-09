@@ -1,18 +1,16 @@
-import {StatusBar} from 'expo-status-bar';
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import {StyleSheet, View, Button, LogBox, Pressable, Text} from 'react-native';
-import {useAsync} from 'react-async';
-import {Provider, useSelector} from 'react-redux';
-import {Advertisement, Journal, Account, Social, Shop, LogIn, Calendar, Registration} from './components';
-import {NavigationContainer, StackActions} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { StyleSheet, View, LogBox, Pressable, Text } from 'react-native';
+import { Provider, useSelector } from 'react-redux';
+import { Account, ChatPage, Journal, Shop, Social } from './pages'
+import { Advertisement, LogIn, Calendar, Registration } from './components';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { capitalize } from './utils/StringUtils';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {capitalize} from './utils/StringUtils';
-import {ChatPage} from './components/ChatPage/ChatPage';
 import store from './src/features/store/store';
-import Profile from './components/Profile/Profile';
-import {Touchable} from 'react-native-web';
+import Profile from './components/Profile';
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -89,9 +87,6 @@ function socialChatScreen({navigation}) {
     return (
         <View style={styles.container}>
             <ChatPage friend={tempVarFriend}/>
-            {/*{!premiumStatus &&*/}
-            {/*<Advertisement type="banner" content="ADVERTISEMENT"/>*/}
-            {/*}*/}
             <StatusBar style="auto"/>
         </View>
     );

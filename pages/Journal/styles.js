@@ -10,14 +10,11 @@ const styles = StyleSheet.create({
     journalInput: {
         marginTop: 15,
         marginBottom: 30,
-        
         backgroundColor: 'white',
         borderRadius: 50/4,
         padding: 50/4,
-        
         paddingTop: 10,
         paddingBottom: 10,
-
     },
     boxTest: {
         width: '100%',
@@ -36,19 +33,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     dailyActivityList: {
-        width: "100%",
-        backgroundColor: "white",
-        borderRadius: 50/4,
         padding: 50/4,
-        elevation: 4,
-        shadowColor: "black",
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 15,
-        marginBottom: 10
     },
     flatList: {
         width: "100%",

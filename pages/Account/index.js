@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text, ScrollView, View } from 'react-native';
 import mainStyles from '../../styles/styles';
-import Advertisement from '../Advertisement/Advertisement';
-import UpperContents from '../UpperContents/UpperContents';
-import CustomiseAvatar from '../CustomiseAvatar';
+import Advertisement from '../../components/Advertisement';
+import UpperContents from '../../components/UpperContents';
+import CustomiseAvatar from '../../components/CustomiseAvatar';
 
 
 export const Account = (props) => {

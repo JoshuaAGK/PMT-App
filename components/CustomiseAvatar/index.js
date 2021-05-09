@@ -3,6 +3,7 @@ import { Text, View, Image, Pressable } from 'react-native';
 import { getShirtColour, getSkinTone, setShirtColour, setSkinTone, getShirts, getSkins } from '../../src/firebase/firestore/firestoreService';
 import styles from './styles';
 import * as Constants from './avatar';
+import mainStyles from '../../styles/styles';
 
 class CustomiseAvatar extends React.Component {
     state = {
@@ -65,7 +66,7 @@ class CustomiseAvatar extends React.Component {
             );
         } else {
             avatarContent = (
-                <View style={styles.myAvatar}>
+                <View style={[styles.myAvatar, mainStyles.minorShadow]}>
                     <Image
                     style={styles.myImage}
                     source={Constants.SKIN_TONES[this.state.skinTone].image}
@@ -134,7 +135,7 @@ class AvatarItem extends React.Component {
     return (
       <View>
         <Pressable
-          style={styles.gridItem}
+          style={[styles.gridItem, mainStyles.minorShadow]}
           onPress={() => {
             this.props.propFunction(this.props.value)
           }}

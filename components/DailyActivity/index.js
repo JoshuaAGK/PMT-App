@@ -3,7 +3,7 @@ import { Text, View, FlatList } from 'react-native';
 import styles from './styles';
 import BrainTraining from './BrainTraining'
 
-const InlineBigComponent = ({ type }) => {
+const DailyActivity = ({ type }) => {
   switch(type) {
     case "braintraining":
       return (
@@ -14,4 +14,4 @@ const InlineBigComponent = ({ type }) => {
   }
 }
 
-export default InlineBigComponent;
+export default DailyActivity;

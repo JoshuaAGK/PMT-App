@@ -27,6 +27,24 @@ const styles = StyleSheet.create({
             }
         })
     },
+    minorShadow: {
+        backgroundColor: "white",
+        borderRadius: 50/4,
+        ...Platform.select({
+            ios: {
+                shadowColor: "black",
+                shadowOffset: {
+                    width: 0,
+                    height: 5,
+                },
+                shadowOpacity: 0.1,
+                shadowRadius: 7,
+            },
+            default: {
+                elevation: 4,
+            }
+        })  
+    },
     lowestElementOnPageToGiveItABottomMarginBecauseAndroidIsWeirdAndDoesntLikeShadowsForSomeReason: {
         marginBottom: 10
     },

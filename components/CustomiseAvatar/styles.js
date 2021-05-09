@@ -24,16 +24,6 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: 50/4,
-        elevation: 4,
-        shadowColor: "black",
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 7,
-        backgroundColor: "white"
     },
     myImage: {
         maxWidth: Dimensions.get('window').width / 4,
@@ -60,16 +50,6 @@ const styles = StyleSheet.create({
         height: (Dimensions.get('window').width / 4) / 3 * 4,
         width: Dimensions.get('window').width / 4,
         marginBottom: 10,
-        borderRadius: 50/4,
-        elevation: 4,
-        shadowColor: "black",
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 7,
-        backgroundColor: "white"
     },
     gridItemText: {
         textAlign: "center",

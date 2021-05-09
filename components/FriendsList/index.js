@@ -46,7 +46,7 @@ export const FriendRequestsList = (props) => {
     props.dispatch(removeFriendRequest(friend));
   };
   return (
-    <View style={[styles.bigContainer, mainStyles.platformShadow]}>
+    <View style={[styles.bigContainer, mainStyles.platformShadow, mainStyles.lowestElementOnPageToGiveItABottomMarginBecauseAndroidIsWeirdAndDoesntLikeShadowsForSomeReason]}>
       {props.listOfFriendRequests.length > 0 && props.listOfFriendRequests.map((friend, index) => {
         return (
           <View

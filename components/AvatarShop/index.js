@@ -71,9 +71,9 @@ const ShopItem = (props) => {
   let currentBalance = balanceSelector.currentUser ? balanceSelector.currentUser.balance : 0;
 
   return (
-      <View styles={styles.mainContainer}>
+      <View>
         <Pressable
-            style={styles.gridItem}
+            style={[styles.gridItem, mainStyles.minorShadow]}
             onPress={ async () => {
                     if (currentBalance >= props.price) {
                         await decrementBalance(currentBalance, props.price);

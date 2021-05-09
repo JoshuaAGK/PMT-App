@@ -4,17 +4,17 @@ import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import mainStyles from '../../styles/styles';
 import journalStyles from './styles';
-import Advertisement from '../Advertisement/Advertisement';
-import UpperContents from '../UpperContents/UpperContents';
-import EmotionTrackerInput from '../EmotionTracker/EmotionTrackerInput';
+import Advertisement from '../../components/Advertisement';
+import UpperContents from '../../components/UpperContents';
+import EmotionTrackerInput from '../../components/EmotionTracker/EmotionTrackerInput';
 import {getUserCollection, incrementBalance} from '../../src/firebase/firestore/firestoreService';
 import {setText, setMood, selectJournal} from '../../src/features/journal/journalSlice';
 import {addToBalance} from '../../src/features/auth/authSlice';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import points from '../../src/features/points/points';
-import styles from '../LogIn/styles';
-import DailyActivity from '../DailyActivity'
+import styles from '../../components/LogIn/styles';
+import DailyActivity from '../../components/DailyActivity'
 
 export const Journal = (props) => {
     const balanceSelector = useSelector(state => state.auth);
@@ -128,7 +128,7 @@ export const Journal = (props) => {
             }
             <Text style={mainStyles.bigText}>Daily Activity</Text>
 
-            <View style={[journalStyles.dailyActivityList, mainStyles.platformShadow]}>
+            <View style={[journalStyles.dailyActivityList, mainStyles.platformShadow, mainStyles.lowestElementOnPageToGiveItABottomMarginBecauseAndroidIsWeirdAndDoesntLikeShadowsForSomeReason]}>
                 {
                     ACTIVITIES.map((el, index) => (
                         renderItem(el, index)

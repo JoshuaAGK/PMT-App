@@ -5,16 +5,16 @@ import mainStyles from '../../styles/styles';
 
 const advertBanner = require('../../assets/adverts/placeholder.gif');
 
-const Advertisement = ({ type, content }) => {
+const Advertisement = ({ type }) => {
   if (type == 'banner') {
     return (
-      <View style={styles.banner}>
-        <Image source={advertBanner} style={styles.fullImage} />
+      <View style={styles.advertisement}>
+        <Image source={advertBanner} style={styles.image} />
       </View>
     );
   } else {
     return (
-      <View style={[styles.normal, mainStyles.platformShadow]}>
+      <View style={[styles.advertisement, styles.inline, mainStyles.platformShadow]}>
         <Image source={advertBanner} style={styles.image} />
       </View>
     );

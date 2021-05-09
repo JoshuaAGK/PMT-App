@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { Text, View, ScrollView, Pressable } from 'react-native';
 import mainStyles from '../../styles/styles';
 import shopStyles from './styles';
-import InlineBigComponent from '../InlineBigComponent/InlineBigComponent';
-import UpperContents from '../UpperContents/UpperContents';
+import UpperContents from '../../components/UpperContents';
 import { becomePremium, leavePremium, incrementBalance, getShirts } from '../../src/firebase/firestore/firestoreService';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToBalance, setPremium } from '../../src/features/auth/authSlice';
-import * as Constants from '../CustomiseAvatar/avatar';
-import AvatarShop from '../AvatarShop'
+import * as Constants from '../../components/CustomiseAvatar/avatar';
+import AvatarShop from '../../components/AvatarShop'
 
 export const Shop = (props) => {
     let dispatch = useDispatch();

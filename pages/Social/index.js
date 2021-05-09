@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import {
   Text,
-  View,
   ScrollView,
   RefreshControl,
   TextInput,
-  FlatList,
 } from 'react-native';
 import mainStyles from '../../styles/styles';
-import socialStyles from './styles';
-import UpperContents from '../UpperContents/UpperContents';
-import FriendsList, { FriendRequestsList } from '../FriendsList';
+import UpperContents from '../../components/UpperContents';
+import FriendsList, { FriendRequestsList } from '../../components/FriendsList';
 import {
   addFriend,
   attachListenerAndDo,
