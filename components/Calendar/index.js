@@ -38,7 +38,9 @@ class Calendar extends React.Component{
         let startDate = new Date(this.state.year, this.state.month, 0);                 // First day of the month
         let endDate = new Date(this.state.year, this.state.month, daysInMonth + 1);     // Last day of the month
         let weekDayOfFirst = new Date(this.state.year, this.state.month, 1).getDay();   // Week day of the 1st day of the month (Sunday - Saturday)
+        let weekDayOfLast = new Date(this.state.year, this.state.month, daysInMonth).getDay();   // Week day of the last day of the month (Sunday - Saturday)
         let fillerNeeded = weekDayOfFirst - 1 < 0 ? 6 : weekDayOfFirst - 1;             // Number of blank days needed to offset the CalendarDays so they are under the correct heading
+        let fillerNeededEnd = 6 - (weekDayOfLast - 1 < 0 ? 6 : weekDayOfLast - 1);             // Number of blank days needed to offset the CalendarDays so they are under the correct heading
 
         // Database reference
         let journalRef = getUserCollection('journal');
@@ -86,8 +88,14 @@ class Calendar extends React.Component{
 
             // Add filler CalendarDays to the beginning of the array
             for (let i = 0; i < fillerNeeded; i++) {
-                let fillerDay = <CalendarDay itemType={"filler"}/>
+                let fillerDay = <CalendarDay key={i} itemType={"filler"}/>
                 calendarDayArray.unshift(fillerDay)
+            }
+
+            // Add filler CalendarDays to the end of the array
+            for (let i = 0; i < fillerNeededEnd; i++) {
+                let fillerDay = <CalendarDay key={i+7} itemType={"filler"}/>
+                calendarDayArray.push(fillerDay)
             }
 
             // Update state

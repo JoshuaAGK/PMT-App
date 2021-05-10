@@ -55,6 +55,8 @@ const styles = StyleSheet.create({
     calendarDayFiller: {
         width: dateWidth,
         height: dateHeight,
+        borderTopWidth: 1,
+        borderColor: "rgba(0, 0, 0, 0.1)",
     },
     calendarHeaderText: {
         backgroundColor: "skyblue",
