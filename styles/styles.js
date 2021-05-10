@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
                 shadowRadius: 7,
             },
             default: {
-                elevation: 4,
+                elevation: 2,
             }
         })  
     },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         padding: 10,
         width: "30%",
         backgroundColor: 'limegreen',
-        borderRadius: 5,
+        borderRadius: 50/4,
     },
     buttonDisabled: {
         backgroundColor: '#80d180'
@@ -124,8 +124,6 @@ const styles = StyleSheet.create({
         color: '#c20a0a'
     },
     profileButton: {
-        // paddingVertical: 100,
-        // paddingHorizontal: 30,
         fontWeight: 'bold',
         backgroundColor: '#2ecc71'
     }

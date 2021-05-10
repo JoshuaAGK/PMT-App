@@ -1,96 +1,83 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-const lightBg = '#d8dee8';
+const dateWidth = (Dimensions.get('window').width * 0.9) / 7;
+const dateHeight = dateWidth * 1.2;
+
+const scaleFontSize = (fontSize) => {
+    const ratio = fontSize / 375;
+    const newSize = Math.round(ratio * Dimensions.get('window').width);
+    return newSize; 
+}
 
 const styles = StyleSheet.create({
-    calendarMain: {
-        width: '100%'
+    buttonContainer: {
+        alignSelf: "center",
+        width: "90%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginTop: 20
     },
-    title: {
-        textAlign: 'center',
-        marginBottom: 20
+    nextPrevBtn: {
+        height: 30,
+        width: 50,
+        backgroundColor: "skyblue",
+        borderRadius: 50/4,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    calendarArrow: {
+        fontSize: scaleFontSize(24)
     },
     calendarContainer: {
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'center',
-        paddingLeft: 20,
-        paddingRight: 20
+        marginTop: "5%",
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        overflow: "hidden"
     },
-    calendarHeader: {
-        display: 'flex',
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 20
+    calendarDaySet: {
+        width: dateWidth,
+        height: dateHeight,
+        borderTopWidth: 1,
+        borderColor: "rgba(0, 0, 0, 0.1)",
+        alignItems: "center"
     },
-    monthButton: {
-        backgroundColor: lightBg,
-        padding: 5,
-        borderRadius: 10
+    calendarDayUnset: {
+        width: dateWidth,
+        height: dateHeight,
+        borderTopWidth: 1,
+        borderColor: "rgba(0, 0, 0, 0.1)",
+        alignItems: "center"
     },
-    prevMonth: {
-        //alignItems: "flex-start"
+    calendarDayFiller: {
+        width: dateWidth,
+        height: dateHeight,
     },
-    nextMonth: {
-        //alignItems: "flex-end"
+    calendarHeaderText: {
+        backgroundColor: "skyblue",
+        width: dateWidth,
+        height: 20,
+        textAlign: "center",
+        fontWeight: "600",
+        lineHeight: 20,
+        
     },
-    monthYearTxt: {
-        textAlign: 'center',
-        //marginBottom: 20
+    calendarDayNumberText: {
+        fontSize: scaleFontSize(16),
+        position: "absolute",
+        top: "15%"
     },
-    calendarRow: {
-        display: 'flex',
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginBottom: 20
+    checkIcon: {
+        position: "absolute",
+        top: "50%",
+        fontSize: scaleFontSize(24)
     },
-    headerCell: {
-        fontWeight: 'bold',
-        marginRight: 10
-    },
-    emptyCell: {
-        backgroundColor: 'transparent'
-    },
-    cell: {
-        backgroundColor: 'grey',
-        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-        flex: 1,
-        marginRight: 10
-    },
-    hasEntry: {
-        backgroundColor: 'limegreen'
-    },
-    selected: {
-        backgroundColor: 'gold'
-    },
-    cellText: {
-        color: 'white',
-        textAlign: 'center'
-    },
-    journalEntryHeader: {
-        display: 'flex',
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        fontWeight: 'bold'
-    },
-    journalEntries: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%'
-    },
-    journalEntry: {
-        padding: 20,
-        alignSelf: 'center',
-        width: '80%',
-        backgroundColor: lightBg,
-        borderRadius: 10,
-        marginVertical: 5
-    },
-    journalEntryDate: {
-        marginBottom: 10
+    journalDetails: {
+        marginTop: 20,
+        padding: 50/4
     }
 });
 

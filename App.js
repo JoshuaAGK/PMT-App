@@ -210,8 +210,8 @@ function StackApp() {
                 <Stack.Screen name="Log In" component={LogIn}/>}
                 {!loggedIn &&
                 <Stack.Screen name="Registration" component={Registration}/>}
-                <Stack.Screen name="App" component={AppTabs} options={stackOptions}/>
-                <Stack.Screen name="Calendar" component={Calendar} options={stackOptions}/>
+                <Stack.Screen name="Journal" component={AppTabs} options={stackOptions}/>
+                <Stack.Screen name="Calendar" component={Calendar}/>
             </Stack.Navigator>
         </NavigationContainer>
     );
