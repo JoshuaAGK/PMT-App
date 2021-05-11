@@ -11,8 +11,10 @@ import {
     getSkinTone,
     getShirtColour,
     getUserDocument,
-    incrementBalance
+    incrementBalance,
+    addPushNotificationToken
 } from '../../firebase/firestore/firestoreService';
+import { registerPushNotifications } from '../notifications/notifications';
 import Points from '../points/points';
 
 const authSlice = createSlice({
@@ -20,6 +22,7 @@ const authSlice = createSlice({
     initialState: {
         authenticated: false,
         currentUser: null,
+        pushNotificationToken: null
     },
     reducers: {
         signInUser: (state = this.initialState, action) => {
@@ -93,12 +96,15 @@ const authSlice = createSlice({
         },
         setShirtColour: (state = this.initialState, action) => {
             state.currentUser.shirtColour = action.payload;
+        },
+        setPushNotificationToken: (state = this.initialState, action) => {
+            state.pushNotificationToken = action.payload;
         }
     }
 });
 
 const { actions, reducer } = authSlice;
-const { signInUser, signOutUser, setBalance, setPremium, addToBalance, removeFromBalance } = actions;
+const { signInUser, signOutUser, setBalance, setPremium, addToBalance, removeFromBalance, setPushNotificationToken } = actions;
 
 export function verifyAuth() {
     return function(dispatch) {
@@ -133,5 +139,5 @@ export function verifyAuth() {
     };
 }
 
-export { signInUser, signOutUser, setBalance, setPremium, addToBalance, removeFromBalance };
+export { signInUser, signOutUser, setBalance, setPremium, addToBalance, removeFromBalance, setPushNotificationToken };
 export default reducer;

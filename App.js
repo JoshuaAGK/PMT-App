@@ -11,8 +11,17 @@ import { capitalize } from './utils/StringUtils';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import store from './src/features/store/store';
 import Profile from './components/Profile';
+import * as Notifications from 'expo-notifications';
 
 LogBox.ignoreLogs(['Setting a timer']);
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+    }),
+});
 
 String.prototype.capitalize = capitalize;
 

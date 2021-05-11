@@ -26,13 +26,14 @@ import {
 var listOfFriends = [];
 
 async function addElement(friendName) {
-  let friendRequest = await addFriend(friendName);
-  if (friendRequest.success) {
-    alert('Friend request sent!');
-    listOfFriends.push({ id: listOfFriends.lastIndex + 1, text: friendName });
-  } else {
-    alert(friendRequest.message);
-  }
+	if (friendName === '') return;
+	let friendRequest = await addFriend(friendName);
+	if (friendRequest.success) {
+		alert('Friend request sent!');
+		listOfFriends.push({ id: listOfFriends.lastIndex + 1, text: friendName });
+	} else {
+		alert(friendRequest.message);
+	}
 }
 
 const refreshFriendsLists = async () => {
@@ -42,68 +43,93 @@ const refreshFriendsLists = async () => {
 };
 
 export const Social = (props) => {
-  const dispatch = useDispatch();
-  const friendsSelector = useSelector((state) => state.friends);
-  const authSelector = useSelector((state) => state.auth);
-  const [refreshing, setRefreshing] = React.useState(false);
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
+	const dispatch = useDispatch();
+	const friendsSelector = useSelector((state) => state.friends);
+	const authSelector = useSelector((state) => state.auth);
+	const [refreshing, setRefreshing] = React.useState(false);
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
 
-    refreshFriendsLists().then((query) => {
-      dispatch(resetFriendsList());
-      query[0].forEach((friend) => {
-        dispatch(addFriendStore(friend));
-      });
+		refreshFriendsLists().then((query) => {
+			dispatch(resetFriendsList());
+			query[0].forEach((friend) => {
+				let myfriend = {};
+				myfriend.id = friend.id;
+				myfriend.status = friend.status;
+				myfriend.unread = friend.unread ? friend.unread : 0;
 
-      dispatch(resetFriendRequestsList());
-      query[1].forEach((friend) => {
-        dispatch(addFriendRequest(friend));
-      });
+				findUser(friend.id).then(doc => { 
+					myfriend.displayName = doc.data().displayName;
+					myfriend.skinTone = doc.data().skinTone;
+					myfriend.shirtColour = doc.data().shirtColour;
+					dispatch(addFriendStore(myfriend));
+				});
+				
+			});
 
-      setRefreshing(false);
-    });
-  }, []);
+			dispatch(resetFriendRequestsList());
+			query[1].forEach((friend) => {
+				let pendingFriend = {};
+				pendingFriend.id = friend.id;
+				pendingFriend.status = friend.status;
+				pendingFriend.unread = friend.unread ? friend.unread : 0;
 
-  let addFriendInput;
+				findUser(friend.id).then(doc => { 
+					pendingFriend.displayName = doc.data().displayName;
+					pendingFriend.skinTone = doc.data().skinTone;
+					pendingFriend.shirtColour = doc.data().shirtColour;
+					dispatch(addFriendRequest(pendingFriend));
+				});
+			});
+			setRefreshing(false);
+		});
+	}, []);
 
-  attachSubCollectionListenerAndDo(
-    'friends',
-    authSelector.currentUser?.uid,
-    (collectionSnapshot) => {
-      dispatch(resetFriendsList());
-      collectionSnapshot.forEach(async (document) => {
-        let friend = {};
-        friend.id = document.id;
-        friend.status = document.data().status;
+	let addFriendInput;
 
-        let displayNameQuery = await findUser(document.id);
-        friend.displayName = displayNameQuery.data().displayName;
-        dispatch(addFriendStore(friend));
-      });
-    },
-    [authSelector]
-  )
+	attachSubCollectionListenerAndDo(
+		'friends',
+		authSelector.currentUser?.uid,
+		(collectionSnapshot) => {
+		dispatch(resetFriendsList());
+		collectionSnapshot.forEach(async (document) => {
+			let friend = {};
+			friend.id = document.id;
+			friend.status = document.data().status;
+			friend.unread = document.data().unread;
+
+			let displayNameQuery = await findUser(document.id);
+			friend.displayName = displayNameQuery.data().displayName;
+			friend.skinTone = displayNameQuery.data().skinTone;
+			friend.shirtColour = displayNameQuery.data().shirtColour;
+			dispatch(addFriendStore(friend));
+		});
+		},
+		[authSelector]
+	)
     .then(() => {})
     .catch((error) => alert(error));
 
     attachSubCollectionListenerAndDo(
-    'friend_requests',
-    authSelector.currentUser?.uid,
-    (collectionSnapshot) => {
-      dispatch(resetFriendRequestsList());
-      //if(collectionSnapshot.size === 0) return;
-      collectionSnapshot.forEach(async (document) => {
-        let friend = {};
-        friend.id = document.id;
-        friend.status = document.data().status;
+		'friend_requests',
+		authSelector.currentUser?.uid,
+		(collectionSnapshot) => {
+		dispatch(resetFriendRequestsList());
+		//if(collectionSnapshot.size === 0) return;
+		collectionSnapshot.forEach(async (document) => {
+			let friend = {};
+			friend.id = document.id;
+			friend.status = document.data().status;
 
-        let displayNameQuery = await findUser(document.id);
-        friend.displayName = displayNameQuery.data().displayName;
-        dispatch(addFriendRequest(friend));
-      });
-    },
-    [authSelector]
-  )
+			let displayNameQuery = await findUser(document.id);
+			friend.displayName = displayNameQuery.data().displayName;
+			friend.skinTone = displayNameQuery.data().skinTone;
+			friend.shirtColour = displayNameQuery.data().shirtColour;
+			dispatch(addFriendRequest(friend));
+		});
+		},
+		[authSelector]
+	)
     .then(() => {})
     .catch((error) => alert(error));
 

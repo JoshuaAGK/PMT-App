@@ -1,6 +1,7 @@
 import firebase from '../config';
 import { useEffect } from 'react';
 import * as Constants from '../../../components/CustomiseAvatar/avatar';
+import { sendFriendRequestNotification, sendMessageNotification } from '../../features/notifications/notifications';
 
 const USER_COLLECTION = 'users';
 const DISPLAY_NAME = 'displayName';
@@ -14,6 +15,7 @@ export const SKIN_TONE = 'skinTone';
 export const SHIRT_COLOUR = 'shirtColour';
 const SKINS = 'skins';
 const SHIRTS = 'shirts';
+const PUSHNOTIFTOKENS = 'pushNotificationTokens';
 
 const DEFAULT = {};
 DEFAULT[BALANCE] = 0;
@@ -164,6 +166,14 @@ export async function addShirt(shirt) {
     updateUserProperty(SHIRTS, firebase.firestore.FieldValue.arrayUnion(shirt))
 }
 
+export async function addPushNotificationToken(token) {
+    updateUserProperty(PUSHNOTIFTOKENS, firebase.firestore.FieldValue.arrayUnion(token));
+}
+
+export async function removePushNotificationToken(token) {
+    await updateUserProperty(PUSHNOTIFTOKENS, firebase.firestore.FieldValue.arrayRemove(token));
+}
+
 export async function findUser(userID) {
   return await db.collection(USER_COLLECTION).doc(userID).get();
 }
@@ -197,6 +207,11 @@ export async function addFriend(friendName) {
       .collection('friend_requests')
       .doc(firebase.auth().currentUser.uid)
       .set({ status: 'pending' });
+    await userQuery.forEach( async (doc) => {
+      await doc.data().pushNotificationTokens.forEach( async (token) => {
+        await sendFriendRequestNotification(token);
+      });
+    });
     return { success: true };
   } else {
     return { success: false, message: 'User does not exist' };
@@ -210,6 +225,7 @@ export async function getFriends() {
     friendsList.push({
       id: doc.id,
       status: doc.data().status,
+      unread: doc.data().unread
     });
   });
 
@@ -233,6 +249,7 @@ export async function getFriendRequests() {
     friendRequestsList.push({
       id: doc.id,
       status: doc.data().status,
+      unread: doc.data().unread
     });
   });
 
@@ -259,7 +276,7 @@ export async function acceptFriendRequest(friendID) {
     .doc(friendID)
     .collection('friends')
     .doc(firebase.auth().currentUser.uid)
-    .set({ status: 'accepted' });
+    .update({ status: 'accepted' });
 }
 
 export async function declineFriendRequest(friendID) {
@@ -367,6 +384,16 @@ export async function sendMessage(userId, message) {
     sender: myUserId,
     contents: message
   };
+  let userDocument = await db.collection(USER_COLLECTION).doc(userId).get();
+  const displayName = userDocument.data().displayName;
+  await userDocument.data().pushNotificationTokens.forEach( async (token) => {
+    await sendMessageNotification(token,displayName);
+  });
   
+  await db.collection(USER_COLLECTION).doc(userId).collection('friends').doc(myUserId).update({ unread: firebase.firestore.FieldValue.increment(1)});
   await firebase.database().ref('/conversations/'+conversationID).push(conversationObject);
+}
+
+export async function resetUnreadMessages(friendID) {
+  await getUserDocument().collection('friends').doc(friendID).update({ unread: 0 });
 }

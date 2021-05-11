@@ -7,14 +7,15 @@ import journalStyles from './styles';
 import Advertisement from '../../components/Advertisement';
 import UpperContents from '../../components/UpperContents';
 import EmotionTrackerInput from '../../components/EmotionTracker/EmotionTrackerInput';
-import {getUserCollection, incrementBalance} from '../../src/firebase/firestore/firestoreService';
+import {addPushNotificationToken, getUserCollection, incrementBalance} from '../../src/firebase/firestore/firestoreService';
 import {setText, setMood, selectJournal} from '../../src/features/journal/journalSlice';
-import {addToBalance} from '../../src/features/auth/authSlice';
+import {addToBalance, setPushNotificationToken} from '../../src/features/auth/authSlice';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import points from '../../src/features/points/points';
 import styles from '../../components/LogIn/styles';
-import DailyActivity from '../../components/DailyActivity'
+import DailyActivity from '../../components/DailyActivity';
+import { registerPushNotifications } from '../../src/features/notifications/notifications';
 
 export const Journal = (props) => {
     const balanceSelector = useSelector(state => state.auth);
@@ -23,6 +24,11 @@ export const Journal = (props) => {
     const journal = useSelector(state => state.journal);
     const auth = useSelector(state => state.auth);
     const navigation = useNavigation();
+    
+    registerPushNotifications().then( async (token) => {
+        await addPushNotificationToken(token);
+        dispatch(setPushNotificationToken(token));
+    });
 
     function openCalendar() {
         navigation.navigate('Calendar');

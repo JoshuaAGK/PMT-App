@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import styles from './styles';
-import { attachMessageListenerAndDo } from '../../src/firebase/firestore/firestoreService';
+import { attachMessageListenerAndDo, resetUnreadMessages } from '../../src/firebase/firestore/firestoreService';
 import { useSelector } from 'react-redux';
 
 function timestampToDate(timestamp) {
@@ -21,6 +21,7 @@ export const Conversation = (props) => {
     authSelector.currentUser.uid,
     props.friend.id,
     (snapshot) => {
+      resetUnreadMessages(props.friend.id);
       setConversation((prevConversation) => [...prevConversation, snapshot]);
     },
     []

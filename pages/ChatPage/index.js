@@ -1,6 +1,7 @@
 import React from 'react';
 import { KeyboardAvoidingView, ScrollView, Text, TextInput, Pressable, Platform } from 'react-native';
 import Conversation from '../../components/Conversation';
+import { sendMessage } from '../../src/firebase/firestore/firestoreService';
 import styles from './styles';
 
 export const ChatPage = (props) => {

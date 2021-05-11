@@ -6,6 +6,7 @@ import {dateString} from '../../utils/StringUtils';
 import styles from './styles';
 import {signOutFirebase} from '../../src/firebase/firestore/firebaseService';
 import {useSelector} from 'react-redux';
+import { removePushNotificationToken } from '../../src/firebase/firestore/firestoreService';
 
 function UpperContents(props) {
     const navigation = useNavigation();
@@ -18,7 +19,7 @@ function UpperContents(props) {
             content = (
 
                 <Pressable style={styles.rightBox} onPress={async () => {
-                    await logOut(navigation);
+                    await logOut(navigation, auth);
                 }}>
                     <Text>Log out</Text>
                 </Pressable>
@@ -53,7 +54,10 @@ function UpperContents(props) {
     );
 }
 
-async function logOut(navigation) {
+async function logOut(navigation, authSelector) {
+    if(authSelector.pushNotificationToken){
+        await removePushNotificationToken(authSelector.pushNotificationToken);
+    }
     await signOutFirebase();
     navigation.navigate('Log In');
     navigation.reset({index: 0, routes: [{name: 'Log In'}]});
