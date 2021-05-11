@@ -10,7 +10,7 @@ import UpperContents from '../../components/UpperContents';
 import FriendsList, { FriendRequestsList } from '../../components/FriendsList';
 import {
   addFriend,
-  attachListenerAndDo,
+  attachSubCollectionListenerAndDo,
   findUser,
   getFriendRequests,
   getFriends,
@@ -66,7 +66,7 @@ export const Social = (props) => {
 
   let addFriendInput;
 
-  attachListenerAndDo(
+  attachSubCollectionListenerAndDo(
     'friends',
     authSelector.currentUser?.uid,
     (collectionSnapshot) => {
@@ -86,7 +86,7 @@ export const Social = (props) => {
     .then(() => {})
     .catch((error) => alert(error));
 
-  attachListenerAndDo(
+    attachSubCollectionListenerAndDo(
     'friend_requests',
     authSelector.currentUser?.uid,
     (collectionSnapshot) => {

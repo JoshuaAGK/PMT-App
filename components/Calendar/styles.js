@@ -38,6 +38,12 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         overflow: "hidden"
     },
+    calendarRow: {
+        display: "flex",
+        width: "100%",
+        flexDirection: "row",
+        justifyContent: "space-around"
+    },  
     calendarDaySet: {
         width: dateWidth,
         height: dateHeight,
@@ -58,6 +64,13 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderColor: "rgba(0, 0, 0, 0.1)",
     },
+    calendarDayFillerPopulated: {
+        width: dateWidth,
+        height: dateHeight,
+        borderTopWidth: 1,
+        borderColor: "rgba(0, 0, 0, 0.1)",
+        alignItems: "center"
+    },
     calendarHeaderText: {
         backgroundColor: "skyblue",
         width: dateWidth,
@@ -71,6 +84,12 @@ const styles = StyleSheet.create({
         fontSize: scaleFontSize(16),
         position: "absolute",
         top: "15%"
+    },
+    calendarDayNumberTextFiller: {
+        fontSize: scaleFontSize(16),
+        position: "absolute",
+        top: "15%",
+        color: "grey"
     },
     checkIcon: {
         position: "absolute",

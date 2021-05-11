@@ -10,8 +10,10 @@ import {
     getPremiumStatus,
     getSkinTone,
     getShirtColour,
-    getUserDocument
+    getUserDocument,
+    incrementBalance
 } from '../../firebase/firestore/firestoreService';
+import Points from '../points/points';
 
 const authSlice = createSlice({
     name: 'auth',
@@ -33,15 +35,39 @@ const authSlice = createSlice({
                 shirtColour: action.payload.shirtColour
             };
 
-            let today = new Date().getTime();
+            let today = new Date();
+            let month = today.getMonth();
+            let year = today.getFullYear();
+            let day = today.getDate();
+
             let lastLogIn = new Date(state.currentUser.lastLogIn);
-            let streakEnd = lastLogIn;
-            if (today > streakEnd) {
+            let lastLogInMonth = lastLogIn.getMonth();
+            let lastLogInYear = lastLogIn.getFullYear();
+            let lastLogInDay = lastLogIn.getDate();
+
+            if (month === lastLogInMonth && year === lastLogInYear && (day - lastLogInDay) === 1) {
+                state.currentUser.streak = state.currentUser.streak + 1;
+
+                if (state.currentUser.streak >= 7) {
+                    state.currentUser.streak = 1;
+                    resetStreak(1);
+                    alert(`You've logged in for 7 consecutive days! +${Points.FULL_STREAK} steps!`);
+                    addToBalance(Points.FULL_STREAK);
+                    incrementBalance(state.currentUser.balance, Points.FULL_STREAK);
+                } else if (state.currentUser.streak > 1) {
+                    alert(`You've logged in for ${state.currentUser.streak} days straight! +${Points.STREAK_BONUS} steps!`);
+                    addToBalance(Points.STREAK_BONUS);
+                    incrementBalance(state.currentUser.balance, Points.STREAK_BONUS);
+                } else {
+                    incrementStreak();
+                }
+            } else {
+                if (state.currentUser.streak >= 1) {
+                    alert("You lost your streak.");
+                }
+
                 state.currentUser.streak = 0;
                 resetStreak();
-            } else {
-                state.currentUser.streak = state.currentUser.streak + 1;
-                incrementStreak();
             }
 
             updateLastLogIn();

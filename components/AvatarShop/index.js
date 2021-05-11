@@ -1,69 +1,54 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import styles from './styles';
-import { decrementBalance, addSkin, addShirt } from '../../src/firebase/firestore/firestoreService';
+import { decrementBalance, addSkin, addShirt, getShirts, getSkins } from '../../src/firebase/firestore/firestoreService';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromBalance } from '../../src/features/auth/authSlice';
 import { current } from 'immer';
 import mainStyles from '../../styles/styles';
 
+function AvatarShop({ type, items, inventory }) {
+    const [purchasedSkins, setPurchasedSkins] = useState([]);
+    const [purchasedShirts, setPurchasedShirts] = useState([]);
 
-var purchasedSkin = false
-var purchasedShirt = false
-
-class AvatarShop extends React.Component {
-  constructor(props) {
-    super(props)
-    this.handlePurchase = this.handlePurchase.bind(this);
-    this.state = {
-        type: props.type,
-        items: props.items,
-        inventory: props.inventory,
-        purchased: []
-    };
-  }
-
-  hasPurchased(itemKey) {
-      return this.state.purchased.includes(itemKey);
-  }
-
-  handlePurchase(itemKey) {
-    this.state.purchased.push(itemKey);
-    if (this.state.type == "skin") {
-        addSkin(itemKey);
-    } else if (this.state.type == "shirt") {
-        addShirt(itemKey);
-    }
-    this.forceUpdateHandler()
-  }
-
-  forceUpdateHandler() {
-    this.forceUpdate();
-  };
-
-  render() {
-    let shopItems = Object.entries(this.state.items).map(([itemKey, item], index) => {
-        if (this.hasPurchased(itemKey)) {
-            return (
-                <Text key={index}>Purchased {item.name}!</Text>
-            );
-        } else {
-            return (
-                <ShopItem key={index} propFunction={this.handlePurchase} image={item.image} itemKey={itemKey} price={item.price} name={item.name + " (₩" + item.price + ")"}/>
-            );
-        }
+    useEffect(() => {
+        getShirts().then(shirts => {
+            setPurchasedShirts([...shirts, ...purchasedSkins]);
+        });
+        getSkins().then(skins => {
+            setPurchasedSkins([...skins, ...purchasedShirts]);
+        });
+    }, [setPurchasedSkins, setPurchasedShirts]);
+    
+    let shopItems = Object.entries(items).map(([itemKey, item], index) => {
+        return (
+            <ShopItem key={index} 
+                purchased={(itemKey) => {
+                    return purchasedSkins.includes(itemKey) || purchasedShirts.includes(itemKey);
+                }}
+                propFunction={(itemKey) => {
+                    if (type == "skin") {
+                        setPurchasedSkins([...purchasedSkins, itemKey]);
+                        addSkin(itemKey);
+                    } else if (type == "shirt") {
+                        setPurchasedShirts([...purchasedShirts, itemKey]);
+                        addShirt(itemKey);
+                    }
+                }} 
+                image={item.image} 
+                itemKey={itemKey} 
+                price={item.price} 
+                name={item.name + " (₩" + item.price + ")"}/>
+        );
     });
-
     return (
         <View style={[styles.avatarShop, mainStyles.platformShadow]}>
             <View style={styles.itemGrid}>
                 {shopItems}
             </View>
         </View>
-      );
-  }
-};
-
+    );
+}
 
 const ShopItem = (props) => {
   const dispatch = useDispatch();
@@ -73,8 +58,12 @@ const ShopItem = (props) => {
   return (
       <View>
         <Pressable
-            style={[styles.gridItem, mainStyles.minorShadow]}
+            style={[styles.gridItem, mainStyles.minorShadow, props.purchased(props.itemKey) ? styles.purchased : null]}
             onPress={ async () => {
+                    if (props.purchased(props.itemKey)) {
+                        return;
+                    }
+
                     if (currentBalance >= props.price) {
                         await decrementBalance(currentBalance, props.price);
                         dispatch(removeFromBalance(props.price));

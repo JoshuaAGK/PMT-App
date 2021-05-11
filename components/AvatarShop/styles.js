@@ -55,6 +55,10 @@ const styles = StyleSheet.create({
     itemImage: {
         width: Dimensions.get('window').width / 4,
         maxHeight: Dimensions.get('window').width / 4,
+    },
+    purchased: {
+        borderColor: "limegreen",
+        borderWidth: 2
     }
 })
 

@@ -45,6 +45,12 @@ const styles = StyleSheet.create({
         backgroundColor: "green",
         width: "100%",
         height: 160
+    },
+    button: {
+        marginBottom: 20
+    },
+    title: {
+        marginTop: 20
     }
 });
 

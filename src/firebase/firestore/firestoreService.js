@@ -17,6 +17,7 @@ const SHIRTS = 'shirts';
 
 const DEFAULT = {};
 DEFAULT[BALANCE] = 0;
+DEFAULT[STREAK] = 0;
 DEFAULT[PREMIUM] = false;
 DEFAULT[SKIN_TONE] = Constants.MID;
 DEFAULT[SHIRT_COLOUR] = Constants.CRIMSON;
@@ -67,11 +68,8 @@ export async function getUserPropertyByDisplayName(displayName, prop) {
 }
 
 async function getUserProperty(prop) {
-  let result = await getUserDocument()
-    .get()
-    .then((query) => {
-      return query.get(prop);
-    });
+  let query = await getUserDocument().get();
+  let result = query.get(prop);
   if (result) {
     return result;
   }
@@ -94,8 +92,8 @@ export async function incrementStreak() {
   await updateUserProperty(STREAK, streak + 1);
 }
 
-export async function resetStreak() {
-  await updateUserProperty(STREAK, 0);
+export async function resetStreak(newStreak = 0) {
+  await updateUserProperty(STREAK, newStreak);
 }
 
 export async function getUserLastLogIn() {
@@ -285,6 +283,26 @@ export async function removeFriend(friendID) {
 }
 
 export async function attachListenerAndDo(
+    userId,
+    action,
+    deps
+) {
+    useEffect(() => {
+        if (!userId) return;
+    
+        const subscriber = db
+          .collection('users')
+          .doc(userId)
+          .onSnapshot(async (documentSnapshot) => {
+            await action(documentSnapshot);
+          });
+    
+        // Stop listening for updates when no longer required
+        return () => subscriber();
+      }, deps);
+}
+
+export async function attachSubCollectionListenerAndDo(
   collectionName,
   userId,
   action,

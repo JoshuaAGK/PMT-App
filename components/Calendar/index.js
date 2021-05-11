@@ -39,8 +39,8 @@ class Calendar extends React.Component{
         let endDate = new Date(this.state.year, this.state.month, daysInMonth + 1);     // Last day of the month
         let weekDayOfFirst = new Date(this.state.year, this.state.month, 1).getDay();   // Week day of the 1st day of the month (Sunday - Saturday)
         let weekDayOfLast = new Date(this.state.year, this.state.month, daysInMonth).getDay();   // Week day of the last day of the month (Sunday - Saturday)
-        let fillerNeeded = weekDayOfFirst - 1 < 0 ? 6 : weekDayOfFirst - 1;             // Number of blank days needed to offset the CalendarDays so they are under the correct heading
-        let fillerNeededEnd = 6 - (weekDayOfLast - 1 < 0 ? 6 : weekDayOfLast - 1);             // Number of blank days needed to offset the CalendarDays so they are under the correct heading
+        let fillerNeeded = weekDayOfFirst === 0 ? 6 : weekDayOfFirst - 1;             // Number of blank days needed to offset the CalendarDays so they are under the correct heading
+        let fillerNeededEnd = 6 - (weekDayOfLast === 0 ? 6 : weekDayOfLast - 1);             // Number of blank days needed to offset the CalendarDays so they are under the correct heading
 
         // Database reference
         let journalRef = getUserCollection('journal');
@@ -62,16 +62,26 @@ class Calendar extends React.Component{
             });
 
             // All CalendarDay objects
-            let calendarDayArray = []
+            let calendarDayArray = [];
+
+            let prevMonth = new Date(this.state.year, this.state.month, 0);
+            let prevMonthDate = prevMonth.getDate();
+            // Add filler CalendarDays to the beginning of the array
+            for (let i = 0; i < fillerNeeded; i++) {
+                //let fillerDay = <CalendarDay key={i} itemType={"filler"}/>
+                let fillerDay = <CalendarDay key={i} date={(prevMonthDate - fillerNeeded + 1) + i} itemType={"filler"}/>
+                calendarDayArray.push(fillerDay);
+            }
 
             // Create a CalendarDay for each day of the month
             for (let i = 0; i < daysInMonth; i++) {
-                var calendarDay = <CalendarDay date={i + 1} itemType={"unset"}/>
+                var calendarDay = <CalendarDay key={fillerNeeded + i} date={i + 1} itemType={"unset"}/>
 
                 // If that day has data, use a "set" CalendarDay instead
                 for (let j = 0; j < journalEntries.length; j++) {
                     if (journalEntries[j].date.getDate() == i + 1) {
                         calendarDay = <CalendarDay
+                            key={fillerNeeded + i}
                             propFunction={this.loadJournalForDate}
                             date={journalEntries[j].date.getDate()}
                             fulldate={journalEntries[j].date}
@@ -83,25 +93,43 @@ class Calendar extends React.Component{
                 }
 
                 // Append to array
-                calendarDayArray.push(calendarDay)
-            }
-
-            // Add filler CalendarDays to the beginning of the array
-            for (let i = 0; i < fillerNeeded; i++) {
-                let fillerDay = <CalendarDay key={i} itemType={"filler"}/>
-                calendarDayArray.unshift(fillerDay)
+                calendarDayArray.push(calendarDay);
             }
 
             // Add filler CalendarDays to the end of the array
             for (let i = 0; i < fillerNeededEnd; i++) {
-                let fillerDay = <CalendarDay key={i+7} itemType={"filler"}/>
-                calendarDayArray.push(fillerDay)
+                let fillerDay = <CalendarDay key={fillerNeeded + daysInMonth + i} date={(i + 1)} itemType={"filler"}/>
+                calendarDayArray.push(fillerDay);
             }
+
+            let calendarRows = [];
+            let currentRow = [];
+            for (let i = 0; i < calendarDayArray.length; i++) {
+                const day = calendarDayArray[i];
+                currentRow.push(day);
+                if (currentRow.length === 7) {
+                    let content = currentRow.map((day, index) => {
+                        return day;
+                    });
+                    calendarRows.push(
+                        (
+                            <View style={styles.calendarRow}>
+                                {content}
+                            </View>
+                        )
+                    );
+                    currentRow = [];
+                }
+            }
+
+            let displayEntries = calendarRows.map((row, index) => {
+                return row;
+            });
 
             // Update state
             this.setState(
                 {
-                    displayEntries: calendarDayArray,
+                    displayEntries: displayEntries,
                 },
                 // Reload render callback
                 this.forceUpdateHandler
@@ -210,13 +238,15 @@ class Calendar extends React.Component{
                 </View>
                 
                 <View style={[styles.calendarContainer, mainStyles.platformShadow]}>
-                    <Text style={styles.calendarHeaderText}>{this.state.daysOfWeek[1]}</Text>
-                    <Text style={styles.calendarHeaderText}>{this.state.daysOfWeek[2]}</Text>
-                    <Text style={styles.calendarHeaderText}>{this.state.daysOfWeek[3]}</Text>
-                    <Text style={styles.calendarHeaderText}>{this.state.daysOfWeek[4]}</Text>
-                    <Text style={styles.calendarHeaderText}>{this.state.daysOfWeek[5]}</Text>
-                    <Text style={styles.calendarHeaderText}>{this.state.daysOfWeek[6]}</Text>
-                    <Text style={styles.calendarHeaderText}>{this.state.daysOfWeek[0]}</Text>
+                    <View style={styles.calendarRow}>
+                        <Text style={styles.calendarHeaderText}>{this.state.daysOfWeek[1]}</Text>
+                        <Text style={styles.calendarHeaderText}>{this.state.daysOfWeek[2]}</Text>
+                        <Text style={styles.calendarHeaderText}>{this.state.daysOfWeek[3]}</Text>
+                        <Text style={styles.calendarHeaderText}>{this.state.daysOfWeek[4]}</Text>
+                        <Text style={styles.calendarHeaderText}>{this.state.daysOfWeek[5]}</Text>
+                        <Text style={styles.calendarHeaderText}>{this.state.daysOfWeek[6]}</Text>
+                        <Text style={styles.calendarHeaderText}>{this.state.daysOfWeek[0]}</Text>
+                    </View>
                     <>{this.state.displayEntries}</>
                 </View>
 
@@ -232,9 +262,17 @@ class CalendarDay extends React.Component {
         switch(this.props.itemType) {
             // Filler day (blank)
             case "filler":
-                returnDay = (
-                    <View style={styles.calendarDayFiller}></View>
-                )
+                if (this.props.date) {
+                    returnDay = (
+                        <View style={styles.calendarDayFillerPopulated}>
+                            <Text style={styles.calendarDayNumberTextFiller}>{this.props.date}</Text>
+                        </View>
+                    )
+                } else {
+                    returnDay = (
+                        <View style={styles.calendarDayFiller}></View>
+                    )
+                }
                 break;
             // Unset day (just the number)
             case "unset":

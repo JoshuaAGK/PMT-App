@@ -126,7 +126,7 @@ export const Journal = (props) => {
             {!props.premium &&
             <Advertisement type="inline" content="ADVERTISEMENT"/>
             }
-            <Text style={mainStyles.bigText}>Daily Activity</Text>
+            <Text style={[mainStyles.bigText, journalStyles.title]}>Daily Activity</Text>
 
             <View style={[journalStyles.dailyActivityList, mainStyles.platformShadow, mainStyles.lowestElementOnPageToGiveItABottomMarginBecauseAndroidIsWeirdAndDoesntLikeShadowsForSomeReason]}>
                 {

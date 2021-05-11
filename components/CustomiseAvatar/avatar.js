@@ -37,10 +37,10 @@ SKIN_TONES[GOLD] = {
     };
 
 export const CRIMSON = "crimson";
-export const FOREST_GREEN = "forestGreen";
+export const FOREST_GREEN = "forestgreen";
 export const BLUE = "blue";
-export const SKY_BLUE = "skyBlue";
-export const DARK_ORANGE = "darkOrange";
+export const SKY_BLUE = "skyblue";
+export const DARK_ORANGE = "darkorange";
 const SHIRT_COLOURS = {};
 SHIRT_COLOURS[CRIMSON] = {
         name: "Crimson",
