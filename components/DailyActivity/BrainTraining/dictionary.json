@@ -1,98 +1,98 @@
 {
-    "pluviophile": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "hedonism": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "jovian": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "quixotic": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "moistlet": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "misanthrope": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "borborygmus": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "catoptromancy": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "bumbershoot": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "deipnosophist": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "somnambulant": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "loblolly": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "merkin": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "steatopygous": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "triskaidekaphobia": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    },
-    "pettitoes": {
-        "correct": "CORRECT",
-        "incorrect0": "INCORRECT0",
-        "incorrect1": "INCORRECT1",
-        "incorrect2": "INCORRECT2"
-    }
+  "pluviophile": {
+    "correct": "A lover of rain, who finds joy and peace of mind during rainy days.",
+    "incorrect0": "A lover of Spain,  who finds joy in all things spanish.",
+    "incorrect1": "A lover of solitude, who finds joy being alone.",
+    "incorrect2": "A person who collects or has a great love of books."
+  },
+  "hedonism": {
+    "correct": "the pursuit of pleasure; sensual self-indulgence.",
+    "incorrect0": "a strong belief in a supernatural power or powers that control human destiny.",
+    "incorrect1": "the practice of unreasonable or unjustly severe criticism; faultfinding.",
+    "incorrect2": "a song by British techno group: Skunk Anansie."
+  },
+  "jovian": {
+    "correct": "of or relating to the Roman god Jupiter.",
+    "incorrect0": "the system of beliefs held by Jehovah's Witnesses.",
+    "incorrect1": "lively celebration with others; merrymaking.",
+    "incorrect2": "a cornmeal flatbread. An early American staple food."
+  },
+  "quixotic": {
+    "correct": "extremely idealistic; unrealistic and impractical.",
+    "incorrect0": "A legendary Pokemon found at the Sky Pillar (Dragon/Flying).",
+    "incorrect1": "an old Aztec God, know as ‘The Feathered Serpent’.",
+    "incorrect2": "A quiz composed of facts about exotic animals."
+  },
+  "moist": {
+    "correct": "slightly wet.",
+    "incorrect0": "very wet.",
+    "incorrect1": "dry.",
+    "incorrect2": "completely composed of water."
+  },
+  "misanthrope": {
+    "correct": "a person who dislikes humankind and avoids human society.",
+    "incorrect0": "a person who seeks to promote the welfare of others, especially by the generous donation of money to good causes.",
+    "incorrect1": "a person who is unable to spell nissan, and instead seeks to change the word to be spelled 'misan'.",
+    "incorrect2": "a person who's favorite name is 'Misan', a Nigerian name, which means: 'God fixed me well'."
+  },
+  "borborygmus": {
+    "correct": "a rumbling or gurgling noise made by the movement of fluid and gas in the intestines.",
+    "incorrect0": "a common name, used in Ancient Rome.",
+    "incorrect1": "a creature card from the trading card game: Yu-Gi-Oh!",
+    "incorrect2": "a word used to describe speech when spoken by a boring speaker."
+  },
+  "catoptromancy": {
+    "correct": "a way to tell the future using a mirror.",
+    "incorrect0": "a form of magic, using a cat as a focal point.",
+    "incorrect1": "the act of operating a catapult.",
+    "incorrect2": "a form of magic, where you launch a cat from a catapult."
+  },
+  "bumbershoot": {
+    "correct": "an synonym for an umbrella.",
+    "incorrect0": "an ostentatious word used for 'passing gas'.",
+    "incorrect1": "a type of weapon designed to fire bumble bees.",
+    "incorrect2": "the name of a character from Borderlands."
+  },
+  "deipnosophist": {
+    "correct": "a person who is a master of dinner-table conversation.",
+    "incorrect0": "a veterinary dentist.",
+    "incorrect1": "a person who specialises in dyeing clothes",
+    "incorrect2": "an expert in the subject of dinosaurs"
+  },
+  "somnambulant": {
+    "correct": "a person who is walking or having the habit of walking while asleep.",
+    "incorrect0": "a medical sleep aid.",
+    "incorrect1": "the French word for a Ambulance operator/paramedic.",
+    "incorrect2": "a word for a heavy sleeper."
+  },
+  "loblolly": {
+    "correct": "a small evergreen tree of the tea family.",
+    "incorrect0": "the act of throwing a lollipop.",
+    "incorrect1": "a lollipop shaped tennis ball launcher (used to throw tennis balls for dogs).",
+    "incorrect2": "a brand of lollipop favoured by Baseball player."
+  },
+  "merkin": {
+    "correct": "a pubic wig.",
+    "incorrect0": "an evil munchkin.",
+    "incorrect1": "a person who identifies/associates with mermaids.",
+    "incorrect2": "Merlin the Wizard's extended family."
+  },
+  "steatopygous": {
+    "correct": "having fat or prominent buttocks.",
+    "incorrect0": "a species of dinosaur.",
+    "incorrect1": "informal insult relating to a person's appearance (saying they look like a donkey/ass). ",
+    "incorrect2": "an era in which the ice age occured."
+  },
+  "triskaidekaphobia": {
+    "correct": "extreme superstition/fear regarding the number thirteen.",
+    "incorrect0": "fear of long words.",
+    "incorrect1": "the love of the number thirteen.",
+    "incorrect2": "An abnormal fear of snakes."
+  },
+  "pettitoes": {
+    "correct": "the feet of a pig used as a food.",
+    "incorrect0": "small toes.",
+    "incorrect1": "small potatoes.",
+    "incorrect2": "irrational fear of feet."
+  }
 }
