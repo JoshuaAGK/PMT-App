@@ -11,7 +11,7 @@ const fieldName = 'emotionTracker';
 export const EmotionTrackerInput = (props) => {
     const validateMood = (value) => {
         let error;
-        if (!value || value === -1) {
+        if (value === -1) {
             error = 'Mood Required';
         }
         return error;
