@@ -35,8 +35,7 @@ export const Registration = ({navigation}) => {
                 try {
                     await registerInFirebase(values);
                     setSubmitting(false);
-                    navigation.navigate('App');
-                    navigation.reset({index: 0, routes: [{name: 'App'}]});
+                    navigation.reset({index: 0, routes: [{name: 'Journal'}]});
                 } catch (e) {
                     setErrors({auth: e.message});
                     setSubmitting(false);

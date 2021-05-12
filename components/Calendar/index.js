@@ -113,7 +113,7 @@ class Calendar extends React.Component{
                     });
                     calendarRows.push(
                         (
-                            <View style={styles.calendarRow}>
+                            <View key={'row'+i} style={styles.calendarRow}>
                                 {content}
                             </View>
                         )

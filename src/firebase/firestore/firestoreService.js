@@ -385,9 +385,8 @@ export async function sendMessage(userId, message) {
     contents: message
   };
   let userDocument = await db.collection(USER_COLLECTION).doc(userId).get();
-  const displayName = userDocument.data().displayName;
   await userDocument.data().pushNotificationTokens.forEach( async (token) => {
-    await sendMessageNotification(token,displayName);
+    await sendMessageNotification(token,firebase.auth().currentUser.displayName);
   });
   
   await db.collection(USER_COLLECTION).doc(userId).collection('friends').doc(myUserId).update({ unread: firebase.firestore.FieldValue.increment(1)});

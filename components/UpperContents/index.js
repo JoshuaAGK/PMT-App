@@ -48,7 +48,10 @@ function UpperContents(props) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.dateText}>{dateString(new Date())}</Text>
+            <View style={{alignSelf: 'center'}}>
+                <Text style={styles.dateText}>{auth.currentUser ? auth.currentUser.displayName : null}</Text>
+                <Text style={styles.dateText}>{dateString(new Date())}</Text>
+            </View>
             {content}
         </View>
     );
@@ -59,7 +62,6 @@ async function logOut(navigation, authSelector) {
         await removePushNotificationToken(authSelector.pushNotificationToken);
     }
     await signOutFirebase();
-    navigation.navigate('Log In');
     navigation.reset({index: 0, routes: [{name: 'Log In'}]});
 }
 

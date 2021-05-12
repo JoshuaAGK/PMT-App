@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
     profileNameText: {
         fontSize: 18,
         fontWeight: 'bold',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        marginBottom: 10
     },
     button: {
         marginVertical: 10,

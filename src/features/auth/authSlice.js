@@ -35,7 +35,8 @@ const authSlice = createSlice({
                 streak: action.payload.streak,
                 premium: action.payload.premium,
                 skinTone: action.payload.skinTone,
-                shirtColour: action.payload.shirtColour
+                shirtColour: action.payload.shirtColour,
+                displayName: action.payload.displayName
             };
 
             let today = new Date();
