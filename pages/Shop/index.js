@@ -74,11 +74,11 @@ export const Shop = (props) => {
       <Text style={mainStyles.bigText}>Buy in-app currency</Text>
       <View style={[shopStyles.shopContainer, mainStyles.platformShadow]}>
         <View style={shopStyles.shopFlex}>
-          <PurchaseCurrency amount={1.0} />
-          <PurchaseCurrency amount={2.0} />
-          <PurchaseCurrency amount={5.0} />
-          <PurchaseCurrency amount={10.0} />
-          <PurchaseCurrency amount={20.0} />
+          <PurchaseCurrency amount={100.0} />
+          <PurchaseCurrency amount={200.0} />
+          <PurchaseCurrency amount={500.0} />
+          <PurchaseCurrency amount={1000.0} />
+          <PurchaseCurrency amount={2000.0} />
           <PurchaseCurrency
             amount="Custom"
             type="custom"
