@@ -158,7 +158,7 @@ const CustomModal = (props) => {
   let sendAmount;
   let changedText;
 
-  const [customAmount, changeCustomAmount] = useState(0);
+  const [customAmount, changeCustomAmount] = useState('');
   const dispatch = useDispatch();
   const balanceSelector = useSelector((state) => state.auth);
   let currentBalance = balanceSelector.currentUser
@@ -206,14 +206,17 @@ const CustomModal = (props) => {
                   sendAmount.blur();
                   sendAmount.clear();
                   changeCustomAmount(0);
-                  if (customAmount === '') {
-                    return;
+                  const regex = /^[0-9]{1,4}$/.test(customAmount);
+                  if (regex) {
+                    if (parseInt(customAmount) === 0) {
+                      return;
+                    }
+                    dispatchPurchaseCurrency(
+                      { amount: parseInt(customAmount) },
+                      currentBalance,
+                      dispatch
+                    );
                   }
-                  dispatchPurchaseCurrency(
-                    { amount: parseInt(customAmount) },
-                    currentBalance,
-                    dispatch
-                  );
                 }}
               >
                 <Text style={modalStyles.textStyle}>
