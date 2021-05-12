@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     avatarShop: {
-        marginBottom: 10
+        marginBottom: 10,
+        padding: 10
     },
     avatarUpper: {
         width: "100%",
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     gridItem: {
         height: (Dimensions.get('window').width / 4) / 3 * 4,
         width: Dimensions.get('window').width / 4,
-        marginBottom: 10,
+        marginBottom: 10
     },
     gridItemText: {
         textAlign: "center",
