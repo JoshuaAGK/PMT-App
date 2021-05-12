@@ -206,6 +206,9 @@ const CustomModal = (props) => {
                   sendAmount.blur();
                   sendAmount.clear();
                   changeCustomAmount(0);
+                  if (customAmount === '') {
+                    return;
+                  }
                   dispatchPurchaseCurrency(
                     { amount: parseInt(customAmount) },
                     currentBalance,
