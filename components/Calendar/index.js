@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { View, Pressable, Text, ScrollView, TextInput } from 'react-native';
+import React from 'react';
+import { View, Pressable, Text } from 'react-native';
 import mainStyles from '../../styles/styles';
 import styles from './styles';
-import { dateString, pad } from '../../utils/StringUtils';
+import { dateString } from '../../utils/StringUtils';
 import { getUserCollection } from '../../src/firebase/firestore/firestoreService';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 class Calendar extends React.Component{
     constructor(props) {
-        super(props)
+        super(props);
         let today = new Date();
 
         // State variables
@@ -20,7 +20,7 @@ class Calendar extends React.Component{
             selectedMood: null,
             month: today.getMonth(),
             year: today.getFullYear(),
-        }
+        };
 
         // Get month & year as string (e.g. May 2021)
         let date = new Date(this.state.year, this.state.month + 1, 0);
@@ -30,7 +30,7 @@ class Calendar extends React.Component{
 
     // Perform request automatically on component load
     componentDidMount() {
-        this.makeFirestoreRequest()
+        this.makeFirestoreRequest();
     }
 
     makeFirestoreRequest() {
@@ -69,13 +69,13 @@ class Calendar extends React.Component{
             // Add filler CalendarDays to the beginning of the array
             for (let i = 0; i < fillerNeeded; i++) {
                 //let fillerDay = <CalendarDay key={i} itemType={"filler"}/>
-                let fillerDay = <CalendarDay key={i} date={(prevMonthDate - fillerNeeded + 1) + i} itemType={"filler"}/>
+                let fillerDay = <CalendarDay key={i} date={(prevMonthDate - fillerNeeded + 1) + i} itemType={'filler'}/>;
                 calendarDayArray.push(fillerDay);
             }
 
             // Create a CalendarDay for each day of the month
             for (let i = 0; i < daysInMonth; i++) {
-                var calendarDay = <CalendarDay key={fillerNeeded + i} date={i + 1} itemType={"unset"}/>
+                var calendarDay = <CalendarDay key={fillerNeeded + i} date={i + 1} itemType={'unset'}/>;
 
                 // If that day has data, use a "set" CalendarDay instead
                 for (let j = 0; j < journalEntries.length; j++) {
@@ -87,8 +87,8 @@ class Calendar extends React.Component{
                             fulldate={journalEntries[j].date}
                             text={journalEntries[j].text}
                             mood={journalEntries[j].mood}
-                            itemType={"set"}
-                        />  
+                            itemType={'set'}
+                        /> ; 
                     }
                 }
 
@@ -98,7 +98,7 @@ class Calendar extends React.Component{
 
             // Add filler CalendarDays to the end of the array
             for (let i = 0; i < fillerNeededEnd; i++) {
-                let fillerDay = <CalendarDay key={fillerNeeded + daysInMonth + i} date={(i + 1)} itemType={"filler"}/>
+                let fillerDay = <CalendarDay key={fillerNeeded + daysInMonth + i} date={(i + 1)} itemType={'filler'}/>;
                 calendarDayArray.push(fillerDay);
             }
 
@@ -133,7 +133,7 @@ class Calendar extends React.Component{
                 },
                 // Reload render callback
                 this.forceUpdateHandler
-            )
+            );
         }).catch((error) => {
             console.error('Error getting document: ', error);
         });
@@ -142,7 +142,7 @@ class Calendar extends React.Component{
     // Reload render
     forceUpdateHandler() {
         this.forceUpdate();
-    };
+    }
 
     // Load previous month
     prevMonth = () => {
@@ -161,7 +161,7 @@ class Calendar extends React.Component{
             },
             // Request previous month
             this.makeFirestoreRequest
-        )
+        );
     }
 
     // Load next month
@@ -181,7 +181,7 @@ class Calendar extends React.Component{
             },
             // Request next month
             this.makeFirestoreRequest
-        )
+        );
     }
 
     // Prop function for CalendarDay
@@ -193,22 +193,22 @@ class Calendar extends React.Component{
                 selectedMood: mood
             },
             this.forceUpdateHandler
-        )
+        );
     }
     
     render() {
-        let emojis = ["😢", "🙁", "😐", "🙂", "😃"]
+        let emojis = ['😢', '🙁', '😐', '🙂', '😃'];
         
         // Details of currently-selected journal date
-        var journalDetails = null
+        var journalDetails = null;
         // Check date has data
         if (this.state.selectedText != null) {
             journalDetails = (
                 <View style={[styles.journalDetails, mainStyles.platformShadow]}>
-                    <Text>{emojis[this.state.selectedMood] + " " + this.state.selectedDate.toISOString().substring(0, 10) + "\n"}</Text>
+                    <Text>{emojis[this.state.selectedMood] + ' ' + this.state.selectedDate.toISOString().substring(0, 10) + '\n'}</Text>
                     <Text>{this.state.selectedText}</Text>
                 </View>
-            )
+            );
         }
 
         return(
@@ -252,7 +252,7 @@ class Calendar extends React.Component{
 
                 {journalDetails}
             </View>
-        )
+        );
     }
 }
 
@@ -261,32 +261,32 @@ class CalendarDay extends React.Component {
         var returnDay;
         switch(this.props.itemType) {
             // Filler day (blank)
-            case "filler":
+            case 'filler':
                 if (this.props.date) {
                     returnDay = (
                         <View style={styles.calendarDayFillerPopulated}>
                             <Text style={styles.calendarDayNumberTextFiller}>{this.props.date}</Text>
                         </View>
-                    )
+                    );
                 } else {
                     returnDay = (
                         <View style={styles.calendarDayFiller}></View>
-                    )
+                    );
                 }
                 break;
             // Unset day (just the number)
-            case "unset":
+            case 'unset':
                 returnDay = (
                     <View style={styles.calendarDayUnset}>
                         <Text style={styles.calendarDayNumberText}>{this.props.date}</Text>
                     </View>
-                )
+                );
                 break;
             // Set day (number, checkmark, and onpress)
-            case "set":
+            case 'set':
                 returnDay = (
                     <Pressable style={styles.calendarDaySet}
-                        onPress={() => {this.props.propFunction(this.props.fulldate, this.props.text, this.props.mood)}}
+                        onPress={() => {this.props.propFunction(this.props.fulldate, this.props.text, this.props.mood);}}
                     > 
                         <Text style={styles.calendarDayNumberText}>{this.props.date}</Text>
                         <MaterialIcons
@@ -295,7 +295,7 @@ class CalendarDay extends React.Component {
                             style={styles.checkIcon}
                         />
                     </Pressable>
-                )
+                );
                 break;
         }
         return returnDay;

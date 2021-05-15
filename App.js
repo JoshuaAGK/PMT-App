@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, View, LogBox, Pressable, Text } from 'react-native';
+import { StyleSheet, View, LogBox, Pressable, Text, Alert } from 'react-native';
 import { Provider, useSelector } from 'react-redux';
-import { Account, ChatPage, Journal, Shop, Social } from './pages'
+import { Account, ChatPage, Journal, Shop, Social } from './pages';
 import { Advertisement, LogIn, Calendar, Registration } from './components';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -12,6 +12,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import store from './src/features/store/store';
 import Profile from './components/Profile';
 import * as Notifications from 'expo-notifications';
+import * as Updates from 'expo-updates';
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -21,6 +22,31 @@ Notifications.setNotificationHandler({
         shouldPlaySound: true,
         shouldSetBadge: false,
     }),
+});
+
+const announceUpdate = () => {
+    Alert.alert(
+        'New update available!',
+        'A newer version of the app is available and is ready to be launched. Would you like to launch it now?',
+        [
+            {
+                text: 'No'
+            },
+            {
+                text: 'Yes',
+                onPress: () => {
+                    Updates.reloadAsync();
+                }
+            }
+        ],
+        { cancelable: false }
+    );
+};
+
+Updates.addListener((eventListener) => {
+    if(eventListener.type === Updates.UpdateEventType.UPDATE_AVAILABLE){
+        announceUpdate();
+    }
 });
 
 String.prototype.capitalize = capitalize;

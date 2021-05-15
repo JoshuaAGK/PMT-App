@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {  } from '../../firebase/firestore/firestoreService';
 
 const friendSlice = createSlice({
     name: 'friends',

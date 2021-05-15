@@ -1,11 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
+import { Text, View, Pressable, Image } from 'react-native';
 import styles from './styles';
 import mainStyles from '../../styles/styles';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { acceptFriendRequest, declineFriendRequest } from '../../src/firebase/firestore/firestoreService';
-import { useDispatch } from 'react-redux';
 import { addFriend, removeFriendRequest } from '../../src/features/friends/friendsSlice';
 import avatarStyles from '../CustomiseAvatar/styles';
 import { SKIN_TONES, SHIRT_COLOURS } from '../CustomiseAvatar/avatar';

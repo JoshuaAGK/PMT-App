@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Pressable, Image, Dimensions } from 'react-native';
+import { Text, View, Pressable, Image, Dimensions } from 'react-native';
 import styles from './styles';
 import { decrementBalance, addSkin, addShirt, getShirts, getSkins } from '../../src/firebase/firestore/firestoreService';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromBalance } from '../../src/features/auth/authSlice';
-import { current } from 'immer';
 import mainStyles from '../../styles/styles';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { scrollInterpolator, animatedStyles } from '../../utils/carouselInterpolations';
@@ -112,7 +111,7 @@ function AvatarShop({ type, items, inventory }) {
                                 addShirt(itemKey);
                             }
                         } else {
-                            alert('Insufficient funds! You need ₩' + (item.price - currentBalance) + ' more.')
+                            alert('Insufficient funds! You need ₩' + (item.price - currentBalance) + ' more.');
                         }
                     }}
                 >

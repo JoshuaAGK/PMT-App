@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View, Image, Pressable } from 'react-native';
-import { getShirtColour, getSkinTone, setShirtColour as setDBShirtColour, setSkinTone as setDBSkinTone, getShirts, getSkins, attachListenerAndDo } from '../../src/firebase/firestore/firestoreService';
+import { getShirtColour, getSkinTone, setShirtColour as setDBShirtColour, setSkinTone as setDBSkinTone, attachListenerAndDo } from '../../src/firebase/firestore/firestoreService';
 import styles from './styles';
 import * as Constants from './avatar';
 import mainStyles from '../../styles/styles';
@@ -119,7 +119,7 @@ class AvatarItem extends React.Component {
         <Pressable
           style={[styles.gridItem, mainStyles.minorShadow]}
           onPress={() => {
-            this.props.propFunction(this.props.value)
+            this.props.propFunction(this.props.value);
           }}
         >
           <Image
@@ -129,7 +129,7 @@ class AvatarItem extends React.Component {
           <Text style={styles.gridItemText}>{this.props.all[this.props.value].name}</Text>
         </Pressable>
       </View>
-    )
+    );
   }
 }
 

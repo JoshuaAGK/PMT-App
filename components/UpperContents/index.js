@@ -1,6 +1,5 @@
 import React from 'react';
 import {Text, View, Pressable} from 'react-native';
-import {useAsync} from 'react-async';
 import {useNavigation} from '@react-navigation/native';
 import {dateString} from '../../utils/StringUtils';
 import styles from './styles';
@@ -33,8 +32,8 @@ function UpperContents(props) {
             );
             break;
         case 'currency':
-            let currentBalance = auth.currentUser ? auth.currentUser.balance : '0';
-            let streak = auth.currentUser ? auth.currentUser.streak : '0';
+            var currentBalance = auth.currentUser ? auth.currentUser.balance : '0';
+            var streak = auth.currentUser ? auth.currentUser.streak : '0';
             content = (
                 <View>
                     <Text>Streak: {streak}</Text>

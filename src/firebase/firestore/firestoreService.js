@@ -163,7 +163,7 @@ export async function addSkin(skin) {
 }
 
 export async function addShirt(shirt) {
-    updateUserProperty(SHIRTS, firebase.firestore.FieldValue.arrayUnion(shirt))
+    updateUserProperty(SHIRTS, firebase.firestore.FieldValue.arrayUnion(shirt));
 }
 
 export async function addPushNotificationToken(token) {

@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, ScrollView, View } from 'react-native';
 import mainStyles from '../../styles/styles';
 import Advertisement from '../../components/Advertisement';
 import UpperContents from '../../components/UpperContents';
 import CustomiseAvatar from '../../components/CustomiseAvatar';
-import { attachListenerAndDo } from '../../src/firebase/firestore/firestoreService';
-import { useSelector } from 'react-redux';
 
 export const Account = (props) => {    
     return (

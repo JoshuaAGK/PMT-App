@@ -1,9 +1,7 @@
 import React from 'react';
-import {ScrollView, Text, ToastAndroid, TouchableOpacity, View} from 'react-native';
+import {ScrollView, Text, ToastAndroid, TouchableOpacity, View, TextInput} from 'react-native';
 import styles from './styles';
 import {Formik} from 'formik';
-
-import {TextInput} from 'react-native-gesture-handler';
 import {registerInFirebase} from '../../src/firebase/firestore/firebaseService';
 
 

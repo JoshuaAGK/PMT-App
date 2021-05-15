@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, FlatList } from 'react-native';
+import { View } from 'react-native';
 import styles from './styles';
 import BrainTraining from './BrainTraining';
 

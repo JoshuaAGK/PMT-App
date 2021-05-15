@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Pressable, Text, ScrollView, TextInput, TouchableOpacity, FlatList} from 'react-native';
+import {View, Pressable, Text, ScrollView, TextInput, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import mainStyles from '../../styles/styles';
@@ -8,7 +8,7 @@ import Advertisement from '../../components/Advertisement';
 import UpperContents from '../../components/UpperContents';
 import EmotionTrackerInput from '../../components/EmotionTracker/EmotionTrackerInput';
 import {addPushNotificationToken, getUserCollection, incrementBalance} from '../../src/firebase/firestore/firestoreService';
-import {setText, setMood, selectJournal} from '../../src/features/journal/journalSlice';
+import {setText, setMood} from '../../src/features/journal/journalSlice';
 import {addToBalance, setPushNotificationToken} from '../../src/features/auth/authSlice';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -21,8 +21,6 @@ export const Journal = (props) => {
     const balanceSelector = useSelector(state => state.auth);
     let currentBalance = balanceSelector.currentUser ? balanceSelector.currentUser.balance : 0;
     const dispatch = useDispatch();
-    const journal = useSelector(state => state.journal);
-    const auth = useSelector(state => state.auth);
     const navigation = useNavigation();
     
     registerPushNotifications().then( async (token) => {
@@ -44,14 +42,10 @@ export const Journal = (props) => {
             await incrementBalance(currentBalance, points.JOURNAL_SUBMISSION_POINTS);
             dispatch(setText(''));
             dispatch(setMood(-1));
-            console.log('Saved journal entry!');
         }).catch((error) => {
             console.error('Error writing document: ', error);
         });
     }
-
-    let mood = journal.mood;
-    let text = journal.text;
 
     const renderItem = ( item, key ) => (
         <DailyActivity type={item.type} key={key}/>
@@ -59,7 +53,7 @@ export const Journal = (props) => {
 
     const ACTIVITIES = [
         {
-            id: "1",
+            id: '1',
             type: 'braintraining',
         },
     ];
@@ -85,7 +79,7 @@ export const Journal = (props) => {
                     onSubmit={async (values, {setSubmitting, setErrors}) => {
                         onSave(values);
                         values.text = '';
-                        values.emotionTracker = -1
+                        values.emotionTracker = -1;
                     }}
             >
                 {({

@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
-import { ScrollView, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { ScrollView, Text, ToastAndroid, TouchableOpacity, View, TextInput } from 'react-native';
 import styles from './styles';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 
-import {TextInput} from 'react-native-gesture-handler';
 import {signInWithEmail} from '../../src/firebase/firestore/firebaseService';
 
 export const LogIn = ({navigation}) => {
@@ -91,7 +90,7 @@ export const LogIn = ({navigation}) => {
                         <Text style={styles.buttonTitle}>Log In</Text>
                     </TouchableOpacity>
                     <View style={styles.footerView}>
-                        <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress}
+                        <Text style={styles.footerText}>{'Don\'t have an account? '}<Text onPress={onFooterLinkPress}
                                                                                      style={styles.footerLink}>Sign
                             Up</Text></Text>
                     </View>
@@ -100,7 +99,7 @@ export const LogIn = ({navigation}) => {
         </Formik>
         </ScrollView>
     );
-}
+};
 
 
 export default LogIn;

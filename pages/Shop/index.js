@@ -5,8 +5,8 @@ import {
   ScrollView,
   Pressable,
   StyleSheet,
-  Alert,
   Modal,
+  TextInput
 } from 'react-native';
 import mainStyles from '../../styles/styles';
 import shopStyles from './styles';
@@ -21,7 +21,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToBalance, setPremium } from '../../src/features/auth/authSlice';
 import * as Constants from '../../components/CustomiseAvatar/avatar';
 import AvatarShop from '../../components/AvatarShop';
-import { TextInput } from 'react-native-gesture-handler';
 
 export const Shop = (props) => {
   let dispatch = useDispatch();
@@ -103,7 +102,7 @@ export const Shop = (props) => {
                 await leavePremium();
                 dispatch(setPremium(false));
                 alert(
-                  "We're sorry to hear you go... You are no longer a premium member."
+                  'We\'re sorry to hear you go... You are no longer a premium member.'
                 );
               }
             }}
@@ -156,7 +155,6 @@ const dispatchPurchaseCurrency = async (props, currentBalance, dispatch) => {
 
 const CustomModal = (props) => {
   let sendAmount;
-  let changedText;
 
   const [customAmount, changeCustomAmount] = useState('');
   const dispatch = useDispatch();

@@ -1,9 +1,8 @@
-import {applyMiddleware, configureStore} from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import {combineReducers} from 'redux';
 import journalReducer from '../journal/journalSlice';
 import friendsSlice from '../friends/friendsSlice';
 import authReducer, { verifyAuth } from '../auth/authSlice';
-import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
     journal: journalReducer,
@@ -14,7 +13,6 @@ const rootReducer = combineReducers({
 const store = configureStore(
     {
         reducer: rootReducer
-        //middleware: applyMiddleware(thunk)
     });
 store.dispatch(verifyAuth());
 

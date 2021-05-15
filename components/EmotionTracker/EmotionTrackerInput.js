@@ -1,10 +1,6 @@
-import React, {useState} from 'react';
-import {View, Text, Pressable} from 'react-native';
-import mainStyles from '../../styles/styles';
-import emotionStyles from './styles';
+import React from 'react';
 import EmotionTracker from './EmotionTracker';
 import {Field} from 'formik';
-import styles from '../LogIn/styles';
 
 const fieldName = 'emotionTracker';
 

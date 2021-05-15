@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import mainStyles from '../../styles/styles';
 import emotionStyles from './styles';
@@ -7,23 +7,23 @@ import Emotion from './Emotion';
 export const EMOTIONS = {
     VERY_SAD: {
         value: 0,
-        emoji: "😢"
+        emoji: '😢'
     },
     SAD: {
         value: 1,
-        emoji: "🙁"
+        emoji: '🙁'
     },
     NORMAL: {
         value: 2,
-        emoji: "😐"
+        emoji: '😐'
     },
     HAPPY: {
         value: 3,
-        emoji: "🙂"
+        emoji: '🙂'
     },
     VERY_HAPPY: {
         value: 4,
-        emoji: "😃"
+        emoji: '😃'
     }
 };
 

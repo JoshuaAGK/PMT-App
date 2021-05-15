@@ -1,20 +1,12 @@
 import {createSlice} from '@reduxjs/toolkit';
 import firebase from 'firebase';
 import {
-    getUserBalance,
     updateLastLogIn,
-    getUserLastLogIn,
     resetStreak,
-    getUserStreak,
     incrementStreak,
-    getPremiumStatus,
-    getSkinTone,
-    getShirtColour,
     getUserDocument,
     incrementBalance,
-    addPushNotificationToken
 } from '../../firebase/firestore/firestoreService';
-import { registerPushNotifications } from '../notifications/notifications';
 import Points from '../points/points';
 
 const authSlice = createSlice({
@@ -67,7 +59,7 @@ const authSlice = createSlice({
                 }
             } else {
                 if (state.currentUser.streak >= 1) {
-                    alert("You lost your streak.");
+                    alert('You lost your streak.');
                 }
 
                 state.currentUser.streak = 0;
@@ -112,13 +104,13 @@ export function verifyAuth() {
         return firebase.auth().onAuthStateChanged( async (user) => {
             if(user) {
                 const currentUser = await getUserDocument().get();
-                const currentUserData = currentUser.data()
+                const currentUserData = currentUser.data();
 
                 let lastLogIn;
                 if (!currentUserData.lastLogIn) {
                     lastLogIn = new Date();
                 } else {
-                    lastLogIn = currentUserData.lastLogIn.toDate()
+                    lastLogIn = currentUserData.lastLogIn.toDate();
                 }
 
                 let authObj = {
