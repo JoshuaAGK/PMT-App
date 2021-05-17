@@ -6,7 +6,7 @@ import {
   Pressable,
   StyleSheet,
   Modal,
-  TextInput
+  TextInput,
 } from 'react-native';
 import mainStyles from '../../styles/styles';
 import shopStyles from './styles';
@@ -102,7 +102,7 @@ export const Shop = (props) => {
                 await leavePremium();
                 dispatch(setPremium(false));
                 alert(
-                  'We\'re sorry to hear you go... You are no longer a premium member.'
+                  "We're sorry to hear you go... You are no longer a premium member."
                 );
               }
             }}
@@ -182,6 +182,7 @@ const CustomModal = (props) => {
               placeholder={'Enter an custom amount...'}
               onChangeText={changeCustomAmount}
               value={customAmount.toString()}
+              textAlign={'center'}
               ref={(input) => {
                 sendAmount = input;
               }}
@@ -214,6 +215,7 @@ const CustomModal = (props) => {
                       currentBalance,
                       dispatch
                     );
+                    changeCustomAmount('');
                   }
                 }}
               >
@@ -260,7 +262,7 @@ const modalStyles = StyleSheet.create({
     alignContent: 'space-between',
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
     elevation: 2,

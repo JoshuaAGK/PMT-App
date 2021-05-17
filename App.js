@@ -17,36 +17,36 @@ import * as Updates from 'expo-updates';
 LogBox.ignoreLogs(['Setting a timer']);
 
 Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: true,
-        shouldSetBadge: false,
-    }),
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
 });
 
 const announceUpdate = () => {
-    Alert.alert(
-        'New update available!',
-        'A newer version of the app is available and is ready to be launched. Would you like to launch it now?',
-        [
-            {
-                text: 'No'
-            },
-            {
-                text: 'Yes',
-                onPress: () => {
-                    Updates.reloadAsync();
-                }
-            }
-        ],
-        { cancelable: false }
-    );
+  Alert.alert(
+    'New update available!',
+    'A newer version of the app is available and is ready to be launched. Would you like to launch it now?',
+    [
+      {
+        text: 'No',
+      },
+      {
+        text: 'Yes',
+        onPress: () => {
+          Updates.reloadAsync();
+        },
+      },
+    ],
+    { cancelable: false }
+  );
 };
 
 Updates.addListener((eventListener) => {
-    if(eventListener.type === Updates.UpdateEventType.UPDATE_AVAILABLE){
-        announceUpdate();
-    }
+  if (eventListener.type === Updates.UpdateEventType.UPDATE_AVAILABLE) {
+    announceUpdate();
+  }
 });
 
 String.prototype.capitalize = capitalize;
@@ -58,213 +58,232 @@ const SOCIAL = 'social';
 const SHOP = 'shop';
 
 // Temporary solution
-var tempVarFriend = {displayName: 'N/A'};
+var tempVarFriend = { displayName: 'N/A' };
 
 function setFriend(x) {
-    tempVarFriend = x;
+  tempVarFriend = x;
 }
 
-function LogInScreen({navigation}) {
-    return (
-        <View stlye={styles.container}>
-            <LogIn/>
-        </View>
-    );
+function LogInScreen({ navigation }) {
+  return (
+    <View stlye={styles.container}>
+      <LogIn />
+    </View>
+  );
 }
 
-function JournalScreen({navigation}) {
-    let auth = useSelector(state => state.auth);
-    let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
-    return (
-        <View style={styles.container}>
-            <Journal premium={premiumStatus}/>
-            {!premiumStatus &&
-            <Advertisement type="banner" content="ADVERTISEMENT"/>
-            }
-            <StatusBar style="auto"/>
-        </View>
-    );
+function JournalScreen({ navigation }) {
+  let auth = useSelector((state) => state.auth);
+  let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
+  return (
+    <View style={styles.container}>
+      <Journal premium={premiumStatus} />
+      {!premiumStatus && (
+        <Advertisement type="banner" content="ADVERTISEMENT" />
+      )}
+      <StatusBar style="auto" />
+    </View>
+  );
 }
 
-function AccountScreen({navigation}) {
-    let auth = useSelector(state => state.auth);
-    let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
-    return (
-        <View style={styles.container}>
-            <Account premium={premiumStatus}/>
-            {!premiumStatus &&
-            <Advertisement type="banner" content="ADVERTISEMENT"/>
-            }
-            <StatusBar style="auto"/>
-        </View>
-    );
+function AccountScreen({ navigation }) {
+  let auth = useSelector((state) => state.auth);
+  let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
+  return (
+    <View style={styles.container}>
+      <Account premium={premiumStatus} />
+      {!premiumStatus && (
+        <Advertisement type="banner" content="ADVERTISEMENT" />
+      )}
+      <StatusBar style="auto" />
+    </View>
+  );
 }
 
 const Stack = createStackNavigator();
 
-function socialHomeScreen({navigation}) {
-    let auth = useSelector(state => state.auth);
-    let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
-    return (
-        <View style={styles.container}>
-            <Social nav={navigation} loadFriendData={setFriend}/>
-            {!premiumStatus &&
-            <Advertisement type="banner" content="ADVERTISEMENT"/>
-            }
-            <StatusBar style="auto"/>
-        </View>
-    );
+function socialHomeScreen({ navigation }) {
+  let auth = useSelector((state) => state.auth);
+  let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
+  return (
+    <View style={styles.container}>
+      <Social nav={navigation} loadFriendData={setFriend} />
+      {!premiumStatus && (
+        <Advertisement type="banner" content="ADVERTISEMENT" />
+      )}
+      <StatusBar style="auto" />
+    </View>
+  );
 }
 
-function socialChatScreen({navigation}) {
-    let auth = useSelector(state => state.auth);
-    let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
-    return (
-        <View style={styles.container}>
-            <ChatPage friend={tempVarFriend}/>
-            <StatusBar style="auto"/>
-        </View>
-    );
+function socialChatScreen({ navigation }) {
+  let auth = useSelector((state) => state.auth);
+  let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
+  return (
+    <View style={styles.container}>
+      <ChatPage friend={tempVarFriend} />
+      <StatusBar style="auto" />
+    </View>
+  );
 }
 
-function socialProfileScreen({navigation}) {
-    let auth = useSelector(state => state.auth);
-    let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
-    return (
-        <View style={styles.container}>
-            <Profile friend={tempVarFriend}/>
-            {!premiumStatus &&
-            <Advertisement type="banner" content="ADVERTISEMENT"/>
-            }
-            <StatusBar style="auto"/>
-        </View>
-    );
+function socialProfileScreen({ navigation }) {
+  let auth = useSelector((state) => state.auth);
+  let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
+  return (
+    <View style={styles.container}>
+      <Profile friend={tempVarFriend} />
+      {!premiumStatus && (
+        <Advertisement type="banner" content="ADVERTISEMENT" />
+      )}
+      <StatusBar style="auto" />
+    </View>
+  );
 }
 
-function SocialScreen({navigation}) {
+function SocialScreen({ navigation }) {
+  const button = (
+    <Pressable
+      onPress={() => {
+        navigation.navigate('socialProfileScreen');
+      }}
+      style={styles.profileButton}
+    >
+      <Text>Profile</Text>
+    </Pressable>
+  );
 
-    const button = (
-        <Pressable onPress={() => { navigation.navigate('socialProfileScreen');}}
-            style={styles.profileButton}>
-            <Text>Profile</Text>
-        </Pressable>
-    );
-
-    return (
-        <Stack.Navigator
-            initialRouteName="socialHomeScreen"
-        >
-            <Stack.Screen name="socialHomeScreen" options={{headerShown: false, title: 'Social'}}
-                          component={socialHomeScreen}/>
-            <Stack.Screen name="socialChatScreen" options={{
-                headerShown: true,
-                title: tempVarFriend.displayName,
-                headerRight: () => (button),
-                headerRightContainerStyle: {
-                    marginTop: 5,
-                    marginRight: 10,
-                    padding: 5,
-                    paddingHorizontal: 15,
-                    height: "70%",
-                    backgroundColor: '#eee',
-                    borderRadius: 10,
-                },
-            }}
-                          component={socialChatScreen}/>
-            <Stack.Screen name="socialProfileScreen"
-                          options={{headerShown: true, title: tempVarFriend.displayName + '\'s Profile'}}
-                          component={socialProfileScreen}/>
-        </Stack.Navigator>
-    );
+  return (
+    <Stack.Navigator initialRouteName="socialHomeScreen">
+      <Stack.Screen
+        name="socialHomeScreen"
+        options={{ headerShown: false, title: 'Social' }}
+        component={socialHomeScreen}
+      />
+      <Stack.Screen
+        name="socialChatScreen"
+        options={{
+          headerShown: true,
+          title: tempVarFriend.displayName,
+          headerRight: () => button,
+          headerRightContainerStyle: {
+            marginTop: 5,
+            marginRight: 10,
+            padding: 5,
+            paddingHorizontal: 15,
+            height: '70%',
+            backgroundColor: '#eee',
+            borderRadius: 10,
+          },
+        }}
+        component={socialChatScreen}
+      />
+      <Stack.Screen
+        name="socialProfileScreen"
+        options={{
+          headerShown: true,
+          title: tempVarFriend.displayName + "'s Profile",
+        }}
+        component={socialProfileScreen}
+      />
+    </Stack.Navigator>
+  );
 }
 
-function ShopScreen({navigation}) {
-    let auth = useSelector(state => state.auth);
-    let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
-    return (
-        <View style={styles.container}>
-            <Shop premium={premiumStatus}/>
-            {!premiumStatus &&
-            <Advertisement type="banner" content="ADVERTISEMENT"/>
-            }
-            <StatusBar style="auto"/>
-        </View>
-    );
+function ShopScreen({ navigation }) {
+  let auth = useSelector((state) => state.auth);
+  let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
+  return (
+    <View style={styles.container}>
+      <Shop premium={premiumStatus} />
+      {!premiumStatus && (
+        <Advertisement type="banner" content="ADVERTISEMENT" />
+      )}
+      <StatusBar style="auto" />
+    </View>
+  );
 }
 
 const Tab = createBottomTabNavigator();
 
 function AppTabs() {
-    return (
-        <Tab.Navigator
-            screenOptions={({route}) => ({
-                tabBarIcon: ({focused, color, size}) => {
-                    let iconName;
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
 
-                    switch (route.name) {
-                        case JOURNAL.capitalize():
-                            iconName = focused ? 'book' : 'book';
-                            break;
-                        case ME.capitalize():
-                            iconName = focused ? 'person' : 'person';
-                            break;
-                        case SOCIAL.capitalize():
-                            iconName = focused ? 'people-alt' : 'people-alt';
-                            break;
-                        case SHOP.capitalize():
-                            iconName = focused ? 'shopping-cart' : 'shopping-cart';
-                            break;
-                    }
+          switch (route.name) {
+            case JOURNAL.capitalize():
+              iconName = focused ? 'book' : 'book';
+              break;
+            case ME.capitalize():
+              iconName = focused ? 'person' : 'person';
+              break;
+            case SOCIAL.capitalize():
+              iconName = focused ? 'people-alt' : 'people-alt';
+              break;
+            case SHOP.capitalize():
+              iconName = focused ? 'shopping-cart' : 'shopping-cart';
+              break;
+          }
 
-                    return <MaterialIcons name={iconName} size={size} color={color}/>;
-                },
-            })}
-        >
-            <Tab.Screen name={JOURNAL.capitalize()} component={JournalScreen}/>
-            <Tab.Screen name={ME.capitalize()} component={AccountScreen}/>
-            <Tab.Screen name={SOCIAL.capitalize()} component={SocialScreen}/>
-            <Tab.Screen name={SHOP.capitalize()} component={ShopScreen}/>
-        </Tab.Navigator>
-    );
+          return <MaterialIcons name={iconName} size={size} color={color} />;
+        },
+      })}
+    >
+      <Tab.Screen name={JOURNAL.capitalize()} component={JournalScreen} />
+      <Tab.Screen name={ME.capitalize()} component={AccountScreen} />
+      <Tab.Screen name={SOCIAL.capitalize()} component={SocialScreen} />
+      <Tab.Screen name={SHOP.capitalize()} component={ShopScreen} />
+    </Tab.Navigator>
+  );
 }
 
 const stackOptions = {
-    headerShown: false
+  headerShown: false,
 };
 
 function StackApp() {
-    const auth = useSelector(state => state.auth);
-    let loggedIn = false;
-    if (auth.currentUser) {
-        loggedIn = true;
-    }
-    return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                {!loggedIn &&
-                <Stack.Screen name="Log In" component={LogIn}/>}
-                {!loggedIn &&
-                <Stack.Screen name="Registration" component={Registration}/>}
-                <Stack.Screen name="Journal" component={AppTabs} options={stackOptions}/>
-                <Stack.Screen name="Calendar" component={Calendar}/>
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
+  const auth = useSelector((state) => state.auth);
+  let loggedIn = false;
+  if (auth.currentUser) {
+    loggedIn = true;
+  }
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        {!loggedIn && <Stack.Screen name="Log In" component={LogIn} />}
+        {!loggedIn && (
+          <Stack.Screen name="Registration" component={Registration} />
+        )}
+        <Stack.Screen
+          name="Journal"
+          component={AppTabs}
+          options={stackOptions}
+        />
+        <Stack.Screen name="Calendar" component={Calendar} />
+        {/* TODO: Make GDPR Page */}
+        {/* TODO: Make a Settings Page Link to the GDPR page */}
+        {/* any personal data will be processed and stored in strict accordance with UK GDPR guidelines, if you have any concerns or questions with regards to this survey, please email (@data protection officer) (example@email.com) and we will attempt to resolve them. */}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 export default function App() {
-    return (
-        <Provider store={store}>
-            <StackApp/>
-        </Provider>
-    );
+  return (
+    <Provider store={store}>
+      <StackApp />
+    </Provider>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fefefe',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#fefefe',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
 });

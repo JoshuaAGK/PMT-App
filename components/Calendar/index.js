@@ -241,18 +241,6 @@ class Calendar extends React.Component {
     let journalDetails = null;
     // Check date has data
     if (this.state.selectedText != null) {
-      // console.log(this.state.selectedDate.getUTCDate());
-      // journalDetails = (
-      //   <View style={[styles.journalDetails, mainStyles.platformShadow]}>
-      //     <Text>
-      //       {emojis[this.state.selectedMood] +
-      //         ' ' +
-      //         this.state.selectedDate.toISOString().substring(0, 10) +
-      //         '\n'}
-      //     </Text>
-      //     <Text>{this.state.selectedText}</Text>
-      //   </View>
-      // );
       const journalDaysFilter = this.state.journalEntries.filter(
         (entry) =>
           entry.date.toISOString().substring(8, 10) ===
@@ -335,6 +323,8 @@ class Calendar extends React.Component {
         </View>
 
         {journalDetails}
+        {/* TODO: Data Privacy Collection Statement */}
+        {/* the data we have collected as part of (@form) will be used to (@use/purpose of collection) */}
       </ScrollView>
     );
   }
