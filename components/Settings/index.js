@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     setDisplayName
   } from '../../src/features/auth/authSlice';
-import { clearJournalEntries, setDisplayName as setDBDisplayName } from '../../src/firebase/firestore/firestoreService';
+import { clearChatMessages, clearJournalEntries, setDisplayName as setDBDisplayName } from '../../src/firebase/firestore/firestoreService';
 
 export const Settings = (props) => {
     let dispatch = useDispatch();
@@ -46,7 +46,8 @@ export const Settings = (props) => {
             </View>
             <View style={[mainStyles.buttonContainer, styles.settingsButtonContainer]}>
                 <Pressable style={[mainStyles.button, styles.settingsButton]} onPress={() => {
-
+                    clearChatMessages();
+                    alert("Chat Messages Cleared.");
                 }}>
                     <Text style={mainStyles.buttonText}>Clear Chat History</Text>
                 </Pressable>

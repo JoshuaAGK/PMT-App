@@ -181,6 +181,27 @@ export async function clearJournalEntries() {
 
 export async function clearChatMessages() {
     // TODO: Implement clearing chat messages
+    let userId = firebase.auth().currentUser.uid
+    let conversationsRef = firebase.database().ref("conversations");
+    conversationsRef.once("value", function(snapshot) {
+        let snapshotVal = snapshot.val();
+        let conversationKeys = Object.keys(snapshotVal);
+        for (const conversationKey of conversationKeys) {
+            if (conversationKey.includes(userId)) {
+                let conversation = snapshotVal[conversationKey];
+                let conversationEntries = Object.entries(conversation);
+                for (const conversationEntry of conversationEntries) {
+                    let messageId = conversationEntry[0];
+                    let message = conversationEntry[1];
+                    if (message.sender === userId) {
+                        firebase.database().ref(`conversations/${conversationKey}/${messageId}`).remove();
+                    }
+                }
+            }
+        }
+    }, function(error) {
+        console.log("Error: " + error.code);
+    });
 }
 
 export async function addPushNotificationToken(token) {
