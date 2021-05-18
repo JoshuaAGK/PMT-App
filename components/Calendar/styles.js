@@ -102,6 +102,19 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 50 / 4,
   },
+  journalDetailsHeader: {
+    display: "flex",
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  journalDetailsHeaderRight: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  journalDetailsHeaderElement: {
+      marginRight: 10
+  }
 });
 
 export default styles;

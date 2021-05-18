@@ -1,9 +1,10 @@
-import React from 'react';
-import { View, Pressable, Text, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Pressable, Text, Modal, ScrollView, TextInput } from 'react-native';
 import mainStyles from '../../styles/styles';
+import modalStyles from '../../styles/modalStyles';
 import styles from './styles';
 import { dateString } from '../../utils/StringUtils';
-import { getUserCollection } from '../../src/firebase/firestore/firestoreService';
+import { getJournalDocument, getUserCollection, updateJournalProperty } from '../../src/firebase/firestore/firestoreService';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 class Calendar extends React.Component {
@@ -21,6 +22,7 @@ class Calendar extends React.Component {
       month: today.getMonth(),
       year: today.getFullYear(),
       journalEntries: [],
+      editingJournal: null
     };
 
     // Get month & year as string (e.g. May 2021)
@@ -71,9 +73,10 @@ class Calendar extends React.Component {
           // Push data to journalEntries if data found
           if (data.hasOwnProperty('date') && data.hasOwnProperty('text')) {
             journalEntries.push({
-              date: data.date.toDate(),
-              text: data.text,
-              mood: data.mood,
+                id: doc.id,
+                date: data.date.toDate(),
+                text: data.text,
+                mood: data.mood,
             });
           }
         });
@@ -256,13 +259,26 @@ class Calendar extends React.Component {
             mainStyles.lowestElementOnPageToGiveItABottomMarginBecauseAndroidIsWeirdAndDoesntLikeShadowsForSomeReason,
           ]}
         >
-          <Text>
-            {emojis[entry.mood] +
-              ' ' +
-              entry.date.toISOString().substring(0, 10) +
-              '\n'}
-          </Text>
-          <Text>{entry.text}</Text>
+            <View style={styles.journalDetailsHeader}>
+                <Text>{entry.date.toISOString().substring(0, 10)}</Text>
+                <View style={styles.journalDetailsHeaderRight}>
+                    <Text style={styles.journalDetailsHeaderElement}>{emojis[entry.mood]}</Text>
+                    <Pressable style={styles.journalDetailsHeaderElement} onPress={() => {
+                        this.setState({
+                            editingJournal: entry
+                        })
+                    }}>
+                        <Text>Edit</Text>
+                    </Pressable>
+                    <Pressable style={styles.journalDetailsHeaderElement} onPress={async () => {
+                        await getJournalDocument(entry.id).delete();
+                        this.makeFirestoreRequest();
+                    }}>
+                        <Text>Delete</Text>
+                    </Pressable>
+                </View>
+            </View>
+            <Text>{entry.text}</Text>
         </View>
       ));
     }
@@ -322,6 +338,22 @@ class Calendar extends React.Component {
           <>{this.state.displayEntries}</>
         </View>
 
+        <EditModal
+            editingJournal={this.state.editingJournal}
+            setEditingJournal={(editingJournalText, persist = false) => {
+                let newEditingJournal = this.state.editingJournal;
+                newEditingJournal.text = editingJournalText;
+                this.setState({
+                    editingJournal: newEditingJournal
+                });
+                if (persist) {
+                    updateJournalProperty(newEditingJournal.id, "text", newEditingJournal.text);
+                    this.setState({
+                        editingJournal: null
+                    });
+                }
+            }}
+        />
         {journalDetails}
         {/* TODO: Data Privacy Collection Statement */}
         {/* the data we have collected as part of (@form) will be used to (@use/purpose of collection) */}
@@ -382,5 +414,59 @@ class CalendarDay extends React.Component {
     return returnDay;
   }
 }
+
+const EditModal = ({ editingJournal, setEditingJournal }) => {
+    let editingJournalText = '';
+    if (editingJournal != null) {
+        editingJournalText = editingJournal.text;
+    }
+
+    return (
+      <View style={modalStyles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={(editingJournal != null)}
+          onRequestClose={() => {
+            setEditingJournal(null);
+          }}
+        >
+          <View style={modalStyles.centeredView}>
+            <View style={modalStyles.modalView}>
+              <TextInput
+                style={modalStyles.inputBox}
+                placeholder={'Edit journal entry...'}
+                onChangeText={setEditingJournal}
+                value={editingJournalText}
+                textAlign={'left'}
+              />
+  
+              <View style={modalStyles.buttonCentered}>
+                <Pressable
+                  style={[modalStyles.button, modalStyles.buttonClose]}
+                  onPress={() => {
+                    setEditingJournal(null);
+                  }}
+                >
+                  <Text style={modalStyles.textStyle}>Cancel</Text>
+                </Pressable>
+  
+                <Pressable
+                  style={[modalStyles.button, modalStyles.buttonOpen]}
+                  onPress={() => {
+                    setEditingJournal(editingJournalText, true);
+                  }}
+                >
+                  <Text style={modalStyles.textStyle}>
+                    Save journal edit
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
+    );
+  };
 
 export default Calendar;

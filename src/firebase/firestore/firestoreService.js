@@ -171,6 +171,16 @@ export async function setDisplayName(displayName) {
     updateUserProperty(DISPLAY_NAME, displayName);
 }
 
+export function getJournalDocument(id) {
+    return getUserCollection(JOURNAL_COLLECTION).doc(id);
+}
+
+export async function updateJournalProperty(id, prop, value) {
+    let updateData = {};
+    updateData[prop] = value;
+    await getJournalDocument(id).update(updateData);
+}
+
 export async function clearJournalEntries() {
     getUserCollection(JOURNAL_COLLECTION).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
