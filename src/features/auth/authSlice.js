@@ -90,6 +90,9 @@ const authSlice = createSlice({
         setShirtColour: (state = this.initialState, action) => {
             state.currentUser.shirtColour = action.payload;
         },
+        setDisplayName: (state = this.initialState, action) => {
+            state.currentUser.displayName = action.payload;
+        },
         setPushNotificationToken: (state = this.initialState, action) => {
             state.pushNotificationToken = action.payload;
         }
@@ -97,7 +100,7 @@ const authSlice = createSlice({
 });
 
 const { actions, reducer } = authSlice;
-const { signInUser, signOutUser, setBalance, setPremium, addToBalance, removeFromBalance, setPushNotificationToken } = actions;
+const { signInUser, signOutUser, setBalance, setPremium, addToBalance, removeFromBalance, setDisplayName, setPushNotificationToken } = actions;
 
 export function verifyAuth() {
     return function(dispatch) {
@@ -132,5 +135,5 @@ export function verifyAuth() {
     };
 }
 
-export { signInUser, signOutUser, setBalance, setPremium, addToBalance, removeFromBalance, setPushNotificationToken };
+export { signInUser, signOutUser, setBalance, setPremium, addToBalance, removeFromBalance, setDisplayName, setPushNotificationToken };
 export default reducer;

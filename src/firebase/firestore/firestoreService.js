@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import * as Constants from '../../../components/CustomiseAvatar/avatar';
 import { sendFriendRequestNotification, sendMessageNotification } from '../../features/notifications/notifications';
 
+const JOURNAL_COLLECTION = 'journal';
 const USER_COLLECTION = 'users';
 const DISPLAY_NAME = 'displayName';
 const EMAIL = 'email';
@@ -164,6 +165,22 @@ export async function addSkin(skin) {
 
 export async function addShirt(shirt) {
     updateUserProperty(SHIRTS, firebase.firestore.FieldValue.arrayUnion(shirt));
+}
+
+export async function setDisplayName(displayName) {
+    updateUserProperty(DISPLAY_NAME, displayName);
+}
+
+export async function clearJournalEntries() {
+    getUserCollection(JOURNAL_COLLECTION).get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            getUserCollection(JOURNAL_COLLECTION).doc(doc.id).delete();
+        });
+    });
+}
+
+export async function clearChatMessages() {
+    // TODO: Implement clearing chat messages
 }
 
 export async function addPushNotificationToken(token) {

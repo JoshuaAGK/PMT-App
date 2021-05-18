@@ -1,10 +1,10 @@
 import React from 'react';
-import {Text, View, Pressable} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {dateString} from '../../utils/StringUtils';
+import { Text, View, Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { dateString } from '../../utils/StringUtils';
 import styles from './styles';
-import {signOutFirebase} from '../../src/firebase/firestore/firebaseService';
-import {useSelector} from 'react-redux';
+import { signOutFirebase } from '../../src/firebase/firestore/firebaseService';
+import { useSelector } from 'react-redux';
 import { removePushNotificationToken } from '../../src/firebase/firestore/firestoreService';
 
 function UpperContents(props) {
@@ -16,12 +16,18 @@ function UpperContents(props) {
     switch (containerType) {
         case 'logout':
             content = (
-
-                <Pressable style={styles.rightBox} onPress={async () => {
-                    await logOut(navigation, auth);
-                }}>
-                    <Text>Log out</Text>
-                </Pressable>
+                <View>
+                    <Pressable style={styles.rightBox} onPress={() => {
+                        navigation.navigate("Settings");
+                    }}>
+                        <Text>Settings</Text>
+                    </Pressable>
+                    <Pressable style={styles.rightBox} onPress={async () => {
+                        await logOut(navigation, auth);
+                    }}>
+                        <Text>Log out</Text>
+                    </Pressable>
+                </View>
             );
             break;
         case 'friends':

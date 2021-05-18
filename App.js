@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, View, LogBox, Pressable, Text, Alert } from 'react-native';
 import { Provider, useSelector } from 'react-redux';
 import { Account, ChatPage, Journal, Shop, Social } from './pages';
-import { Advertisement, LogIn, Calendar, Registration } from './components';
+import { Advertisement, LogIn, Calendar, Registration, Settings } from './components';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -264,7 +264,7 @@ function StackApp() {
         />
         <Stack.Screen name="Calendar" component={Calendar} />
         {/* TODO: Make GDPR Page */}
-        {/* TODO: Make a Settings Page Link to the GDPR page */}
+        <Stack.Screen name="Settings" component={Settings} />
         {/* any personal data will be processed and stored in strict accordance with UK GDPR guidelines, if you have any concerns or questions with regards to this survey, please email (@data protection officer) (example@email.com) and we will attempt to resolve them. */}
       </Stack.Navigator>
     </NavigationContainer>
