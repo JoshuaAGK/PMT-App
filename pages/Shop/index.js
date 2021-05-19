@@ -65,10 +65,6 @@ export const Shop = (props) => {
       showsVerticalScrollIndicator={false}
       style={mainStyles.mainPage}
     >
-      <CustomModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      />
       <UpperContents content="currency" />
       <Text style={mainStyles.bigText}>Buy in-app currency</Text>
       <View style={[shopStyles.shopContainer, mainStyles.platformShadow]}>
@@ -117,6 +113,10 @@ export const Shop = (props) => {
       {skinToneShop}
       <Text style={mainStyles.bigText}>Avatar Shirt</Text>
       {shirtShop}
+      <CustomModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </ScrollView>
   );
 };
