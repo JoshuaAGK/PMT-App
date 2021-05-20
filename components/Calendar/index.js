@@ -341,11 +341,17 @@ class Calendar extends React.Component {
         <EditModal
             editingJournal={this.state.editingJournal}
             setEditingJournal={(editingJournalText, persist = false) => {
-                let newEditingJournal = this.state.editingJournal;
-                newEditingJournal.text = editingJournalText;
-                this.setState({
-                    editingJournal: newEditingJournal
-                });
+                if (editingJournalText != null) {
+                    let newEditingJournal = this.state.editingJournal;
+                    newEditingJournal.text = editingJournalText;
+                    this.setState({
+                        editingJournal: newEditingJournal
+                    });
+                } else {
+                    this.setState({
+                        editingJournal: null
+                    });
+                }
                 if (persist) {
                     updateJournalProperty(newEditingJournal.id, "text", newEditingJournal.text);
                     this.setState({
