@@ -33,21 +33,25 @@ function BrainTraining(props) {
   }
 
   function answerQuestion(answer) {
-    if (index == DICLENGTH) {
-      alert('Game over');
-    } else {
-      let correctAnswer = dictionary[Object.keys(dictionary)[index]]['correct'];
-      let points;
-      if (answer == correctAnswer) {
+    let correctAnswer = dictionary[Object.keys(dictionary)[index]]['correct'];
+    let points;
+    if (answer == correctAnswer) {
         setScore(score + 1);
         points = Points.QUESTION_CORRECT;
-      } else {
+    } else {
         points = Points.QUESTION_INCORRECT;
-      }
-      dispatch(addToBalance(points));
-      incrementBalance(authSelector.currentUser.balance, points);
-      setIndex(index + 1);
     }
+    dispatch(addToBalance(points));
+    incrementBalance(authSelector.currentUser.balance, points);
+
+    let newIndex = index + 1;
+
+    if (newIndex >= DICLENGTH) {
+        newIndex = -1;
+        alert(`Game Over! ${score}/${DICLENGTH}`);
+    }
+
+    setIndex(newIndex);
   }
 
   if (index == -1) {
@@ -60,14 +64,6 @@ function BrainTraining(props) {
         >
           <Text style={styles.beginGameText}>Begin game!</Text>
         </Pressable>
-      </View>
-    );
-  } else if (index == DICLENGTH) {
-    return (
-      <View style={styles.brainTraining}>
-        <Text style={styles.scoreText}>
-          Game over! You scored {score} / {DICLENGTH}
-        </Text>
       </View>
     );
   } else {
