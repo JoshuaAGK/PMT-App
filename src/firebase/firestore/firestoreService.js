@@ -189,6 +189,14 @@ export async function clearJournalEntries() {
     });
 }
 
+export async function updateMessage(conversationId, messageId, newMessage) {
+    firebase.database().ref(`conversations/${conversationId}/${messageId}`).set(newMessage);
+}
+
+export async function deleteMessage(conversationId, messageId) {
+    firebase.database().ref(`conversations/${conversationId}/${messageId}`).remove();
+}
+
 export async function clearChatMessages() {
     // TODO: Implement clearing chat messages
     let userId = firebase.auth().currentUser.uid

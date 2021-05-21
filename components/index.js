@@ -5,3 +5,4 @@ export { default as Calendar } from './Calendar';
 export { default as Settings } from './Settings';
 export { default as EmotionTracker } from './EmotionTracker/EmotionTracker';
 export { default as Registration } from './Registration';
+export { default as EditModal } from './EditModal';

@@ -47,6 +47,19 @@ const styles = StyleSheet.create({
         opacity: 0.8,
         fontSize: 12
     },
+    messageOptionsContainer: {
+        display: "flex",
+        flexDirection: "row"
+    },
+    messageOptionBtn: {
+        alignSelf: 'center',
+        marginHorizontal: 10,
+    },
+    messageOptionText: {
+        color: 'gray',
+        opacity: 0.8,
+        fontSize: 12
+    },
     messageDateContainer: {
         width: '60%',
         alignSelf: 'center',

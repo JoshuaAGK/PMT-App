@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, Pressable, Text, Modal, ScrollView, TextInput } from 'react-native';
 import mainStyles from '../../styles/styles';
-import modalStyles from '../../styles/modalStyles';
 import styles from './styles';
 import { dateString } from '../../utils/StringUtils';
 import { getJournalDocument, getUserCollection, updateJournalProperty } from '../../src/firebase/firestore/firestoreService';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import EditModal from '../EditModal';
 
 class Calendar extends React.Component {
   constructor(props) {
@@ -283,6 +283,10 @@ class Calendar extends React.Component {
       ));
     }
 
+    let editingJournalText = null;
+    if (this.state.editingJournal != null) {
+        editingJournalText = this.state.editingJournal.text;
+    }
     return (
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.buttonContainer}>
@@ -339,11 +343,11 @@ class Calendar extends React.Component {
         </View>
 
         <EditModal
-            editingJournal={this.state.editingJournal}
-            setEditingJournal={(editingJournalText, persist = false) => {
-                if (editingJournalText != null) {
-                    let newEditingJournal = this.state.editingJournal;
-                    newEditingJournal.text = editingJournalText;
+            editingText={editingJournalText}
+            setEditingText={(editingText, persist = false) => {
+                let newEditingJournal = this.state.editingJournal;
+                if (editingText != null) {
+                    newEditingJournal.text = editingText;
                     this.setState({
                         editingJournal: newEditingJournal
                     });
@@ -359,6 +363,8 @@ class Calendar extends React.Component {
                     });
                 }
             }}
+            editTxtPlaceholder={'Edit journal entry...'}
+            saveBtnText={'Save journal edit'}
         />
         {journalDetails}
         {/* TODO: Data Privacy Collection Statement */}
@@ -420,59 +426,5 @@ class CalendarDay extends React.Component {
     return returnDay;
   }
 }
-
-const EditModal = ({ editingJournal, setEditingJournal }) => {
-    let editingJournalText = '';
-    if (editingJournal != null) {
-        editingJournalText = editingJournal.text;
-    }
-
-    return (
-      <View style={modalStyles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={(editingJournal != null)}
-          onRequestClose={() => {
-            setEditingJournal(null);
-          }}
-        >
-          <View style={modalStyles.centeredView}>
-            <View style={modalStyles.modalView}>
-              <TextInput
-                style={modalStyles.inputBox}
-                placeholder={'Edit journal entry...'}
-                onChangeText={setEditingJournal}
-                value={editingJournalText}
-                textAlign={'left'}
-              />
-  
-              <View style={modalStyles.buttonCentered}>
-                <Pressable
-                  style={[modalStyles.button, modalStyles.buttonClose]}
-                  onPress={() => {
-                    setEditingJournal(null);
-                  }}
-                >
-                  <Text style={modalStyles.textStyle}>Cancel</Text>
-                </Pressable>
-  
-                <Pressable
-                  style={[modalStyles.button, modalStyles.buttonOpen]}
-                  onPress={() => {
-                    setEditingJournal(editingJournalText, true);
-                  }}
-                >
-                  <Text style={modalStyles.textStyle}>
-                    Save journal edit
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </View>
-    );
-  };
 
 export default Calendar;

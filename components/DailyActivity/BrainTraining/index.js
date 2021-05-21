@@ -30,6 +30,7 @@ function BrainTraining(props) {
 
   function beginGame() {
     setIndex(index + 1);
+    setScore(0);
   }
 
   function answerQuestion(answer) {
@@ -47,8 +48,8 @@ function BrainTraining(props) {
     let newIndex = index + 1;
 
     if (newIndex >= DICLENGTH) {
-        newIndex = -1;
         alert(`Game Over! ${score}/${DICLENGTH}`);
+        newIndex = -1;
     }
 
     setIndex(newIndex);
