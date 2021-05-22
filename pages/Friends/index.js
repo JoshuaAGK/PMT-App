@@ -42,7 +42,7 @@ const refreshFriendsLists = async () => {
   return [friendsList, friendRequestsList];
 };
 
-export const Social = (props) => {
+export const Friends = (props) => {
 	const dispatch = useDispatch();
 	const friendsSelector = useSelector((state) => state.friends);
 	const authSelector = useSelector((state) => state.auth);
@@ -174,4 +174,4 @@ export const Social = (props) => {
   );
 };
 
-export default Social;
+export default Friends;

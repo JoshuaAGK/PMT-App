@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View, LogBox, Pressable, Text, Alert } from 'react-native';
 import { Provider, useSelector } from 'react-redux';
-import { Account, ChatPage, Journal, Shop, Social } from './pages';
+import { Account, ChatPage, Journal, Shop, Friends, Groups, GroupChatPage } from './pages';
 import { Advertisement, LogIn, Calendar, Registration, Settings } from './components';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -54,7 +54,8 @@ String.prototype.capitalize = capitalize;
 const LOGIN = 'Log-In';
 const JOURNAL = 'journal';
 const ME = 'me';
-const SOCIAL = 'social';
+const PUBLIC = 'groups';
+const FRIENDS = 'friends';
 const SHOP = 'shop';
 
 // Temporary solution
@@ -62,6 +63,11 @@ var tempVarFriend = { displayName: 'N/A' };
 
 function setFriend(x) {
   tempVarFriend = x;
+}
+var tempVarGroup = { name: 'N/A' };
+
+function setGroup(x) {
+  tempVarGroup = x;
 }
 
 function LogInScreen({ navigation }) {
@@ -100,6 +106,82 @@ function AccountScreen({ navigation }) {
   );
 }
 
+function GroupsHomeScreen({ navigation }) {
+  let auth = useSelector((state) => state.auth);
+  let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
+  return (
+    <View style={styles.container}>
+      <Groups
+        nav={navigation}
+        premium={premiumStatus} loadGroupData={setGroup}/>
+      {!premiumStatus && (
+        <Advertisement type="banner" content="ADVERTISEMENT" />
+      )}
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+
+function groupsChatScreen({ navigation }) {
+  let auth = useSelector((state) => state.auth);
+  let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
+  return (
+    <View style={styles.container}>
+      <GroupChatPage group={tempVarGroup}/>
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+
+function GroupsScreen({ navigation }) {
+  const button = (
+    <Pressable
+      onPress={() => {
+        //navigation.navigate('groupsInfoScreen');
+      }}
+      style={styles.profileButton}
+    >
+      <Text>Info</Text>
+    </Pressable>
+  );
+
+  return (
+    <Stack.Navigator initialRouteName="groupsHomeScreen">
+      <Stack.Screen
+        name="groupsHomeScreen"
+        options={{ headerShown: false, title: 'Groups' }}
+        component={GroupsHomeScreen}
+      />
+      <Stack.Screen
+        name="groupsChatScreen"
+        options={{
+          headerShown: true,
+          title: tempVarGroup.name,
+          headerRight: () => button,
+          headerRightContainerStyle: {
+            marginTop: 5,
+            marginRight: 10,
+            padding: 5,
+            paddingHorizontal: 15,
+            height: '70%',
+            backgroundColor: '#eee',
+            borderRadius: 10,
+          },
+        }}
+        component={groupsChatScreen}
+      />{/*
+      <Stack.Screen
+        name="groupsInfoScreen"
+        options={{
+          headerShown: true,
+          title: tempVarFriend.displayName + '\'s Profile',
+        }}
+        component={socialProfileScreen}
+      />*/}
+    </Stack.Navigator>
+  );
+}
+
 const Stack = createStackNavigator();
 
 function socialHomeScreen({ navigation }) {
@@ -107,7 +189,7 @@ function socialHomeScreen({ navigation }) {
   let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
   return (
     <View style={styles.container}>
-      <Social nav={navigation} loadFriendData={setFriend} />
+      <Friends nav={navigation} loadFriendData={setFriend} />
       {!premiumStatus && (
         <Advertisement type="banner" content="ADVERTISEMENT" />
       )}
@@ -182,7 +264,7 @@ function SocialScreen({ navigation }) {
         name="socialProfileScreen"
         options={{
           headerShown: true,
-          title: tempVarFriend.displayName + "'s Profile",
+          title: tempVarFriend.displayName + '\'s Profile',
         }}
         component={socialProfileScreen}
       />
@@ -220,8 +302,11 @@ function AppTabs() {
             case ME.capitalize():
               iconName = focused ? 'person' : 'person';
               break;
-            case SOCIAL.capitalize():
+            case FRIENDS.capitalize():
               iconName = focused ? 'people-alt' : 'people-alt';
+              break;
+            case PUBLIC.capitalize():
+              iconName = focused ? 'public' : 'public';
               break;
             case SHOP.capitalize():
               iconName = focused ? 'shopping-cart' : 'shopping-cart';
@@ -234,7 +319,8 @@ function AppTabs() {
     >
       <Tab.Screen name={JOURNAL.capitalize()} component={JournalScreen} />
       <Tab.Screen name={ME.capitalize()} component={AccountScreen} />
-      <Tab.Screen name={SOCIAL.capitalize()} component={SocialScreen} />
+      <Tab.Screen name={PUBLIC.capitalize()} component={GroupsScreen} />
+      <Tab.Screen name={FRIENDS.capitalize()} component={SocialScreen} />
       <Tab.Screen name={SHOP.capitalize()} component={ShopScreen} />
     </Tab.Navigator>
   );

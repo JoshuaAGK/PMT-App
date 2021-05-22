@@ -199,9 +199,9 @@ export async function deleteMessage(conversationId, messageId) {
 
 export async function clearChatMessages() {
     // TODO: Implement clearing chat messages
-    let userId = firebase.auth().currentUser.uid
-    let conversationsRef = firebase.database().ref("conversations");
-    conversationsRef.once("value", function(snapshot) {
+    let userId = firebase.auth().currentUser.uid;
+    let conversationsRef = firebase.database().ref('conversations');
+    conversationsRef.once('value', function(snapshot) {
         let snapshotVal = snapshot.val();
         let conversationKeys = Object.keys(snapshotVal);
         for (const conversationKey of conversationKeys) {
@@ -218,7 +218,7 @@ export async function clearChatMessages() {
             }
         }
     }, function(error) {
-        console.log("Error: " + error.code);
+        console.log('Error: ' + error.code);
     });
 }
 
@@ -451,4 +451,90 @@ export async function sendMessage(userId, message) {
 
 export async function resetUnreadMessages(friendID) {
   await getUserDocument().collection('friends').doc(friendID).update({ unread: 0 });
+}
+
+export async function getGroups() {
+  let groupsList = [];
+  const groupsQuery = await db.collection('groups').where('members', 'array-contains', firebase.auth().currentUser.uid).get();
+  groupsQuery.forEach((doc) => {
+    groupsList.push({
+      id: doc.id,
+      owner: doc.data().owner,
+      name: doc.data().name
+    });
+  });
+
+  return groupsList;
+}
+
+export async function getGroupDetails(groupId){
+  const groupDoc = await db.collection('groups').doc(groupId).get();
+  return {
+    id: groupDoc.id,
+    owner: groupDoc.data().owner,
+    name: groupDoc.data().name
+  };
+}
+
+export async function findGroupsByName(groupName){
+  const groupDocs = await db.collection('groups').where('name', '==', groupName).get();
+  let groupsList = [];
+  groupDocs.forEach((documentSnapshot) => {
+    groupsList.push({
+      id: documentSnapshot.id,
+      owner: documentSnapshot.data().owner,
+      name: documentSnapshot.data().name
+    });
+  });
+
+  return groupsList;
+}
+
+export async function joinGroup(groupId) {
+  const updateObject = {members: firebase.firestore.FieldValue.arrayUnion(firebase.auth().currentUser.uid)};
+  await db.collection('groups').doc(groupId).update(updateObject);
+}
+
+export async function sendGroupMessage(groupId, message) {
+  const myUserId = firebase.auth().currentUser.uid;
+  const currentTime = new Date().getTime();
+
+  let conversationObject = {
+    time: currentTime,
+    sender: myUserId,
+    contents: message
+  };
+
+  //await db.collection(USER_COLLECTION).doc(userId).collection('groups').doc(myUserId).update({ unread: firebase.firestore.FieldValue.increment(1)});
+  await firebase.database().ref('/group_messages/'+groupId).push(conversationObject);
+}
+
+export async function attachGroupMessageListenerAndDo(
+  groupId,
+  action,
+  deps
+) {
+  useEffect(() => {
+    if (!groupId) return;
+
+    const subscriber = firebase
+      .database()
+      .ref('/group_messages/'+groupId)
+      .on('child_added', async (snapshot) => {
+        await action(snapshot);
+      });
+
+    // Stop listening for updates when no longer required
+    return () => firebase
+    .database()
+      .ref('/group_messages/'+groupId)
+      .off('child_added', subscriber);
+  },deps);
+}
+
+export async function getAvatar(userId) {
+  const userDoc = await db.collection(USER_COLLECTION).doc(userId).get();
+  const skinTone = userDoc.data().skinTone;
+  const shirtColour = userDoc.data().shirtColour;
+  return {skin: skinTone, shirt: shirtColour};
 }

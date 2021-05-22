@@ -43,7 +43,6 @@ function AvatarShop({ type, items, inventory }) {
     };
 
     const _renderShopItem = (itemToRender) => {
-        //console.log(item);
         const { key, item } = itemToRender.item;
         const itemKey = key;
         const activeItem = itemToRender.index == currentItem;
