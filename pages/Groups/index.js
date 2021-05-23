@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Alert, ScrollView, Text, TextInput } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, ScrollView, Text, TextInput, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { UpperContents } from '../../components';
 import GroupsList from '../../components/GroupsList';
@@ -50,10 +50,17 @@ async function findGroup(name, dispatch, groupsSelector){
 export const Groups = (props) => {
     const dispatch = useDispatch();
     const groupsSelector = useSelector((state) => state.groups);
+    const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
         queryGroups(dispatch);
     }, []);
+
+    const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
+        queryGroups(dispatch);
+        setRefreshing(false);
+    });
 
     const refreshFriendsLists = async () => {
       let friendsList = await getFriends();
@@ -99,6 +106,9 @@ export const Groups = (props) => {
     return (
         <ScrollView
         showsVerticalScrollIndicator={false}
+        refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         style={mainStyles.mainPage}
       >
             <UpperContents content="none" />

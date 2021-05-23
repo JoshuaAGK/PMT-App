@@ -4,10 +4,37 @@ import mainStyles from '../../styles/styles';
 import avatarStyles from '../CustomiseAvatar/styles';
 import styles from './style';
 import { SKIN_TONES, SHIRT_COLOURS } from '../CustomiseAvatar/avatar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { removeFriend as removeFriendStore } from '../../src/features/friends/friendsSlice';
+import { addFriend as addFriendFireStore, removeFriend as removeFriendFirestore} from '../../src/firebase/firestore/firestoreService';
 
+async function removeFriend(dispatch, friendsSelector, friendName, nav){
+    for (const friend in friendsSelector.friendsList) {
+        if (Object.hasOwnProperty.call(friendsSelector.friendsList, friend)) {
+            if(friendsSelector.friendsList[friend].displayName === friendName){
+                dispatch(removeFriendStore(friendsSelector.friendsList[friend]));
+                await removeFriendFirestore(friendsSelector.friendsList[friend].id);
+                break;
+            }
+        }
+    }
+    nav.navigate('groupsInfoScreen');
+}
+
+async function addFriend(dispatch, friendsSelector, friendName, nav){
+    let friendRequest = await addFriendFireStore(friendName);
+    if (friendRequest.success) {
+		alert('Friend request sent!');
+	} else {
+		alert(friendRequest.message);
+	}
+    nav.navigate('groupsInfoScreen');
+}
 
 const PublicProfile = (props) => {
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
     const friendsSelector = useSelector((state) => state.friends);
     const friend = friendsSelector.friendsList.filter((friend) => friend.id === props.user.id);
     const isFriend = friend.length > 0;
@@ -22,11 +49,7 @@ const PublicProfile = (props) => {
             <Text style={styles.profileNameText}><Text>{props.user.displayName}</Text></Text>
             <View style={styles.container}>
             {isFriend && isPending &&
-                    <Pressable
-                        style={styles.button}
-                        onPress={async () => {
-                            //await removeFriend(dispatch, friendsSelector, friendName, navigation);
-                        }}>
+                    <Pressable style={styles.button}>
                             <Text style={styles.buttonText}>Friend request pending</Text>
                     </Pressable>
                 }
@@ -34,7 +57,7 @@ const PublicProfile = (props) => {
                     <Pressable
                         style={styles.buttonRed}
                         onPress={async () => {
-                            //await removeFriend(dispatch, friendsSelector, friendName, navigation);
+                            await removeFriend(dispatch, friendsSelector, props.user.displayName, navigation);
                         }}>
                             <Text style={styles.buttonText}>Remove friend</Text>
                     </Pressable>
@@ -43,7 +66,7 @@ const PublicProfile = (props) => {
                     <Pressable
                     style={styles.buttonGreen}
                     onPress={async () => {
-                        //await removeFriend(dispatch, friendsSelector, friendName, navigation);
+                        await addFriend(dispatch, friendsSelector, props.user.displayName, navigation);
                     }}>
                         <Text style={styles.buttonText}>Add friend</Text>
                     </Pressable>
