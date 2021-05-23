@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Text, TouchableOpacity, View, Image } from 'react-native';
+import { Text, TouchableOpacity, View, Image, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
-import { attachGroupMessageListenerAndDo, getAvatar } from '../../src/firebase/firestore/firestoreService';
+import { attachGroupMessageListenerAndDo, findUser, getAvatar } from '../../src/firebase/firestore/firestoreService';
 import avatarStyles from '../CustomiseAvatar/styles';
 import { SKIN_TONES, SHIRT_COLOURS } from '../CustomiseAvatar/avatar';
 import styles from './style';
@@ -47,6 +47,7 @@ const GroupConversation = (props) => {
                     me={authSelector.currentUser.uid}
                     message={message}
                     prevTime={oldTime}
+                    viewProfile={props.viewProfile}
                     //setEditingMessage={setEditingMessage}
                     /*deleteMessage={(message) => {
                         deleteConversationMessage(message.id);
@@ -83,7 +84,21 @@ export const Message = (props) => {
             </View>
         }
             <View style={[styles.messageContainer, myMsg ? {alignSelf: 'flex-end'}: {alignSelf: 'flex-start'}]}>
-                { !myMsg && <Avatar user={message.sender} /> }
+                { !myMsg &&
+                    <Avatar
+                        user={message.sender}
+                        viewProfile={async () => {
+                            const user = await findUser(message.sender);
+                            const userObject = {
+                                id: user.id,
+                                displayName: user.data().displayName,
+                                skinTone: user.data().skinTone,
+                                shirtColour: user.data().shirtColour,
+                            };
+                            props.viewProfile(userObject);
+                        }}
+                        myMsg={myMsg}/>
+                }
                 { myMsg && showOptions && 
                     <View style={styles.messageOptionsContainer}>
                         <Text style={styles.messageTime}>{time}</Text>
@@ -105,7 +120,7 @@ export const Message = (props) => {
                 </TouchableOpacity>
                 </View>
                 { !myMsg && showOptions && <Text style={styles.messageTime}>{time}</Text> }
-                { myMsg && <Avatar user={message.sender} /> }
+                { myMsg && <Avatar user={message.sender} myMsg={myMsg} /> }
             </View>
         </View>
     );
@@ -117,6 +132,7 @@ const Avatar = (props) => {
     
     useEffect(() => {
         getAvatar(props.user).then((avatar) => {
+            if(avatar === null) return;
             setSkinTone(avatar.skin);
             setShirtColour(avatar.shirt);
         });
@@ -129,16 +145,22 @@ const Avatar = (props) => {
     }
 
     return (
-        <View style={[avatarStyles.myAvatar, { width: 40, height: 40 }]}>
-                <Image
-                style={{width: 30, height: 30, position: 'absolute'}}
-                source={SKIN_TONES[skinTone].image}
-                />
-                <Image
-                style={{width: 30, height: 30, position: 'absolute'}}
-                source={SHIRT_COLOURS[shirtColour].image}
-                />
-            </View>
+        <Pressable
+            onPress={ async () => {
+                if(props.myMsg) return;
+                await props.viewProfile();
+            }}
+            style={[avatarStyles.myAvatar, { width: 40, height: 40 }]}
+        >
+            <Image
+            style={{width: 30, height: 30, position: 'absolute'}}
+            source={SKIN_TONES[skinTone].image}
+            />
+            <Image
+            style={{width: 30, height: 30, position: 'absolute'}}
+            source={SHIRT_COLOURS[shirtColour].image}
+            />
+        </Pressable>
     );
 };
 

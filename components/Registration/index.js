@@ -40,6 +40,7 @@ export const Registration = ({ navigation }) => {
         onSubmit={async (values, { setSubmitting, setErrors }) => {
           try {
             dispatch(addDisplayName(values.displayName));
+            await registerInFirebase(values);
             setSubmitting(false);
             navigation.reset({ index: 0, routes: [{ name: 'Journal' }] });
           } catch (e) {
