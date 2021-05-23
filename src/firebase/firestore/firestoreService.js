@@ -1,7 +1,10 @@
 import firebase from '../config';
 import { useEffect } from 'react';
 import * as Constants from '../../../components/CustomiseAvatar/avatar';
-import { sendFriendRequestNotification, sendMessageNotification } from '../../features/notifications/notifications';
+import {
+  sendFriendRequestNotification,
+  sendMessageNotification,
+} from '../../features/notifications/notifications';
 
 const JOURNAL_COLLECTION = 'journal';
 const USER_COLLECTION = 'users';
@@ -21,26 +24,34 @@ const PUSHNOTIFTOKENS = 'pushNotificationTokens';
 const DEFAULT = {};
 DEFAULT[BALANCE] = 0;
 DEFAULT[STREAK] = 0;
+DEFAULT[LAST_LOG_IN] = 0;
 DEFAULT[PREMIUM] = false;
 DEFAULT[SKIN_TONE] = Constants.MID;
 DEFAULT[SHIRT_COLOUR] = Constants.CRIMSON;
-DEFAULT[SKINS] = [Constants.LIGHT, Constants.LIGHTER, Constants.MID, Constants.DARK, Constants.DARKER];
+DEFAULT[SKINS] = [
+  Constants.LIGHT,
+  Constants.LIGHTER,
+  Constants.MID,
+  Constants.DARK,
+  Constants.DARKER,
+];
 DEFAULT[SHIRTS] = [Constants.CRIMSON];
 
 const db = firebase.firestore();
 
 export function setUserProfileData(user) {
   let userData = {};
-  userData[DISPLAY_NAME] = user.displayName;
+  userData[DISPLAY_NAME] = '';
   return db.collection(USER_COLLECTION).doc(user.uid).set({
-    displayName: user.displayName,
+    displayName: '',
     email: user.email,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    lastLogIn: DEFAULT[LAST_LOG_IN],
     balance: DEFAULT[BALANCE],
     premium: DEFAULT[PREMIUM],
     skinTone: DEFAULT[SKIN_TONE],
     shirtColour: DEFAULT[SHIRT_COLOUR],
-    shirts: DEFAULT[SHIRTS]
+    shirts: DEFAULT[SHIRTS],
   });
 }
 
@@ -49,6 +60,7 @@ export function getUserCollection(collectionName) {
 }
 
 export function getUserDocument() {
+  console.log(firebase.auth().currentUser.uid);
   return db.collection(USER_COLLECTION).doc(firebase.auth().currentUser.uid);
 }
 
@@ -80,7 +92,7 @@ async function getUserProperty(prop) {
   return DEFAULT[prop];
 }
 
-async function updateUserProperty(prop, value) {
+export async function updateUserProperty(prop, value) {
   let updateData = {};
   updateData[prop] = value;
   await getUserDocument().update(updateData);
@@ -152,82 +164,103 @@ export async function setShirtColour(colour) {
 }
 
 export async function getSkins() {
-    return await getUserProperty(SKINS);
+  return await getUserProperty(SKINS);
 }
 
 export async function getShirts() {
-    return await getUserProperty(SHIRTS);
+  return await getUserProperty(SHIRTS);
 }
 
 export async function addSkin(skin) {
-    updateUserProperty(SKINS, firebase.firestore.FieldValue.arrayUnion(skin));
+  updateUserProperty(SKINS, firebase.firestore.FieldValue.arrayUnion(skin));
 }
 
 export async function addShirt(shirt) {
-    updateUserProperty(SHIRTS, firebase.firestore.FieldValue.arrayUnion(shirt));
+  updateUserProperty(SHIRTS, firebase.firestore.FieldValue.arrayUnion(shirt));
 }
 
 export async function setDisplayName(displayName) {
-    updateUserProperty(DISPLAY_NAME, displayName);
+  updateUserProperty(DISPLAY_NAME, displayName);
 }
 
 export function getJournalDocument(id) {
-    return getUserCollection(JOURNAL_COLLECTION).doc(id);
+  return getUserCollection(JOURNAL_COLLECTION).doc(id);
 }
 
 export async function updateJournalProperty(id, prop, value) {
-    let updateData = {};
-    updateData[prop] = value;
-    await getJournalDocument(id).update(updateData);
+  let updateData = {};
+  updateData[prop] = value;
+  await getJournalDocument(id).update(updateData);
 }
 
 export async function clearJournalEntries() {
-    getUserCollection(JOURNAL_COLLECTION).get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            getUserCollection(JOURNAL_COLLECTION).doc(doc.id).delete();
-        });
+  getUserCollection(JOURNAL_COLLECTION)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        getUserCollection(JOURNAL_COLLECTION).doc(doc.id).delete();
+      });
     });
 }
 
 export async function updateMessage(conversationId, messageId, newMessage) {
-    firebase.database().ref(`conversations/${conversationId}/${messageId}`).set(newMessage);
+  firebase
+    .database()
+    .ref(`conversations/${conversationId}/${messageId}`)
+    .set(newMessage);
 }
 
 export async function deleteMessage(conversationId, messageId) {
-    firebase.database().ref(`conversations/${conversationId}/${messageId}`).remove();
+  firebase
+    .database()
+    .ref(`conversations/${conversationId}/${messageId}`)
+    .remove();
 }
 
 export async function clearChatMessages() {
-    // TODO: Implement clearing chat messages
-    let userId = firebase.auth().currentUser.uid;
-    let conversationsRef = firebase.database().ref('conversations');
-    conversationsRef.once('value', function(snapshot) {
-        let snapshotVal = snapshot.val();
-        let conversationKeys = Object.keys(snapshotVal);
-        for (const conversationKey of conversationKeys) {
-            if (conversationKey.includes(userId)) {
-                let conversation = snapshotVal[conversationKey];
-                let conversationEntries = Object.entries(conversation);
-                for (const conversationEntry of conversationEntries) {
-                    let messageId = conversationEntry[0];
-                    let message = conversationEntry[1];
-                    if (message.sender === userId) {
-                        firebase.database().ref(`conversations/${conversationKey}/${messageId}`).remove();
-                    }
-                }
+  // TODO: Implement clearing chat messages
+  let userId = firebase.auth().currentUser.uid;
+  let conversationsRef = firebase.database().ref('conversations');
+  conversationsRef.once(
+    'value',
+    function (snapshot) {
+      let snapshotVal = snapshot.val();
+      let conversationKeys = Object.keys(snapshotVal);
+      for (const conversationKey of conversationKeys) {
+        if (conversationKey.includes(userId)) {
+          let conversation = snapshotVal[conversationKey];
+          let conversationEntries = Object.entries(conversation);
+          for (const conversationEntry of conversationEntries) {
+            let messageId = conversationEntry[0];
+            let message = conversationEntry[1];
+            if (message.sender === userId) {
+              firebase
+                .database()
+                .ref(`conversations/${conversationKey}/${messageId}`)
+                .remove();
             }
+          }
         }
-    }, function(error) {
-        console.log('Error: ' + error.code);
-    });
+      }
+    },
+    function (error) {
+      console.log('Error: ' + error.code);
+    }
+  );
 }
 
 export async function addPushNotificationToken(token) {
-    updateUserProperty(PUSHNOTIFTOKENS, firebase.firestore.FieldValue.arrayUnion(token));
+  updateUserProperty(
+    PUSHNOTIFTOKENS,
+    firebase.firestore.FieldValue.arrayUnion(token)
+  );
 }
 
 export async function removePushNotificationToken(token) {
-    await updateUserProperty(PUSHNOTIFTOKENS, firebase.firestore.FieldValue.arrayRemove(token));
+  await updateUserProperty(
+    PUSHNOTIFTOKENS,
+    firebase.firestore.FieldValue.arrayRemove(token)
+  );
 }
 
 export async function findUser(userID) {
@@ -243,17 +276,23 @@ export async function addFriend(friendName) {
   if (userQuery.size === 1) {
     userQuery.forEach((doc) => (userID = doc.id));
   }
-  if (userID === firebase.auth().currentUser.uid) return {
-    success: false,
-    message: 'You cannot add yourself as a friend',
-  };
+  if (userID === firebase.auth().currentUser.uid)
+    return {
+      success: false,
+      message: 'You cannot add yourself as a friend',
+    };
   let myFriend = await getUserCollection('friends').doc(userID).get();
   if (myFriend.exists) {
     return { success: false, message: 'User is already your friend' };
   }
-  let pendingRequest = await getUserCollection('friend_requests').doc(userID).get();
+  let pendingRequest = await getUserCollection('friend_requests')
+    .doc(userID)
+    .get();
   if (pendingRequest.exists) {
-    return { success: false, message: 'The user has already sent you a friend request.' };
+    return {
+      success: false,
+      message: 'The user has already sent you a friend request.',
+    };
   }
   if (userID) {
     await getUserCollection('friends').doc(userID).set({ status: 'pending' });
@@ -263,8 +302,8 @@ export async function addFriend(friendName) {
       .collection('friend_requests')
       .doc(firebase.auth().currentUser.uid)
       .set({ status: 'pending' });
-    await userQuery.forEach( async (doc) => {
-      await doc.data().pushNotificationTokens.forEach( async (token) => {
+    await userQuery.forEach(async (doc) => {
+      await doc.data().pushNotificationTokens.forEach(async (token) => {
         await sendFriendRequestNotification(token);
       });
     });
@@ -281,7 +320,7 @@ export async function getFriends() {
     friendsList.push({
       id: doc.id,
       status: doc.data().status,
-      unread: doc.data().unread
+      unread: doc.data().unread,
     });
   });
 
@@ -305,7 +344,7 @@ export async function getFriendRequests() {
     friendRequestsList.push({
       id: doc.id,
       status: doc.data().status,
-      unread: doc.data().unread
+      unread: doc.data().unread,
     });
   });
 
@@ -315,9 +354,8 @@ export async function getFriendRequests() {
         .collection(USER_COLLECTION)
         .doc(friendRequestsList[friend].id)
         .get();
-      friendRequestsList[
-        friend
-      ].displayName = displayNameQuery.data().displayName;
+      friendRequestsList[friend].displayName =
+        displayNameQuery.data().displayName;
     }
   }
 
@@ -355,24 +393,20 @@ export async function removeFriend(friendID) {
     .delete();
 }
 
-export async function attachListenerAndDo(
-    userId,
-    action,
-    deps
-) {
-    useEffect(() => {
-        if (!userId) return;
-    
-        const subscriber = db
-          .collection('users')
-          .doc(userId)
-          .onSnapshot(async (documentSnapshot) => {
-            await action(documentSnapshot);
-          });
-    
-        // Stop listening for updates when no longer required
-        return () => subscriber();
-      }, deps);
+export async function attachListenerAndDo(userId, action, deps) {
+  useEffect(() => {
+    if (!userId) return;
+
+    const subscriber = db
+      .collection('users')
+      .doc(userId)
+      .onSnapshot(async (documentSnapshot) => {
+        await action(documentSnapshot);
+      });
+
+    // Stop listening for updates when no longer required
+    return () => subscriber();
+  }, deps);
 }
 
 export async function attachSubCollectionListenerAndDo(
@@ -408,82 +442,103 @@ export async function attachMessageListenerAndDo(
     if (!userId2) return;
 
     let conversationID;
-    if ( userId1 < userId2 ) conversationID = userId1 + ':' + userId2;
+    if (userId1 < userId2) conversationID = userId1 + ':' + userId2;
     else conversationID = userId2 + ':' + userId1;
 
     const subscriber = firebase
       .database()
-      .ref('/conversations/'+conversationID)
+      .ref('/conversations/' + conversationID)
       .on('child_added', async (snapshot) => {
         await action(snapshot);
       });
 
     // Stop listening for updates when no longer required
-    return () => firebase
-    .database()
-      .ref('/conversations/'+conversationID)
-      .off('child_added', subscriber);
-  },deps);
+    return () =>
+      firebase
+        .database()
+        .ref('/conversations/' + conversationID)
+        .off('child_added', subscriber);
+  }, deps);
 }
 
 export async function sendMessage(userId, message) {
   let conversationID;
   const myUserId = firebase.auth().currentUser.uid;
 
-  if ( myUserId < userId ) conversationID =  myUserId + ':' + userId;
-  else  conversationID =  userId + ':' + myUserId;
+  if (myUserId < userId) conversationID = myUserId + ':' + userId;
+  else conversationID = userId + ':' + myUserId;
 
   const currentTime = new Date().getTime();
 
   let conversationObject = {
     time: currentTime,
     sender: myUserId,
-    contents: message
+    contents: message,
   };
   let userDocument = await db.collection(USER_COLLECTION).doc(userId).get();
-  await userDocument.data().pushNotificationTokens.forEach( async (token) => {
-    await sendMessageNotification(token,firebase.auth().currentUser.displayName);
+  await userDocument.data().pushNotificationTokens.forEach(async (token) => {
+    await sendMessageNotification(
+      token,
+      firebase.auth().currentUser.displayName
+    );
   });
-  
-  await db.collection(USER_COLLECTION).doc(userId).collection('friends').doc(myUserId).update({ unread: firebase.firestore.FieldValue.increment(1)});
-  await firebase.database().ref('/conversations/'+conversationID).push(conversationObject);
+
+  await db
+    .collection(USER_COLLECTION)
+    .doc(userId)
+    .collection('friends')
+    .doc(myUserId)
+    .update({ unread: firebase.firestore.FieldValue.increment(1) });
+  await firebase
+    .database()
+    .ref('/conversations/' + conversationID)
+    .push(conversationObject);
 }
 
 export async function resetUnreadMessages(friendID) {
-  await getUserDocument().collection('friends').doc(friendID).update({ unread: 0 });
+  await getUserDocument()
+    .collection('friends')
+    .doc(friendID)
+    .update({ unread: 0 });
 }
 
 export async function getGroups() {
   let groupsList = [];
-  const groupsQuery = await db.collection('groups').where('members', 'array-contains', firebase.auth().currentUser.uid).get();
+  const groupsQuery = await db
+    .collection('groups')
+    .where('members', 'array-contains', firebase.auth().currentUser.uid)
+    .get();
   groupsQuery.forEach((doc) => {
     groupsList.push({
       id: doc.id,
       owner: doc.data().owner,
-      name: doc.data().name
+      name: doc.data().name,
     });
   });
 
   return groupsList;
 }
 
-export async function getGroupDetails(groupId){
+export async function getGroupDetails(groupId) {
   const groupDoc = await db.collection('groups').doc(groupId).get();
   return {
     id: groupDoc.id,
     owner: groupDoc.data().owner,
-    name: groupDoc.data().name
+    name: groupDoc.data().name,
   };
 }
 
-export async function findGroupsByName(groupName){
-  const groupDocs = await db.collection('groups').where('name', '==', groupName).get();
+export async function findGroupsByName(groupName) {
+  const groupDocs = await db
+    .collection('groups')
+    .where('name', '==', groupName)
+    .get();
   let groupsList = [];
   groupDocs.forEach((documentSnapshot) => {
     groupsList.push({
       id: documentSnapshot.id,
       owner: documentSnapshot.data().owner,
-      name: documentSnapshot.data().name
+      name: documentSnapshot.data().name,
     });
   });
 
@@ -491,7 +546,11 @@ export async function findGroupsByName(groupName){
 }
 
 export async function joinGroup(groupId) {
-  const updateObject = {members: firebase.firestore.FieldValue.arrayUnion(firebase.auth().currentUser.uid)};
+  const updateObject = {
+    members: firebase.firestore.FieldValue.arrayUnion(
+      firebase.auth().currentUser.uid
+    ),
+  };
   await db.collection('groups').doc(groupId).update(updateObject);
 }
 
@@ -502,39 +561,39 @@ export async function sendGroupMessage(groupId, message) {
   let conversationObject = {
     time: currentTime,
     sender: myUserId,
-    contents: message
+    contents: message,
   };
 
   //await db.collection(USER_COLLECTION).doc(userId).collection('groups').doc(myUserId).update({ unread: firebase.firestore.FieldValue.increment(1)});
-  await firebase.database().ref('/group_messages/'+groupId).push(conversationObject);
+  await firebase
+    .database()
+    .ref('/group_messages/' + groupId)
+    .push(conversationObject);
 }
 
-export async function attachGroupMessageListenerAndDo(
-  groupId,
-  action,
-  deps
-) {
+export async function attachGroupMessageListenerAndDo(groupId, action, deps) {
   useEffect(() => {
     if (!groupId) return;
 
     const subscriber = firebase
       .database()
-      .ref('/group_messages/'+groupId)
+      .ref('/group_messages/' + groupId)
       .on('child_added', async (snapshot) => {
         await action(snapshot);
       });
 
     // Stop listening for updates when no longer required
-    return () => firebase
-    .database()
-      .ref('/group_messages/'+groupId)
-      .off('child_added', subscriber);
-  },deps);
+    return () =>
+      firebase
+        .database()
+        .ref('/group_messages/' + groupId)
+        .off('child_added', subscriber);
+  }, deps);
 }
 
 export async function getAvatar(userId) {
   const userDoc = await db.collection(USER_COLLECTION).doc(userId).get();
   const skinTone = userDoc.data().skinTone;
   const shirtColour = userDoc.data().shirtColour;
-  return {skin: skinTone, shirt: shirtColour};
+  return { skin: skinTone, shirt: shirtColour };
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Pressable,
@@ -6,10 +6,12 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Modal,
 } from 'react-native';
 import mainStyles from '../../styles/styles';
 import logInStyles from '../LogIn/styles';
 import styles from './styles';
+import modalStyles from '../../styles/modalStyles';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,12 +22,16 @@ import {
   setDisplayName as setDBDisplayName,
 } from '../../src/firebase/firestore/firestoreService';
 import firebase from '../../src/firebase/config';
+import { signOutFirebase } from '../../src/firebase/firestore/firebaseService';
 
-export const Settings = (props) => {
+export const Settings = ({ navigation }) => {
   let dispatch = useDispatch();
   let auth = useSelector((state) => state.auth);
   let displayName = auth.currentUser ? auth.currentUser.displayName : '';
   const email = auth.currentUser ? auth.currentUser.email : '';
+  const uid = auth.currentUser ? auth.currentUser.uid : '';
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   async function onSaveDisplayName(values) {
     let newDisplayName = values.text;
@@ -56,6 +62,83 @@ export const Settings = (props) => {
       })
       .catch(function (error) {
         alert('your password is incorrect');
+      });
+  }
+
+  async function deleteAccount(password) {
+    var user = firebase.auth().currentUser;
+
+    const credentials = firebase.auth.EmailAuthProvider.credential(
+      email,
+      password
+    );
+
+    user
+      .reauthenticateWithCredential(credentials)
+      .then(function () {
+        user
+          .delete()
+          .then(async function () {
+            const batch = firebase.firestore().batch();
+            const usersFriendQuerySnapshot = await firebase
+              .firestore()
+              .collection('users')
+              .doc(uid)
+              .collection('friends')
+              .get();
+            usersFriendQuerySnapshot.forEach((documentSnapshot) => {
+              batch.delete(documentSnapshot.ref);
+            });
+
+            const usersJournalQuerySnapshot = await firebase
+              .firestore()
+              .collection('users')
+              .doc(uid)
+              .collection('journal')
+              .get();
+            usersJournalQuerySnapshot.forEach((documentSnapshot) => {
+              batch.delete(documentSnapshot.ref);
+            });
+
+            const usersFriendRequestsQuerySnapshot = await firebase
+              .firestore()
+              .collection('users')
+              .doc(uid)
+              .collection('friend_requests')
+              .get();
+            usersFriendRequestsQuerySnapshot.forEach((documentSnapshot) => {
+              batch.delete(documentSnapshot.ref);
+            });
+            
+            batch.commit();
+
+            await firebase.firestore().collection('users').doc(uid).delete();
+
+            signOutFirebase();
+            navigation.reset({ index: 0, routes: [{ name: 'Log In' }] });
+          })
+          .catch(function (error) {
+            console.log(error.stackTrace);
+            console.log(error.message);
+            alert('Something went wrong');
+          });
+      })
+      .catch(function (error) {
+        console.log(error.message);
+        alert('Password was incorrect');
+      });
+  }
+
+  async function resetPassword() {
+    const auth = firebase.auth();
+
+    auth
+      .sendPasswordResetEmail(email)
+      .then(function () {
+        alert('Password reset link sent');
+      })
+      .catch(function (error) {
+        alert('Something went wrong');
       });
   }
 
@@ -92,6 +175,37 @@ export const Settings = (props) => {
           <Text style={mainStyles.buttonText}>Clear Chat History</Text>
         </Pressable>
       </View>
+
+      <View
+        style={[mainStyles.buttonContainer, styles.settingsButtonContainer]}
+      >
+        <Pressable
+          style={[mainStyles.button, styles.settingsButton]}
+          onPress={() => {
+            resetPassword();
+          }}
+        >
+          <Text style={mainStyles.buttonText}>Reset Password</Text>
+        </Pressable>
+      </View>
+
+      <View
+        style={[mainStyles.buttonContainer, styles.settingsButtonContainer]}
+      >
+        <Pressable
+          style={[
+            mainStyles.button,
+            styles.settingsButton,
+            styles.deleteAccount,
+          ]}
+          onPress={() => {
+            setModalVisible(true);
+          }}
+        >
+          <Text style={mainStyles.buttonText}>Delete Account</Text>
+        </Pressable>
+      </View>
+
       <View style={[styles.settingsFormContainer]}>
         <Text style={styles.settingTitle}>Set your display name</Text>
         <Formik
@@ -228,7 +342,67 @@ export const Settings = (props) => {
           <Text style={mainStyles.buttonText}>Privacy Policy</Text>
         </Pressable>
       </View>
+      <CustomModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        email={email}
+        deleteAccount={deleteAccount}
+      />
     </ScrollView>
+  );
+};
+
+const CustomModal = (props) => {
+  const [password, changePassword] = useState('');
+
+  return (
+    <View style={modalStyles.centeredView}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={props.modalVisible}
+        onRequestClose={() => {
+          props.setModalVisible(!props.modalVisible);
+        }}
+      >
+        <View style={modalStyles.centeredView}>
+          <View style={modalStyles.modalView}>
+            <Text>Your Email Address: {props.email}</Text>
+
+            <TextInput
+              style={modalStyles.inputBox}
+              placeholder={'Enter your password'}
+              onChangeText={changePassword}
+              value={password}
+              textAlign={'center'}
+              secureTextEntry
+            />
+
+            <View style={modalStyles.buttonCentered}>
+              <Pressable
+                style={[modalStyles.button, modalStyles.buttonClose]}
+                onPress={() => {
+                  props.setModalVisible(!props.modalVisible);
+                }}
+              >
+                <Text style={modalStyles.textStyle}>Cancel</Text>
+              </Pressable>
+
+              <Pressable
+                style={[modalStyles.button, modalStyles.buttonOpen]}
+                onPress={() => {
+                  props.setModalVisible(!props.modalVisible);
+                  changePassword('');
+                  props.deleteAccount(password);
+                }}
+              >
+                <Text style={modalStyles.textStyle}>Delete Account</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </View>
   );
 };
 

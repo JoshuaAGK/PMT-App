@@ -18,6 +18,7 @@ import {
   addPushNotificationToken,
   getUserCollection,
   incrementBalance,
+  updateUserProperty,
 } from '../../src/firebase/firestore/firestoreService';
 import { setText, setMood } from '../../src/features/journal/journalSlice';
 import {
@@ -38,6 +39,12 @@ export const Journal = (props) => {
     : 0;
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  function updateDisplayName() {
+    if (balanceSelector.throwawayDisplayName !== '') {
+      updateUserProperty('displayName', balanceSelector.throwawayDisplayName);
+    }
+  }
 
   registerPushNotifications().then(async (token) => {
     await addPushNotificationToken(token);
@@ -79,6 +86,9 @@ export const Journal = (props) => {
       type: 'braintraining',
     },
   ];
+
+  updateDisplayName();
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}

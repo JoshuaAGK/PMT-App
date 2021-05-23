@@ -10,8 +10,11 @@ import {
 import styles from './styles';
 import { Formik } from 'formik';
 import { registerInFirebase } from '../../src/firebase/firestore/firebaseService';
+import { useDispatch } from 'react-redux';
+import { addDisplayName } from '../../src/features/auth/authSlice';
 
 export const Registration = ({ navigation }) => {
+  const dispatch = useDispatch();
   const showToast = (error) => {
     if (Platform.OS === 'android') {
       ToastAndroid.showWithGravityAndOffset(
@@ -36,7 +39,7 @@ export const Registration = ({ navigation }) => {
         initialValues={{ displayName: '', email: '', password: '' }}
         onSubmit={async (values, { setSubmitting, setErrors }) => {
           try {
-            await registerInFirebase(values);
+            dispatch(addDisplayName(values.displayName));
             setSubmitting(false);
             navigation.reset({ index: 0, routes: [{ name: 'Journal' }] });
           } catch (e) {

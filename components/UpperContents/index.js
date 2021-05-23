@@ -81,8 +81,8 @@ async function logOut(navigation, authSelector) {
   if (authSelector.pushNotificationToken) {
     await removePushNotificationToken(authSelector.pushNotificationToken);
   }
-  await signOutFirebase();
   navigation.reset({ index: 0, routes: [{ name: 'Log In' }] });
+  await signOutFirebase();
 }
 
 export default UpperContents;
