@@ -12,6 +12,7 @@ const GroupChatPage = (props) => {
     };
 
     let sendMessageInput;
+    let scrollView;
     let changingText;
     return (
         <KeyboardAvoidingView
@@ -21,6 +22,10 @@ const GroupChatPage = (props) => {
         >
             <ScrollView
                 style={styles.chatView}
+                ref={(ref) => {
+                  scrollView = ref;
+                }}
+                onContentSizeChange={() => scrollView.scrollToEnd({ animated: true })}
             >
                 <GroupConversation group={props.group} viewProfile={props.viewProfile} />
             </ScrollView>
