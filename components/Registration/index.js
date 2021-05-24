@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
   TextInput,
-  Pressable
+  Pressable,
 } from 'react-native';
 import styles from './styles';
 import { Formik } from 'formik';
@@ -15,10 +15,11 @@ import { useDispatch } from 'react-redux';
 import { addDisplayName } from '../../src/features/auth/authSlice';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { openBrowserAsync } from 'expo-web-browser';
+import * as Yup from 'yup';
 
 export const Registration = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [ termsAndPrivacy, setTermsAndPrivacy ] = useState(false);
+  const [termsAndPrivacy, setTermsAndPrivacy] = useState(false);
   const showToast = (error) => {
     if (Platform.OS === 'android') {
       ToastAndroid.showWithGravityAndOffset(
@@ -40,10 +41,28 @@ export const Registration = ({ navigation }) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <Formik
-        initialValues={{ displayName: '', email: '', password: '', termsAndPrivacy: false}}
+        initialValues={{
+          displayName: '',
+          email: '',
+          password: '',
+          termsAndPrivacy: false,
+        }}
+        validationSchema={Yup.object({
+          displayName: Yup.string().required('No display was provided'),
+          email: Yup.string().required().email(),
+          password: Yup.string()
+            .required()
+            .min(8, 'Password is too short - should be 8 characters long')
+            .matches(
+              /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+              'Password should be minimum 8 characters, at least one letter, one number and one special character'
+            ),
+        })}
         onSubmit={async (values, { setSubmitting, setErrors }) => {
-          if(!termsAndPrivacy){
-            setErrors({ auth: 'Please accept the terms and conditions and the privacy policy' });
+          if (!termsAndPrivacy) {
+            setErrors({
+              auth: 'Please accept the terms and conditions and the privacy policy',
+            });
             setSubmitting(false);
             return;
           }
@@ -65,7 +84,8 @@ export const Registration = ({ navigation }) => {
           values,
           errors,
           isValid,
-          validateForm
+          touched,
+          validateForm,
         }) => (
           <View style={styles.container}>
             <TextInput
@@ -78,6 +98,9 @@ export const Registration = ({ navigation }) => {
               underlineColorAndroid="transparent"
               autoCapitalize="none"
             />
+            {errors.displayName && touched.displayName ? (
+              <Text style={styles.errorStyle}>{errors.displayName}</Text>
+            ) : null}
             <TextInput
               style={styles.input}
               placeholder="E-mail"
@@ -88,6 +111,9 @@ export const Registration = ({ navigation }) => {
               underlineColorAndroid="transparent"
               autoCapitalize="none"
             />
+            {errors.email && touched.email ? (
+              <Text style={styles.errorStyle}>{errors.email}</Text>
+            ) : null}
             <TextInput
               style={styles.input}
               placeholderTextColor="#aaaaaa"
@@ -99,25 +125,33 @@ export const Registration = ({ navigation }) => {
               underlineColorAndroid="transparent"
               autoCapitalize="none"
             />
-            <View style={{
-              alignContent: 'center',
-              justifyContent: 'center',
-              alignItems: 'center',
-              alignSelf: 'center',
-              maxWidth: '80%',
-              marginTop: 10,
-              marginBottom: 10
-            }}>
+            {errors.password && touched.password ? (
+              <Text style={styles.errorStyle}>{errors.password}</Text>
+            ) : null}
+            <View
+              style={{
+                alignContent: 'center',
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'center',
+                maxWidth: '80%',
+                marginTop: 10,
+                marginBottom: 10,
+              }}
+            >
               <BouncyCheckbox
                 size={25}
                 fillColor="skyblue"
                 unfillColor="white"
                 text="By ticking this, you are accepting the Terms and Conditions and Privacy Policy"
-                textStyle={[{textDecorationLine: 'none', fontWeight: 'bold'}, termsAndPrivacy ? {color: 'darkgreen'} : null]}
+                textStyle={[
+                  { textDecorationLine: 'none', fontWeight: 'bold' },
+                  termsAndPrivacy ? { color: 'darkgreen' } : null,
+                ]}
                 isChecked={termsAndPrivacy}
                 onPress={(isChecked) => {
                   setTermsAndPrivacy(isChecked);
-                  if(isChecked){
+                  if (isChecked) {
                     errors.auth = false;
                     validateForm();
                   }
@@ -125,11 +159,15 @@ export const Registration = ({ navigation }) => {
               />
               <Pressable
                 onPress={async () => {
-                  await openBrowserAsync('https://joystep.uk/terms-and-privacy');
+                  await openBrowserAsync(
+                    'https://joystep.uk/terms-and-privacy'
+                  );
                 }}
-                style={{marginTop: 15}}
-                >
-                <Text style={{color: 'navy', fontWeight: 'bold'}}>Click on me to view the T&C and Privacy Policy</Text>
+                style={{ marginTop: 15 }}
+              >
+                <Text style={{ color: 'navy', fontWeight: 'bold' }}>
+                  Click on me to view the T&C and Privacy Policy
+                </Text>
               </Pressable>
             </View>
             {errors.auth && showToast(errors.auth)}
