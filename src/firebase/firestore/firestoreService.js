@@ -52,16 +52,23 @@ export function setUserProfileData(user) {
     skinTone: DEFAULT[SKIN_TONE],
     shirtColour: DEFAULT[SHIRT_COLOUR],
     shirts: DEFAULT[SHIRTS],
+    skins: DEFAULT[SKINS],
   });
 }
 
 export function getUserCollection(collectionName) {
+  if(getUserDocument() === null) return null;
   return getUserDocument().collection(collectionName);
 }
 
 export function getUserDocument() {
-  console.log(firebase.auth().currentUser.uid);
-  return db.collection(USER_COLLECTION).doc(firebase.auth().currentUser.uid);
+  let userDocument;
+  try{
+    userDocument = db.collection(USER_COLLECTION).doc(firebase.auth().currentUser.uid);
+  }catch(error) {
+    userDocument = null;
+  }
+  return userDocument;
 }
 
 export async function getUserPropertyByDisplayName(displayName, prop) {
@@ -83,6 +90,7 @@ export async function getUserPropertyByDisplayName(displayName, prop) {
 }
 
 async function getUserProperty(prop) {
+  if(getUserDocument() === null) return;
   let query = await getUserDocument().get();
   let result = query.get(prop);
   if (result) {
@@ -93,6 +101,7 @@ async function getUserProperty(prop) {
 }
 
 export async function updateUserProperty(prop, value) {
+  if(getUserDocument() === null) return;
   let updateData = {};
   updateData[prop] = value;
   await getUserDocument().update(updateData);
@@ -314,6 +323,7 @@ export async function addFriend(friendName) {
 }
 
 export async function getFriends() {
+  if(getUserCollection('friends') === null) return [];
   let friendsList = [];
   let friendsQuery = await getUserCollection('friends').get();
   friendsQuery.forEach((doc) => {
@@ -338,6 +348,7 @@ export async function getFriends() {
 }
 
 export async function getFriendRequests() {
+  if(getUserCollection('friends') === null) return [];
   let friendRequestsList = [];
   let friendRequestsQuery = await getUserCollection('friend_requests').get();
   friendRequestsQuery.forEach((doc) => {
@@ -513,6 +524,7 @@ export async function getGroups() {
       id: doc.id,
       owner: doc.data().owner,
       name: doc.data().name,
+      members: doc.data().members
     });
   });
 
@@ -525,6 +537,7 @@ export async function getGroupDetails(groupId) {
     id: groupDoc.id,
     owner: groupDoc.data().owner,
     name: groupDoc.data().name,
+    members: groupDoc.data().members
   };
 }
 
@@ -539,6 +552,7 @@ export async function findGroupsByName(groupName) {
       id: documentSnapshot.id,
       owner: documentSnapshot.data().owner,
       name: documentSnapshot.data().name,
+      members: documentSnapshot.data().members
     });
   });
 
@@ -552,6 +566,30 @@ export async function joinGroup(groupId) {
     ),
   };
   await db.collection('groups').doc(groupId).update(updateObject);
+}
+
+export async function createGroup(name) {
+  const existingGroups = await db.collection('groups').where('name', '==', name).get();
+  if(existingGroups.size > 0) return false;
+  const groupObject = {
+    name: name,
+    members: [firebase.auth().currentUser.uid],
+    owner: firebase.auth().currentUser.uid
+  };
+  const newGroup = await db.collection('groups').add(groupObject);
+  groupObject.id = newGroup.id;
+  return groupObject;
+}
+
+export async function leaveGroup(groupId) {
+  const updateObject = {
+    members: firebase.firestore.FieldValue.arrayRemove(
+      firebase.auth().currentUser.uid
+    ),
+  };
+  await db.collection('groups').doc(groupId).update(updateObject);
+  const currentMembers = await db.collection('groups').doc(groupId).get();
+  if(currentMembers.data().members.length === 0) await db.collection('groups').doc(groupId).delete();
 }
 
 export async function sendGroupMessage(groupId, message) {
@@ -593,7 +631,11 @@ export async function attachGroupMessageListenerAndDo(groupId, action, deps) {
 
 export async function getAvatar(userId) {
   const userDoc = await db.collection(USER_COLLECTION).doc(userId).get();
-  const skinTone = userDoc.data().skinTone;
-  const shirtColour = userDoc.data().shirtColour;
-  return { skin: skinTone, shirt: shirtColour };
+  if(userDoc.exists){
+    const skinTone = userDoc.data().skinTone;
+    const shirtColour = userDoc.data().shirtColour;
+    return { skin: skinTone, shirt: shirtColour };
+  }else{
+    return null;
+  }
 }

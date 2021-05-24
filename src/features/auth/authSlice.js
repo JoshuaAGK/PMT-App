@@ -129,10 +129,10 @@ export function verifyAuth() {
   return function (dispatch) {
     return firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        console.log(user);
-        const currentUser = await getUserDocument().get();
+        let currentUser = await getUserDocument().get();
         if (!currentUser.exists) {
           await setUserProfileData(user);
+          currentUser = await getUserDocument().get();
         }
         const currentUserData = currentUser.data();
 
@@ -141,7 +141,6 @@ export function verifyAuth() {
           lastLogIn = currentUserData.lastLogIn.toDate();
         } catch (e) {
           lastLogIn = new Date();
-          console.log(e.message);
         }
 
         let authObj = {

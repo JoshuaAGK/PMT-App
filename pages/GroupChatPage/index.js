@@ -22,7 +22,7 @@ const GroupChatPage = (props) => {
             <ScrollView
                 style={styles.chatView}
             >
-                <GroupConversation group={props.group} />
+                <GroupConversation group={props.group} viewProfile={props.viewProfile} />
             </ScrollView>
             <TextInput
                 style={styles.chatInput}

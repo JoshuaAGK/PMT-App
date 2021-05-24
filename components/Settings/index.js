@@ -109,18 +109,23 @@ export const Settings = ({ navigation }) => {
             );
 
             await firebase.firestore().collection('users').doc(uid).delete();
+            const groups = await firebase.firestore().collection('groups')
+              .where('members', 'array-contains', uid).get();
+            if(groups.size > 0) groups.forEach((documentSnapshot) => {
+              documentSnapshot.ref.update({
+                members: firebase.firestore.FieldValue.arrayRemove(uid)
+              });
+            });
 
             signOutFirebase();
             navigation.reset({ index: 0, routes: [{ name: 'Log In' }] });
           })
           .catch(function (error) {
-            console.log(error.stackTrace);
-            console.log(error.message);
+            console.log(error);
             alert('Something went wrong');
           });
       })
       .catch(function (error) {
-        console.log(error.message);
         alert('Password was incorrect');
       });
   }

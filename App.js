@@ -13,6 +13,8 @@ import store from './src/features/store/store';
 import Profile from './components/Profile';
 import * as Notifications from 'expo-notifications';
 import * as Updates from 'expo-updates';
+import GroupInfo from './components/GroupInfo';
+import PublicProfile from './components/PublicProfile';
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -60,14 +62,18 @@ const SHOP = 'shop';
 
 // Temporary solution
 var tempVarFriend = { displayName: 'N/A' };
-
 function setFriend(x) {
   tempVarFriend = x;
 }
-var tempVarGroup = { name: 'N/A' };
 
+var tempVarGroup = { name: 'N/A' };
 function setGroup(x) {
   tempVarGroup = x;
+}
+
+var tempVarPublicUser = { displayName: 'N/A' };
+function setPublicUser(x) {
+  tempVarPublicUser = x;
 }
 
 function LogInScreen({ navigation }) {
@@ -123,11 +129,36 @@ function GroupsHomeScreen({ navigation }) {
 }
 
 function groupsChatScreen({ navigation }) {
-  let auth = useSelector((state) => state.auth);
-  let premiumStatus = auth.currentUser ? auth.currentUser.premium : false;
+  const viewProfile = (user) => {
+    setPublicUser(user);
+    navigation.navigate('groupMemberProfile');
+  };
   return (
     <View style={styles.container}>
-      <GroupChatPage group={tempVarGroup}/>
+      <GroupChatPage viewProfile={viewProfile} group={tempVarGroup}/>
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+
+function groupsInfoScreen({ navigation }) {
+  const viewProfile = (user) => {
+    setPublicUser(user);
+    navigation.navigate('groupMemberProfile');
+  };
+  return (
+    <View style={styles.container}>
+      <GroupInfo viewProfile={viewProfile} group={tempVarGroup}/>
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+
+function groupMemberProfile({ navigation }) {
+
+  return (
+    <View style={styles.container}>
+      <PublicProfile user={tempVarPublicUser}/>
       <StatusBar style="auto" />
     </View>
   );
@@ -137,7 +168,7 @@ function GroupsScreen({ navigation }) {
   const button = (
     <Pressable
       onPress={() => {
-        //navigation.navigate('groupsInfoScreen');
+        navigation.navigate('groupsInfoScreen');
       }}
       style={styles.profileButton}
     >
@@ -169,15 +200,23 @@ function GroupsScreen({ navigation }) {
           },
         }}
         component={groupsChatScreen}
-      />{/*
+      />
       <Stack.Screen
         name="groupsInfoScreen"
         options={{
           headerShown: true,
-          title: tempVarFriend.displayName + '\'s Profile',
+          title: tempVarGroup.name + '\'s Info',
         }}
-        component={socialProfileScreen}
-      />*/}
+        component={groupsInfoScreen}
+      />
+      <Stack.Screen
+        name="groupMemberProfile"
+        options={{
+          headerShown: true,
+          title: tempVarPublicUser.displayName + '\'s Profile',
+        }}
+        component={groupMemberProfile}
+      />
     </Stack.Navigator>
   );
 }
