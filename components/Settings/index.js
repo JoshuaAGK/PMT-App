@@ -79,38 +79,34 @@ export const Settings = ({ navigation }) => {
         user
           .delete()
           .then(async function () {
-            const batch = firebase.firestore().batch();
             const usersFriendQuerySnapshot = await firebase
               .firestore()
-              .collection('users')
-              .doc(uid)
-              .collection('friends')
+              .collectionGroup('friends')
+              .where('userId', '==', uid)
               .get();
-            usersFriendQuerySnapshot.forEach((documentSnapshot) => {
-              batch.delete(documentSnapshot.ref);
+            usersFriendQuerySnapshot.forEach(async (documentSnapshot) => {
+              await documentSnapshot.ref.delete();
             });
 
             const usersJournalQuerySnapshot = await firebase
               .firestore()
-              .collection('users')
-              .doc(uid)
-              .collection('journal')
+              .collectionGroup('friends')
+              .where('userId', '==', uid)
               .get();
-            usersJournalQuerySnapshot.forEach((documentSnapshot) => {
-              batch.delete(documentSnapshot.ref);
+            usersJournalQuerySnapshot.forEach(async (documentSnapshot) => {
+              await documentSnapshot.ref.delete();
             });
 
             const usersFriendRequestsQuerySnapshot = await firebase
               .firestore()
-              .collection('users')
-              .doc(uid)
-              .collection('friend_requests')
+              .collectionGroup('friend_requests')
+              .where('userId', '==', uid)
               .get();
-            usersFriendRequestsQuerySnapshot.forEach((documentSnapshot) => {
-              batch.delete(documentSnapshot.ref);
-            });
-            
-            batch.commit();
+            usersFriendRequestsQuerySnapshot.forEach(
+              async (documentSnapshot) => {
+                await documentSnapshot.ref.delete();
+              }
+            );
 
             await firebase.firestore().collection('users').doc(uid).delete();
 
