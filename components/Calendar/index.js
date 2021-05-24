@@ -367,8 +367,6 @@ class Calendar extends React.Component {
             saveBtnText={'Save journal edit'}
         />
         {journalDetails}
-        {/* TODO: Data Privacy Collection Statement */}
-        {/* the data we have collected as part of (@form) will be used to (@use/purpose of collection) */}
       </ScrollView>
     );
   }

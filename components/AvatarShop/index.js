@@ -137,7 +137,6 @@ function AvatarShop({ type, items, inventory }) {
                         borderWidth: 2
                     }}
                     inactiveDotStyle={{
-                        // Define styles for inactive dots here
                         backgroundColor: 'skyblue',
                         width: 15,
                         height: 15,

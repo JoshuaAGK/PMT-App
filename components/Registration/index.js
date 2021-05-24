@@ -48,7 +48,8 @@ export const Registration = ({ navigation }) => {
           termsAndPrivacy: false,
         }}
         validationSchema={Yup.object({
-          displayName: Yup.string().required('No display was provided'),
+          displayName: Yup.string().required('No display was provided')
+            .max(15, 'Display name cannot be longer than 15 characters'),
           email: Yup.string().required().email(),
           password: Yup.string()
             .required()
@@ -186,9 +187,6 @@ export const Registration = ({ navigation }) => {
                 </Text>
               </Text>
             </View>
-
-            {/* TODO: Data Privacy Collection Statement */}
-            {/* the data we have collected as part of (@form) will be used to (@use/purpose of collection) */}
           </View>
         )}
       </Formik>

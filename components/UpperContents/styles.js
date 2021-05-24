@@ -41,16 +41,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     letterSpacing: 0.15,
   },
-  // rightBox: {
-  //   borderWidth: 1,
-  //   borderRadius: 50 / 4,
-  //   padding: 5,
-  //   minWidth: 100,
-  //   // height: 50,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   backgroundColor: '#f2f2f7',
-  // },
   rightInnerText: {
     fontSize: scaleFontSize(13),
   },

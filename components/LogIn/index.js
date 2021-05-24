@@ -16,8 +16,6 @@ import { signInWithEmail } from '../../src/firebase/firestore/firebaseService';
 
 async function resetPassword(email) {
   const auth = firebase.auth();
-  console.log(email);
-
   auth
     .sendPasswordResetEmail(email)
     .then(function () {
@@ -136,9 +134,6 @@ export const LogIn = ({ navigation }) => {
                 </Text>
               </View>
             }
-
-            {/* TODO: Data Privacy Collection Statement */}
-            {/* the data we have collected as part of (@form) will be used to (@use/purpose of collection) */}
           </View>
         )}
       </Formik>

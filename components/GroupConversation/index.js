@@ -48,11 +48,6 @@ const GroupConversation = (props) => {
                     message={message}
                     prevTime={oldTime}
                     viewProfile={props.viewProfile}
-                    //setEditingMessage={setEditingMessage}
-                    /*deleteMessage={(message) => {
-                        deleteConversationMessage(message.id);
-                        deleteMessage(conversationID, message.id);
-                    }}*/
                 />);
                 oldTime = time;
                 return messageComponent;
@@ -75,9 +70,6 @@ export const Message = (props) => {
     const currentMsgDate = timestampToDate(message.time);
   
     const showDate = prevMsgDate !== currentMsgDate;
-
-    /*const setEditingMessage = props.setEditingMessage;
-    const deleteMessage = props.deleteMessage;*/
 
     let [ showOptions, setShowOptions ] = useState(false);
     return (
@@ -106,16 +98,6 @@ export const Message = (props) => {
                 { myMsg && showOptions && 
                     <View style={styles.messageOptionsContainer}>
                         <Text style={styles.messageTime}>{time}</Text>
-                        {/*<Pressable style={styles.messageOptionBtn} onPress={() => {
-                            setEditingMessage(message);
-                        }}>
-                            <Text style={styles.messageOptionText}>Edit</Text>
-                        </Pressable>
-                        <Pressable style={styles.messageOptionBtn} onPress={() => {
-                            deleteMessage(message);
-                        }}>
-                            <Text style={styles.messageOptionText}>Delete</Text>
-                        </Pressable>*/}
                     </View> 
                 }
                 <View style={myMsg ? styles.messageContainerMe : [styles.messageContainerOther,{alignSelf: 'flex-end'}]}>
@@ -144,7 +126,16 @@ const Avatar = (props) => {
 
     if(!skinTone || !shirtColour){
         return (
-            <View></View>
+            <View style={[avatarStyles.myAvatar, { width: 40, height: 40 }]}>
+                <Image
+                style={{width: 30, height: 30, position: 'absolute'}}
+                source={require('../../assets/avatar_images/skintones/skin-unknown.png')}
+                />
+                <Image
+                style={{width: 30, height: 30, position: 'absolute'}}
+                source={require('../../assets/avatar_images/shirtcolours/shirt-unknown.png')}
+                />
+            </View>
         );
     }
 

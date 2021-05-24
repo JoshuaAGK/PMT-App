@@ -36,8 +36,10 @@ export const Settings = ({ navigation }) => {
 
   async function onSaveDisplayName(values) {
     let newDisplayName = values.text;
+    if(newDisplayName.length > 15) return false;
     dispatch(setDisplayName(newDisplayName));
     await setDBDisplayName(newDisplayName);
+    return true;
   }
 
   // TODO: Somehow implement password changing.
@@ -82,17 +84,23 @@ export const Settings = ({ navigation }) => {
           .then(async function () {
             const usersFriendQuerySnapshot = await firebase
               .firestore()
-              .collectionGroup('journal')
-              .where('userId', '==', uid)
+              .collection('users')
+              .doc(uid)
+              .collection('friends')
               .get();
             usersFriendQuerySnapshot.forEach(async (documentSnapshot) => {
+              const friendId = documentSnapshot.id;
+              const friendRef = firebase.firestore().collection('users').doc(friendId);
+              await friendRef.collection('friends').doc(uid).delete();
+              await friendRef.collection('friend_requests').doc(uid).delete();
               await documentSnapshot.ref.delete();
             });
 
             const usersJournalQuerySnapshot = await firebase
               .firestore()
-              .collectionGroup('friends')
-              .where('userId', '==', uid)
+              .collection('users')
+              .doc(uid)
+              .collection('journal')
               .get();
             usersJournalQuerySnapshot.forEach(async (documentSnapshot) => {
               await documentSnapshot.ref.delete();
@@ -100,11 +108,15 @@ export const Settings = ({ navigation }) => {
 
             const usersFriendRequestsQuerySnapshot = await firebase
               .firestore()
-              .collectionGroup('friend_requests')
-              .where('userId', '==', uid)
+              .collection('users')
+              .doc(uid)
+              .collection('friend_requests')
               .get();
             usersFriendRequestsQuerySnapshot.forEach(
               async (documentSnapshot) => {
+                const friendId = documentSnapshot.id;
+                const friendRef = firebase.firestore().collection('users').doc(friendId);
+                await friendRef.collection('friends').doc(uid).delete();
                 await documentSnapshot.ref.delete();
               }
             );
@@ -126,7 +138,6 @@ export const Settings = ({ navigation }) => {
             navigation.reset({ index: 0, routes: [{ name: 'Log In' }] });
           })
           .catch(function (error) {
-            console.log(error);
             alert('Something went wrong');
           });
       })
@@ -199,7 +210,7 @@ export const Settings = ({ navigation }) => {
           onSubmit={async (values, { setSubmitting, setErrors }) => {
             try {
               if (values.text !== initialValues.text) {
-                await onSaveDisplayName(values);
+                if(!await onSaveDisplayName(values)) return alert('Display name cannot be longer than 15 characters.');
                 initialValues.text = values.text;
                 alert(`Name updated to ${values.text}.`);
               } else if (

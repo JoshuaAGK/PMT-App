@@ -56,7 +56,7 @@ const GroupInfo = (props) => {
             <Text style={mainStyles.bigText}>Group Members</Text>
             <View style={[mainStyles.platformShadow, {marginBottom: 30}]}>
                 {groupMembers.length > 0 && groupMembers.map((member, index) => {
-                    const selfRow = member.id == authSelector.currentUser.uid;
+                    const selfRow = member.id == (authSelector.currentUser ? authSelector.currentUser.uid : false);
                     return (
                         <Pressable
                             onPress={() => {

@@ -233,7 +233,6 @@ export async function deleteMessage(conversationId, messageId) {
 }
 
 export async function clearChatMessages() {
-  // TODO: Implement clearing chat messages
   let userId = firebase.auth().currentUser.uid;
   let conversationsRef = firebase.database().ref('conversations');
   conversationsRef.once(

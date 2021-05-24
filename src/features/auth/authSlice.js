@@ -54,20 +54,24 @@ const authSlice = createSlice({
           state.currentUser.streak = 1;
           resetStreak(1);
           alert(
-            `You've logged in for 7 consecutive days! +${Points.FULL_STREAK} steps!`
+            `You've logged in for 7 consecutive days! +${Points.FULL_STREAK} Joy Points!`
           );
           addToBalance(Points.FULL_STREAK);
           incrementBalance(state.currentUser.balance, Points.FULL_STREAK);
         } else if (state.currentUser.streak > 1) {
           alert(
-            `You've logged in for ${state.currentUser.streak} days straight! +${Points.STREAK_BONUS} steps!`
+            `You've logged in for ${state.currentUser.streak} days straight! +${Points.STREAK_BONUS} Joy Points!`
           );
           addToBalance(Points.STREAK_BONUS);
           incrementBalance(state.currentUser.balance, Points.STREAK_BONUS);
         } else {
           incrementStreak();
         }
-      } else {
+      } else if (
+        month === lastLogInMonth &&
+        year === lastLogInYear &&
+        day - lastLogInDay !== 0
+      ) {
         if (state.currentUser.streak >= 1) {
           alert('You lost your streak.');
         }
