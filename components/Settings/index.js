@@ -81,7 +81,7 @@ export const Settings = ({ navigation }) => {
           .then(async function () {
             const usersFriendQuerySnapshot = await firebase
               .firestore()
-              .collectionGroup('friends')
+              .collectionGroup('journal')
               .where('userId', '==', uid)
               .get();
             usersFriendQuerySnapshot.forEach(async (documentSnapshot) => {
@@ -109,13 +109,17 @@ export const Settings = ({ navigation }) => {
             );
 
             await firebase.firestore().collection('users').doc(uid).delete();
-            const groups = await firebase.firestore().collection('groups')
-              .where('members', 'array-contains', uid).get();
-            if(groups.size > 0) groups.forEach((documentSnapshot) => {
-              documentSnapshot.ref.update({
-                members: firebase.firestore.FieldValue.arrayRemove(uid)
+            const groups = await firebase
+              .firestore()
+              .collection('groups')
+              .where('members', 'array-contains', uid)
+              .get();
+            if (groups.size > 0)
+              groups.forEach((documentSnapshot) => {
+                documentSnapshot.ref.update({
+                  members: firebase.firestore.FieldValue.arrayRemove(uid),
+                });
               });
-            });
 
             signOutFirebase();
             navigation.reset({ index: 0, routes: [{ name: 'Log In' }] });
