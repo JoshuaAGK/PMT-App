@@ -52,6 +52,7 @@ export function setUserProfileData(user) {
     skinTone: DEFAULT[SKIN_TONE],
     shirtColour: DEFAULT[SHIRT_COLOUR],
     shirts: DEFAULT[SHIRTS],
+    skins: DEFAULT[SKINS],
   });
 }
 
@@ -565,6 +566,30 @@ export async function joinGroup(groupId) {
     ),
   };
   await db.collection('groups').doc(groupId).update(updateObject);
+}
+
+export async function createGroup(name) {
+  const existingGroups = await db.collection('groups').where('name', '==', name).get();
+  if(existingGroups.size > 0) return false;
+  const groupObject = {
+    name: name,
+    members: [firebase.auth().currentUser.uid],
+    owner: firebase.auth().currentUser.uid
+  };
+  const newGroup = await db.collection('groups').add(groupObject);
+  groupObject.id = newGroup.id;
+  return groupObject;
+}
+
+export async function leaveGroup(groupId) {
+  const updateObject = {
+    members: firebase.firestore.FieldValue.arrayRemove(
+      firebase.auth().currentUser.uid
+    ),
+  };
+  await db.collection('groups').doc(groupId).update(updateObject);
+  const currentMembers = await db.collection('groups').doc(groupId).get();
+  if(currentMembers.data().members.length === 0) await db.collection('groups').doc(groupId).delete();
 }
 
 export async function sendGroupMessage(groupId, message) {

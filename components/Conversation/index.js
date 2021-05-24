@@ -135,7 +135,11 @@ export const Conversation = (props) => {
 export const Message = (props) => {
     const message = props.message;
 
-    const time = new Date(message.time).getHours()+':'+new Date(message.time).getMinutes();
+    const timeHours = new Date(message.time).getHours().toString();
+    const timeMinutes = new Date(message.time).getMinutes().toString();
+    const mesageTimeHours = timeHours.length == 1 ? '0'+timeHours : timeHours;
+    const mesageTimeMinutes = timeMinutes.length == 1 ? '0'+timeMinutes : timeMinutes;
+    const time = mesageTimeHours+':'+mesageTimeMinutes;
     const myMsg = message.sender == props.me;
 
     const prevMsgDate = timestampToDate(props.prevTime);

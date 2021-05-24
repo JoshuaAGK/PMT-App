@@ -98,7 +98,7 @@ export const Shop = (props) => {
                 await leavePremium();
                 dispatch(setPremium(false));
                 alert(
-                  "We're sorry to hear you go... You are no longer a premium member."
+                  'We\'re sorry to hear you go... You are no longer a premium member.'
                 );
               }
             }}

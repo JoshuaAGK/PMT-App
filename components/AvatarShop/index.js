@@ -126,7 +126,7 @@ function AvatarShop({ type, items, inventory }) {
                     activeDotIndex={currentItem}
                     carouselRef={carouselRef}
                     tappableDots={true}
-                    containerStyle={{}}
+                    dotContainerStyle={{width: '2%'}}
                     dotStyle={{
                         width: 10,
                         height: 10,

@@ -5,7 +5,7 @@ import { UpperContents } from '../../components';
 import GroupsList from '../../components/GroupsList';
 import { addFriend, addFriendRequest, resetFriendRequestsList, resetFriendsList } from '../../src/features/friends/friendsSlice';
 import { addGroup, resetGroupsList } from '../../src/features/groups/groupsSlice';
-import { findGroupsByName, getGroups, joinGroup, findUser, getFriendRequests, getFriends, } from '../../src/firebase/firestore/firestoreService';
+import { findGroupsByName, getGroups, joinGroup, findUser, getFriendRequests, getFriends, createGroup, } from '../../src/firebase/firestore/firestoreService';
 import mainStyles from '../../styles/styles';
 
 async function queryGroups(dispatch){
@@ -42,7 +42,28 @@ async function findGroup(name, dispatch, groupsSelector){
                 ]
             );
         }else{
-            alert('Group not found');
+            Alert.alert(
+                'Group Does not exist yet!',
+                'Would you like to create '+name+'?',
+                [
+                    {
+                        text: 'Yes',
+                        style: 'default',
+                        onPress: async () => {
+                            const result = await createGroup(name);
+                            if(result === false){
+                                alert('Failed to create group!');
+                            }else{
+                                dispatch(addGroup(result));
+                            }
+                        }
+                    },
+                    {
+                        text: 'No',
+                        style: 'cancel',
+                    }
+                ]
+            );
         }
     });
 }
@@ -113,7 +134,7 @@ export const Groups = (props) => {
       >
             <UpperContents content="none" />
 
-            <Text style={mainStyles.bigText}>Find Groups</Text>
+            <Text style={mainStyles.bigText}>Find/Create a Group</Text>
             <TextInput
                 style={[mainStyles.textInput, mainStyles.platformShadow]}
                 placeholder="Group name"
