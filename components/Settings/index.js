@@ -23,6 +23,7 @@ import {
 } from '../../src/firebase/firestore/firestoreService';
 import firebase from '../../src/firebase/config';
 import { signOutFirebase } from '../../src/firebase/firestore/firebaseService';
+import { openBrowserAsync } from 'expo-web-browser';
 
 export const Settings = ({ navigation }) => {
   let dispatch = useDispatch();
@@ -134,19 +135,6 @@ export const Settings = ({ navigation }) => {
       });
   }
 
-  async function resetPassword() {
-    const auth = firebase.auth();
-
-    auth
-      .sendPasswordResetEmail(email)
-      .then(function () {
-        alert('Password reset link sent');
-      })
-      .catch(function (error) {
-        alert('Something went wrong');
-      });
-  }
-
   const initialValues = { text: displayName, oldPassword: '', newPassword: '' };
 
   return (
@@ -178,19 +166,6 @@ export const Settings = ({ navigation }) => {
           }}
         >
           <Text style={mainStyles.buttonText}>Clear Chat History</Text>
-        </Pressable>
-      </View>
-
-      <View
-        style={[mainStyles.buttonContainer, styles.settingsButtonContainer]}
-      >
-        <Pressable
-          style={[mainStyles.button, styles.settingsButton]}
-          onPress={() => {
-            resetPassword();
-          }}
-        >
-          <Text style={mainStyles.buttonText}>Reset Password</Text>
         </Pressable>
       </View>
 
@@ -340,8 +315,8 @@ export const Settings = ({ navigation }) => {
       >
         <Pressable
           style={[mainStyles.button, styles.settingsButton]}
-          onPress={() => {
-            // TODO: Navigate to privacy policy page
+          onPress={ async () => {
+            await openBrowserAsync('https://joystep.uk/terms-and-privacy');
           }}
         >
           <Text style={mainStyles.buttonText}>Privacy Policy</Text>

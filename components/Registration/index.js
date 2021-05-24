@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
   Text,
@@ -6,15 +6,19 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  Pressable
 } from 'react-native';
 import styles from './styles';
 import { Formik } from 'formik';
 import { registerInFirebase } from '../../src/firebase/firestore/firebaseService';
 import { useDispatch } from 'react-redux';
 import { addDisplayName } from '../../src/features/auth/authSlice';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import { openBrowserAsync } from 'expo-web-browser';
 
 export const Registration = ({ navigation }) => {
   const dispatch = useDispatch();
+  const [ termsAndPrivacy, setTermsAndPrivacy ] = useState(false);
   const showToast = (error) => {
     if (Platform.OS === 'android') {
       ToastAndroid.showWithGravityAndOffset(
@@ -36,8 +40,13 @@ export const Registration = ({ navigation }) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <Formik
-        initialValues={{ displayName: '', email: '', password: '' }}
+        initialValues={{ displayName: '', email: '', password: '', termsAndPrivacy: false}}
         onSubmit={async (values, { setSubmitting, setErrors }) => {
+          if(!termsAndPrivacy){
+            setErrors({ auth: 'Please accept the terms and conditions and the privacy policy' });
+            setSubmitting(false);
+            return;
+          }
           try {
             dispatch(addDisplayName(values.displayName));
             await registerInFirebase(values);
@@ -56,6 +65,7 @@ export const Registration = ({ navigation }) => {
           values,
           errors,
           isValid,
+          validateForm
         }) => (
           <View style={styles.container}>
             <TextInput
@@ -89,6 +99,39 @@ export const Registration = ({ navigation }) => {
               underlineColorAndroid="transparent"
               autoCapitalize="none"
             />
+            <View style={{
+              alignContent: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center',
+              maxWidth: '80%',
+              marginTop: 10,
+              marginBottom: 10
+            }}>
+              <BouncyCheckbox
+                size={25}
+                fillColor="skyblue"
+                unfillColor="white"
+                text="By ticking this, you are accepting the Terms and Conditions and Privacy Policy"
+                textStyle={[{textDecorationLine: 'none', fontWeight: 'bold'}, termsAndPrivacy ? {color: 'darkgreen'} : null]}
+                isChecked={termsAndPrivacy}
+                onPress={(isChecked) => {
+                  setTermsAndPrivacy(isChecked);
+                  if(isChecked){
+                    errors.auth = false;
+                    validateForm();
+                  }
+                }}
+              />
+              <Pressable
+                onPress={async () => {
+                  await openBrowserAsync('https://joystep.uk/terms-and-privacy');
+                }}
+                style={{marginTop: 15}}
+                >
+                <Text style={{color: 'navy', fontWeight: 'bold'}}>Click on me to view the T&C and Privacy Policy</Text>
+              </Pressable>
+            </View>
             {errors.auth && showToast(errors.auth)}
             <TouchableOpacity
               style={styles.button}

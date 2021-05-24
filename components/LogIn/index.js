@@ -10,8 +10,23 @@ import {
 import styles from './styles';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import firebase from '../../src/firebase/config';
 
 import { signInWithEmail } from '../../src/firebase/firestore/firebaseService';
+
+async function resetPassword(email) {
+  const auth = firebase.auth();
+  console.log(email);
+
+  auth
+    .sendPasswordResetEmail(email)
+    .then(function () {
+      alert('If the email address you inputted was correct, an email has been sent to reset your password');
+    })
+    .catch(function (error) {
+      alert('If the email address you inputted was correct, an email has been sent to reset your password');
+    });
+}
 
 export const LogIn = ({ navigation }) => {
   const onFooterLinkPress = () => {
@@ -100,12 +115,27 @@ export const LogIn = ({ navigation }) => {
             </TouchableOpacity>
             <View style={styles.footerView}>
               <Text style={styles.footerText}>
-                {"Don't have an account? "}
+                {'Don\'t have an account? '}
                 <Text onPress={onFooterLinkPress} style={styles.footerLink}>
                   Sign Up
                 </Text>
               </Text>
             </View>
+            {errors.auth &&
+              <View style={styles.footerView}>
+                <Text style={styles.footerText}>
+                  {'Forgot password? '}
+                  <Text
+                    onPress={async () => {
+                      await resetPassword(values.email);
+                    }}
+                    style={styles.footerLink}
+                  >
+                    Send email to reset
+                  </Text>
+                </Text>
+              </View>
+            }
 
             {/* TODO: Data Privacy Collection Statement */}
             {/* the data we have collected as part of (@form) will be used to (@use/purpose of collection) */}
