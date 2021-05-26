@@ -46,7 +46,7 @@ export const LogIn = ({ navigation }) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView keyboardShouldPersistTaps={'handled'}>
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={Yup.object({

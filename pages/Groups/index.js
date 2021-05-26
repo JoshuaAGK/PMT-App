@@ -126,6 +126,7 @@ export const Groups = (props) => {
 
     return (
         <ScrollView
+        keyboardShouldPersistTaps={'handled'}
         showsVerticalScrollIndicator={false}
         refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

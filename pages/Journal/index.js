@@ -22,6 +22,7 @@ import {
 } from '../../src/firebase/firestore/firestoreService';
 import { setText, setMood } from '../../src/features/journal/journalSlice';
 import {
+  addDisplayName,
   addToBalance,
   setPushNotificationToken,
 } from '../../src/features/auth/authSlice';
@@ -40,9 +41,10 @@ export const Journal = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  function updateDisplayName() {
+  function updateDisplayName(dispatch) {
     if (balanceSelector.throwawayDisplayName !== '') {
       updateUserProperty('displayName', balanceSelector.throwawayDisplayName);
+      dispatch(addDisplayName(''));
     }
   }
 
@@ -87,10 +89,11 @@ export const Journal = (props) => {
     },
   ];
 
-  updateDisplayName();
+  updateDisplayName(dispatch);
 
   return (
     <ScrollView
+      keyboardShouldPersistTaps={'handled'}
       showsVerticalScrollIndicator={false}
       style={mainStyles.mainPage}
     >

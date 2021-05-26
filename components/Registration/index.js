@@ -39,7 +39,7 @@ export const Registration = ({ navigation }) => {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={'handled'}>
       <Formik
         initialValues={{
           displayName: '',

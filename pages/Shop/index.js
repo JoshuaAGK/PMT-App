@@ -62,6 +62,7 @@ export const Shop = (props) => {
 
   return (
     <ScrollView
+      keyboardShouldPersistTaps={'handled'}
       showsVerticalScrollIndicator={false}
       style={mainStyles.mainPage}
     >

@@ -288,7 +288,7 @@ class Calendar extends React.Component {
         editingJournalText = this.state.editingJournal.text;
     }
     return (
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView style={styles.scrollContainer} keyboardShouldPersistTaps={'handled'}>
         <View style={styles.buttonContainer}>
           <Pressable style={styles.nextPrevBtn} onPress={this.prevMonth}>
             <MaterialIcons

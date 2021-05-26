@@ -24,6 +24,12 @@ const styles = StyleSheet.create({
     },
     inputBox: {
       marginBottom: 20,
+      backgroundColor: '#e9e9e9',
+      borderColor: 'black',
+      borderWidth: 1,
+      padding: 10,
+      borderRadius: 5,
+      width: '100%'
     },
     buttonCentered: {
       display: 'flex',
